@@ -1,6 +1,9 @@
+import UserModel from "../models/user";
+import ItemFavoriteModel from "../models/itemFavority";
 import { Request, Response } from "express";
 import ItemModel, { IItem } from "../models/item";
-import { loadItemStock, loadItemPrices } from "../utils/itemAPI";
+import { loadItemStock } from "../utils/itemAPI";
+import ItemStockModel from "../models/itemStock";
 
 // POST: /item, body: {name: "아이템 이름"}에서 아이템 이름을 가지고 DB에 그 아이템을 가져오는 기능
 export const getItemByName = async (req: Request, res: Response) => {
@@ -12,7 +15,7 @@ export const getItemByName = async (req: Request, res: Response) => {
     if (item) {
       // item.price의 정보가 비어 있다면 loadItemStock 함수를 실행하여 가격 정보 가져오기
       if (!item.price || item.price.length === 0) {
-        await loadItemStock(item.id);
+        await loadItemStock(item.id); // 아이템 stock(가격정보 ) 업데이트
         // 다시 아이템 정보를 가져와서 업데이트된 정보를 반환
         const updatedItem: IItem | null = await ItemModel.findOne({ name });
         res.status(200).json({ item: updatedItem });
@@ -28,12 +31,13 @@ export const getItemByName = async (req: Request, res: Response) => {
   }
 };
 
+// ItemStock(가격 정보 등)으로 부터 데이터를 가져와서 뿌려주는 역할
 export const getItemPriceByName = async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
 
     // loadItemPrices 함수를 호출하여 아이템 가격 정보를 가져옴
-    const itemPrices = await loadItemPrices(name);
+    const itemPrices = await ItemStockModel.find({ name });
 
     // 가져온 아이템 가격 정보를 응답으로 반환
     res.status(200).json({ itemPrices });

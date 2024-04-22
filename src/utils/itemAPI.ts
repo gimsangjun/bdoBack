@@ -1,7 +1,10 @@
+// BdoMarket과 API요청을 하는 얘들만
 import config from "../config";
 import axios from "axios";
 import ItemModel, { IItem } from "../models/item";
 import ItemStockModel, { IItemStock } from "../models/itemStock";
+import UserModel, { IUser } from "../models/user";
+import ItemFavoriteModel, { IItemFavorite } from "../models/itemFavority";
 
 const BdoMarketUrl = config.BdoMarketURL;
 
@@ -15,7 +18,6 @@ export const loadItemStock = async (itemId: number) => {
 
     // 이미 ItemStock에 동일한 데이터가 있으면, price만 업데이트
     for (const itemData of response.data) {
-      console.log(itemData);
       const existingItemStock = await ItemStockModel.findOne({
         id: itemData.id,
         sid: itemData.sid,
@@ -66,17 +68,5 @@ export const loadItemStock = async (itemId: number) => {
     }
   } catch (error) {
     console.error("Error loading item info:", error);
-  }
-};
-
-// ItemStock(가격 정보 등)으로 부터 데이터를 가져와서 뿌려주는 역할
-export const loadItemPrices = async (name: string) => {
-  try {
-    // 아이템 이름으로 ItemStockModel에서 아이템을 찾음
-    const itemStocks = await ItemStockModel.find({ name });
-    return itemStocks;
-  } catch (error) {
-    console.error("Error loading item prices:", error);
-    throw new Error("Failed to load item prices");
   }
 };
