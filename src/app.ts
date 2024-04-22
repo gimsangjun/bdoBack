@@ -3,6 +3,7 @@ import config from "./config";
 import mongoose from "mongoose";
 import cors from "cors";
 import ItemRouter from "./api/routes/item";
+import UserRouter from "./api/routes/user";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import { initializeItems } from "./models/initItem";
@@ -29,7 +30,12 @@ process.on("SIGINT", async () => {
 // initializeItems();
 
 // ---------------- 미들웨어 설정 -------------------
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3001", // 클라이언트의 origin을 명시적으로 지정
+    credentials: true, // TODO: credentials 모드가 'include'인 요청을 허용 ======> 좀더 정확ㅎㅣ알아봐야할듯.
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // URL-encoded 데이터 파싱을 위한 미들웨어
 app.use(express.static("public")); // 정적 파일 제공을 위한 미들웨어
@@ -53,6 +59,7 @@ app.use((req: Request, res: Response, next: any) => {
   next(); // 다음 미들웨어로 요청 전달
 });
 
+app.use("/auth", UserRouter);
 app.use("/item", ItemRouter);
 
 const port = config.port;
