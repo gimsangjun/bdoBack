@@ -7,7 +7,7 @@ import ItemStockModel from "../models/itemStock";
 
 // 사용자 찜목록 리턴
 export const getUserFavorites = async (req: Request, res: Response) => {
-  const username = req.session.user;
+  const username = req.session.username;
   try {
     // 사용자 정보를 가져올 때 populate() 메서드를 사용하여 favorites 필드를 참조하여 실제 아이템 정보를 가져옵니다.
     // populate에는 DB에 저장되는 이름 그대로 스키마이름 그대로
@@ -26,7 +26,7 @@ export const getUserFavorites = async (req: Request, res: Response) => {
 // / 사용자 찜목록에 아이템 추가
 export const addItemFavorites = async (req: Request, res: Response) => {
   const { itemId, sid, priceThreshold } = req.body;
-  const username = req.session.user;
+  const username = req.session.username;
   try {
     // 사용자 정보 가져오기
     const user = await UserModel.findOne({ username });
@@ -96,7 +96,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
 export const putItemFavorites = async (req: Request, res: Response) => {
   const { priceThreshold, alertEnabled } = req.body;
   const favoriteId = req.params.id;
-  const username = req.session.user;
+  const username = req.session.username;
 
   try {
     // 사용자 정보 가져오기
@@ -139,7 +139,7 @@ export const putItemFavorites = async (req: Request, res: Response) => {
 export const deleteItemFavorites = async (req: Request, res: Response) => {
   const favoriteId = req.params.id;
 
-  const username = req.session.user;
+  const username = req.session.username;
   try {
     // 사용자 정보 가져오기
     const user = await UserModel.findOne({ username });

@@ -6,6 +6,8 @@ import ItemRouter from "./api/routes/item";
 import UserRouter from "./api/routes/user";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+// TODO: 현재 sesionStore.all이 먹히질않고, 라이브러리 문제(이슈탭에 있음)인데 그 개발자가 업데이트를 안해서 다른 개발자가 임시로 만든거 사용
+import connectMongoDBSession from "connect-mongodb-session-quickfix";
 import { initializeItems } from "./models/initItem";
 
 const app = express();
@@ -18,6 +20,25 @@ mongoose.connection.on("connected", () => {
 });
 mongoose.connection.on("error", (err) => {
   console.error(`Failed to connect to ${dbURL} `, err);
+});
+
+// session store 생성
+const MongoDBStore = connectMongoDBSession(session);
+const mongoDBstore = new MongoDBStore(
+  {
+    uri: dbURL,
+    databaseName: "blackdesert",
+    collection: "bdoSessions",
+  },
+  function (error) {
+    if (error) {
+      console.error("MongoDBStore1 - MongoDB Connection Error:", error);
+    }
+  }
+);
+// 세션스토어 에러 체킹용
+mongoDBstore.on("error", function (error) {
+  console.error("MongoDBStore2 - MongoDB Connection Error:", error);
 });
 
 // 애플리케이션 종료 시, MongoDB 연결 종료
@@ -33,21 +54,22 @@ process.on("SIGINT", async () => {
 app.use(
   cors({
     origin: "http://localhost:3001", // 클라이언트의 origin을 명시적으로 지정
-    credentials: true, // TODO: credentials 모드가 'include'인 요청을 허용 ======> 좀더 정확ㅎㅣ알아봐야할듯.
+    credentials: true, // handshake과정중에 헤더에 저 옵션이 true로 설정되어 있어서 브라우저가 이를 인식하고 해당 요청에 대해 사용자의 세션 쿠키를 자동으로 포함 시킴
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // URL-encoded 데이터 파싱을 위한 미들웨어
 app.use(express.static("public")); // 정적 파일 제공을 위한 미들웨어
 app.use(cookieParser());
+
 app.use(
   session({
-    name: "sessionID", //세션쿠키 이름 (connect.sid가 디폴트)
-    // store: 세션 저장소. 메모리가 디폴트.
+    name: "sessionID", //쿠키의 세션ID 담을 이름 (connect.sid가 디폴트), 자동으로 담김.
+    store: mongoDBstore, // 세션 저장소. 메모리가 디폴트.
     secret: "some-secret-example", // 쿠키 암호화 키
-    resave: false,
+    resave: false, // // 매 request 마다 세션을 계속 다시 저장하는 것
     saveUninitialized: true, // 세션에 저장할 내역이 없더라도 세션을 저장할지 여부
-    cookie: { secure: true }, // 그냥 express 아니면 브라우저가 session 쿠키값 자동으로 암호화함. false로 하면 암호화된 값 그대로 넘어와서 못씀.
+    cookie: { secure: false }, // secure 속성이 true로 되어있으면 https에서만 동작하기 떄문에, 쿠키에 세션이 담기지 않음.
   })
 );
 

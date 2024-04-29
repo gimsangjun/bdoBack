@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import UserModel, { IUser } from "../models/user";
 
 // 회원가입
@@ -29,7 +29,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
 };
 
 // 로그인
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { username, password } = req.body as { username: string; password: string };
 
@@ -52,16 +52,18 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // TODO: 나중에 session의 데터를 DB에 저장, ex : Redis
     // 서버측에 데이터 저장.
-    req.session.user = username;
+    req.session.username = username;
 
     // 세션 ID를 클라이언트에게 전달
     // 쿠키에 세션 ID를 저장, 클라이언트(브라우저 자동 적용)에게도 적용됨
     // httpOnly true로 하면 자바스크립트로 접근이 안되서 리액트에서 못가져옴.
-    res.cookie("sessionID", req.sessionID, { httpOnly: false });
+    // 세션 미들웨어가 자동으로 쿠키를 설정함.
+    // res.cookie("sessionID", req.sessionID, { httpOnly: false });
 
-    res.status(200).json({ message: "로그인 성공", sessionID: req.sessionID, username });
+    console.log("로그인 성공 sessionId: ", req.sessionID);
+    // res.status(200).json({ message: "로그인 성공", sessionID: req.sessionID, username });
+    next();
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
     res.status(500).json({ message: "로그인 중 오류 발생" });
@@ -91,13 +93,15 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 export const profile = async (req: Request, res: Response) => {
   try {
     // 세션에서 세션 ID 가져오기
-    const sessionID = req.cookies.sessionID;
+    const sessionID = req.cookies.sessionID.split(".")[0].substring(2);
 
     // 세션이 없는 경우
     if (!sessionID) {
       res.status(401).json({ message: "로그인이 필요합니다." });
       return;
     }
+
+    // req.sessionStore.clear();
 
     // 세션 스토어에서 세션 가져오기
     req.sessionStore.get(sessionID, (err, session) => {
@@ -108,7 +112,7 @@ export const profile = async (req: Request, res: Response) => {
       }
 
       // 세션에서 사용자 정보 가져오기
-      const username = session?.user;
+      const username = session?.username;
 
       if (!username) {
         res.status(401).json({ message: "세션에 사용자 정보가 없습니다." });

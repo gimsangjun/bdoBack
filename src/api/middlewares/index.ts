@@ -1,5 +1,6 @@
-import { isAuth } from "./auth";
+import { isAuth, removePreviousSession } from "./auth";
 
 export default {
   isAuth,
+  removePreviousSession,
 };
