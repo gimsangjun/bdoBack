@@ -28,6 +28,7 @@ export interface IItemStock extends Document {
   priceMax: number;
   lastSoldPrice: number;
   lastSoldTime: number;
+  updateAt: Date;
 }
 
 const ItemStockSchema: Schema = new Schema({
@@ -43,6 +44,7 @@ const ItemStockSchema: Schema = new Schema({
   priceMax: { type: Number, required: true },
   lastSoldPrice: { type: Number, required: true },
   lastSoldTime: { type: Number, required: true },
+  updateAt: { type: Date, default: Date.now },
 });
 
 // id와 sid를 결합한 복합 인덱스 생성

@@ -5,7 +5,12 @@ import {
   deleteItemFavorites,
 } from "./../../services/itemFavService";
 import express, { Request, Response } from "express";
-import { getItemByName, getItemPriceByName } from "../../services/itemService";
+import {
+  getItemByName,
+  getItemPriceByName,
+  updateItemPriceByName,
+  getItemStockByPage,
+} from "../../services/itemService";
 import middlewares from "../middlewares";
 
 const router = express.Router();
@@ -24,6 +29,26 @@ router.post("/", async (req: Request, res: Response) => {
 router.post("/stock", async (req: Request, res: Response) => {
   try {
     await getItemPriceByName(req, res);
+  } catch (error) {
+    console.error("아이템 정보 가져오는 중 오류 발생:", error);
+    res.status(500).json({ message: "아이템 정보 가져오는 중 오류 발생" });
+  }
+});
+
+// POST /item/page body: {page} 30개씩 pagination해서 보내주기
+router.post("/page", async (req: Request, res: Response) => {
+  try {
+    await getItemStockByPage(req, res);
+  } catch (error) {
+    console.error("아이템 페이지 정보 가져오는 중 오류 발생:", error);
+    res.status(500).json({ message: "아이템 페이지 정보 가져오는 중 오류 발생" });
+  }
+});
+
+// POST /item/update body:{name}, 아이템 stock 업데이트
+router.post("/update", async (req: Request, res: Response) => {
+  try {
+    await updateItemPriceByName(req, res);
   } catch (error) {
     console.error("아이템 정보 가져오는 중 오류 발생:", error);
     res.status(500).json({ message: "아이템 정보 가져오는 중 오류 발생" });

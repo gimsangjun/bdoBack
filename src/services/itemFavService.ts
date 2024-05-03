@@ -2,7 +2,7 @@ import UserModel from "../models/user";
 import ItemFavoriteModel from "../models/itemFavority";
 import { Request, Response } from "express";
 import ItemModel, { IItem } from "../models/item";
-import { loadItemStock } from "../utils/itemAPI";
+import { updateItemStock } from "../utils/itemAPI";
 import ItemStockModel from "../models/itemStock";
 
 // 사용자 찜목록 리턴
@@ -36,7 +36,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
 
     if (!item) {
       // 만약, 내 DB에 등록된 stock정보가 없으면
-      await loadItemStock(itemId);
+      await updateItemStock(itemId);
       item = await ItemStockModel.findOne({ id: itemId, sid });
     }
 

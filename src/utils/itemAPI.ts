@@ -11,8 +11,9 @@ const BdoMarketUrl = config.BdoMarketURL;
 // Item의 price(ItemStock에 저장되어있음)를 업데이트
 // ItemStock을 저장 및 업데이트
 // TODO: 나중에 시간마다 업데이트 해줘야됨.
-export const loadItemStock = async (itemId: number) => {
+export const updateItemStock = async (itemId: number) => {
   try {
+    console.log("아이템 가격 업데이트 : ", itemId);
     const reqUrl = `${BdoMarketUrl}/item?lang=kr&id=${itemId}`;
     const response = await axios.get(reqUrl);
 
@@ -24,6 +25,7 @@ export const loadItemStock = async (itemId: number) => {
       });
       if (existingItemStock) {
         console.log("이미 존재하는 itemStock!");
+        // TODO: updateAt을 살펴봐서 업데이트한지 몇분 안지났으면 하지않음.
         // 이미 존재하는 경우, price만 업데이트
         existingItemStock.basePrice = itemData.basePrice;
         existingItemStock.currentStock = itemData.currentStock;
@@ -32,6 +34,7 @@ export const loadItemStock = async (itemId: number) => {
         existingItemStock.priceMax = itemData.priceMax;
         existingItemStock.lastSoldPrice = itemData.lastSoldPrice;
         existingItemStock.lastSoldTime = itemData.lastSoldTime;
+        existingItemStock.updateAt = new Date();
 
         await existingItemStock.save();
       } else {
@@ -50,13 +53,14 @@ export const loadItemStock = async (itemId: number) => {
           priceMax: itemData.priceMax,
           lastSoldPrice: itemData.lastSoldPrice,
           lastSoldTime: itemData.lastSoldTime,
+          updateAt: new Date(),
         });
 
         await newItemStock.save();
       }
     }
 
-    // Item 모델 업데이트
+    // Item 모델의 price에 ItemStockModel(가격 정보)를 추가해줌.
     const savedItemStocks = await ItemStockModel.find({ id: itemId });
     const itemStockIds = savedItemStocks.map((itemStock) => itemStock._id);
 
