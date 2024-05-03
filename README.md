@@ -1,16 +1,7 @@
 # 검은사막 거래소 알림 만들기 - BackEnd
 
-### ~~upAndDown.js~~
+#### 활용한 API : [BDO Market API](https://documenter.getpostman.com/view/4028519/2s9Y5YRhp4#intro)
 
-- ~~아이템의 마지막 번호 10007번인건 알겠는데, 시작 번호를 모르겠음.~~
-- ~~그 시작 번호를 알기위함.~~
-- ~~사진~~
-- ~~아이템 시작번호 2501번 :'동물형(발레노스) 괴물 지식이 담긴 책장',~~
-- ~~끝번호 : 10007번 : '셀레스 장검'~~
-- ~~필요없어짐. id가 일정치도 않을뿐더러, [bdocodex](https://bdocodex.com/kr/)에서 아이템마다 id확인가능.~~
-  - ~~'중앙 시장에서 거래가능' 체크하면 id뜸.~~
-- API 잘살펴보니 모든 아이템 정보를 주는 API있엇음.
+### 중복로그인, 새롭게 로그인하면 이전 세션 제거
 
-### bdoMarcketAPI.js
-
-- BDO Marcket API와 통신하는 파일
+- [connect-mongodb-session 라이브러리 오류](https://www.notion.so/ccc0fbebfa03428f8f459b5de4899cf7?pvs=4)

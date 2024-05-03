@@ -19,6 +19,8 @@ router.get("/profile", profile);
 // GET /auth/session
 // 현재 메모리에 있는 모든 세션 정보를 확인
 router.get("/session", (req, res) => {
+  // connect-mongodb-session을 사용할경우(connect-mongodb-session-quickfix, app.ts 확인)
+  // => 현재 sesionStore.all이 먹히질않고, 라이브러리 문제(이슈탭에 있음)인데 그 개발자가 업데이트를 안해서 다른 개발자가 임시로 만든거 사용
   if (req.sessionStore?.all) {
     // 옵셔널 체이닝 사용하여 메소드 존재 확인
     req.sessionStore.all((err, sessions) => {

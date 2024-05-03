@@ -69,6 +69,8 @@ app.use(
     secret: "some-secret-example", // 쿠키 암호화 키
     resave: false, // // 매 request 마다 세션을 계속 다시 저장하는 것
     saveUninitialized: true, // 세션에 저장할 내역이 없더라도 세션을 저장할지 여부
+    // TODO: 쿠키 기본값 { path: '/', httpOnly: true, secure: false, maxAge: null }.
+    // httpOnly : true이면 해당 쿠키는 클라이언트 측 JavaScript에서 접근할 수 없게됨
     cookie: { secure: false }, // secure 속성이 true로 되어있으면 https에서만 동작하기 떄문에, 쿠키에 세션이 담기지 않음.
   })
 );

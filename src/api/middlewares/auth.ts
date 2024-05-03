@@ -54,8 +54,6 @@ export function removePreviousSession(req: Request, res: Response, next: NextFun
   // req.sessionStore가 정의되어 있다고 TypeScript에 알려주기 위해 as any를 사용
   const sessionStore: any = req.sessionStore;
 
-  console.log("req.sessionID : ", req.sessionStore.all);
-
   // 이전 세션을 삭제하기 위해 모든 세션을 순회
   sessionStore.all((err: any, sessions: any) => {
     if (err) {
@@ -67,7 +65,6 @@ export function removePreviousSession(req: Request, res: Response, next: NextFun
     // 이전 세션 확인 및 삭제
     for (const sessionData of sessions) {
       const sessionID: any = sessionData._id;
-      console.log("session ID 순회 중 : ", sessionID);
       const sessionUsername = sessionData.session.username;
 
       if (sessionUsername === username && sessionID !== req.sessionID) {
