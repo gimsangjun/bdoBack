@@ -1,3 +1,4 @@
+import { Response } from "express";
 // BdoMarket과 API요청을 하는 얘들만
 import config from "../config";
 import axios from "axios";
@@ -17,14 +18,16 @@ export const updateItemStock = async (itemId: number) => {
     const reqUrl = `${BdoMarketUrl}/item?lang=kr&id=${itemId}`;
     const response = await axios.get(reqUrl);
 
+    // TODO: response Data가 단수로 넘어와도, list로 감싸기
+    const data = Array.isArray(response.data) ? response.data : [response.data];
     // 이미 ItemStock에 동일한 데이터가 있으면, price만 업데이트
-    for (const itemData of response.data) {
+    for (const itemData of data) {
       const existingItemStock = await ItemStockModel.findOne({
         id: itemData.id,
         sid: itemData.sid,
       });
       if (existingItemStock) {
-        console.log("이미 존재하는 itemStock!");
+        console.log("이미 존재하는 itemStock: ", itemData.name);
         // TODO: updateAt을 살펴봐서 업데이트한지 몇분 안지났으면 하지않음.
         // 이미 존재하는 경우, price만 업데이트
         existingItemStock.basePrice = itemData.basePrice;
@@ -38,7 +41,7 @@ export const updateItemStock = async (itemId: number) => {
 
         await existingItemStock.save();
       } else {
-        console.log("존재하지 않은 itemStock!");
+        console.log("존재하지 않은 itemStock: ", itemData.name);
         // 존재하지 않는 경우, 새로운 ItemStock 생성 및 저장
         const newItemStock = new ItemStockModel({
           id: itemData.id,
@@ -74,3 +77,34 @@ export const updateItemStock = async (itemId: number) => {
     console.error("Error loading item info:", error);
   }
 };
+
+// 초기 itemStock DB를 구성하기 위한 함수
+export const initUpdateItemStock = async () => {
+  try {
+    // ItemModel에서 모든 아이템의 name을 가져옴
+    const allItems = await ItemModel.find({});
+
+    let count = 0; // 업데이트된 아이템 수를 세는 변수
+
+    const result = [];
+
+    // 각 아이템의 name을 순회하면서 ItemStockModel에 해당하는 아이템 stock 정보가 없으면 updateItemStock 함수를 호출하여 데이터를 넣음
+    for (const item of allItems) {
+      const existingItemStock = await ItemStockModel.findOne({ name: item.name });
+      if (!existingItemStock) {
+        if (count >= 10) {
+          // 이미 10개의 아이템이 업데이트되었으면 더 이상 호출하지 않음
+          break;
+        }
+        await updateItemStock(item.id);
+        result.push(item.name);
+        count++; // 아이템이 업데이트될 때마다 count 증가
+      }
+    }
+    return result;
+  } catch (error) {
+    console.error("Error initializing item stocks:", error);
+  }
+};
+
+export const getItemPrice = async (name: String) => {};

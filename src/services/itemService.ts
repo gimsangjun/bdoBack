@@ -2,7 +2,7 @@ import UserModel from "../models/user";
 import ItemFavoriteModel from "../models/itemFavority";
 import { Request, Response } from "express";
 import ItemModel, { IItem } from "../models/item";
-import { updateItemStock } from "../utils/itemAPI";
+import { updateItemStock, initUpdateItemStock } from "../utils/itemAPI";
 import ItemStockModel from "../models/itemStock";
 
 // POST: /item, body: {name: "아이템 이름"}에서 아이템 이름을 가지고 DB에 그 아이템을 가져오는 기능
@@ -75,8 +75,8 @@ export const updateItemPriceByName = async (req: Request, res: Response) => {
       await updateItemStock(item.id); // 아이템 stock(가격정보 ) 업데이트
 
       // 업데이트된 아이템 정보를 다시 가져와서 반환
-      const updatedItem: IItem | null = await ItemModel.findOne({ name });
-      res.status(200).json({ item: updatedItem });
+      const updatedItem = await ItemStockModel.find({ name });
+      res.status(200).json({ items: updatedItem });
     } else {
       // 아이템 정보가 없다면 404 에러 반환
       res.status(404).json({ message: "Item not found" });
@@ -101,22 +101,29 @@ export const getItemStockByPage = async (req: Request, res: Response) => {
 
     // TODO: 아직 ItemStockModel에 데이터를 업데이트를 안해서 일단은 그냥 ItemModel에서 가져오기.
     // 해당 페이지의 아이템 데이터 가져오기
-    // const itemStocks = await ItemStockModel.find({})
-    //   .skip(skip) // 건너뛸 아이템 수 적용
-    //   .limit(pageSize); // 페이지 크기만큼 데이터 제한
-
-    const itemStocks = await ItemModel.find({})
+    const itemStocks = await ItemStockModel.find({})
       .skip(skip) // 건너뛸 아이템 수 적용
       .limit(pageSize); // 페이지 크기만큼 데이터 제한
 
     // TODO: 나중에 카테고리 별로도 데이터를 가져올 때, 특정조건문을 달아서 Count를 해야할듯.
     // 총 데이터 수 조회
-    const totalCount = await ItemModel.countDocuments();
+    const totalCount = await ItemStockModel.countDocuments();
 
     // 가져온 아이템 데이터를 응답으로 반환
     return res.status(200).json({ itemStocks, totalCount });
   } catch (error) {
     console.error("Error fetching item stocks by page:", error);
     return res.status(500).json({ message: "Failed to fetch item stocks by page" });
+  }
+};
+
+// GET /item/init, 초기 아이템 stock DB 10개씩 업데이트. 개발용도
+export const initItemStock = async (req: Request, res: Response) => {
+  try {
+    const result = await initUpdateItemStock();
+    return res.status(200).json({ result });
+  } catch (error) {
+    console.error("Error init item stocks:", error);
+    return res.status(500).json({ message: "Failed to init item stocks" });
   }
 };

@@ -10,9 +10,9 @@ import {
   getItemPriceByName,
   updateItemPriceByName,
   getItemStockByPage,
+  initItemStock,
 } from "../../services/itemService";
 import middlewares from "../middlewares";
-
 const router = express.Router();
 
 // POST /item body: {name}, 아이템의 정보
@@ -49,6 +49,16 @@ router.post("/page", async (req: Request, res: Response) => {
 router.post("/update", async (req: Request, res: Response) => {
   try {
     await updateItemPriceByName(req, res);
+  } catch (error) {
+    console.error("아이템 정보 가져오는 중 오류 발생:", error);
+    res.status(500).json({ message: "아이템 정보 가져오는 중 오류 발생" });
+  }
+});
+
+// GET /item/init, 초기 아이템 stock DB 10개씩 업데이트. 개발용도
+router.get("/init", async (req: Request, res: Response) => {
+  try {
+    await initItemStock(req, res);
   } catch (error) {
     console.error("아이템 정보 가져오는 중 오류 발생:", error);
     res.status(500).json({ message: "아이템 정보 가져오는 중 오류 발생" });
