@@ -9,13 +9,46 @@ import ItemFavoriteModel, { IItemFavorite } from "../models/itemFavority";
 
 const BdoMarketUrl = config.BdoMarketURL;
 
+export const getItemInfo = async (id: number) => {
+  try {
+    const item: IItem | null = await ItemModel.findOne({ id });
+    return item;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getItemPriceById = async (id: number, sid: number) => {
+  try {
+    const itemPrice = await ItemStockModel.findOne({ id, sid });
+
+    // 아이템 가격 정보가 없으면, updateItemStock 함수를 호출하여 업데이트
+    if (!itemPrice) {
+      const item: IItem | null = await ItemModel.findOne({ id });
+      if (!item) {
+        // 존재하지 않는 아이템
+        throw new Error("Item not found");
+      } else {
+        await updateItemStock(id);
+        // 다시 아이템 가격 정보를 가져옴
+        const updatedItemPrices = await ItemStockModel.find({ id, sid });
+        console.log("updatedItemPrices :", updatedItemPrices);
+        return updatedItemPrices;
+      }
+    } else {
+      return itemPrice;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Item의 price(ItemStock에 저장되어있음)를 업데이트
 // ItemStock을 저장 및 업데이트
-// TODO: 나중에 시간마다 업데이트 해줘야됨.
-export const updateItemStock = async (itemId: number) => {
+export const updateItemStock = async (id: number) => {
   try {
-    console.log("아이템 가격 업데이트 : ", itemId);
-    const reqUrl = `${BdoMarketUrl}/item?lang=kr&id=${itemId}`;
+    console.log("아이템 가격 업데이트 : ", id);
+    const reqUrl = `${BdoMarketUrl}/item?lang=kr&id=${id}`;
     const response = await axios.get(reqUrl);
 
     // TODO: response Data가 단수로 넘어와도, list로 감싸기
@@ -64,10 +97,10 @@ export const updateItemStock = async (itemId: number) => {
     }
 
     // Item 모델의 price에 ItemStockModel(가격 정보)를 추가해줌.
-    const savedItemStocks = await ItemStockModel.find({ id: itemId });
+    const savedItemStocks = await ItemStockModel.find({ id });
     const itemStockIds = savedItemStocks.map((itemStock) => itemStock._id);
 
-    const item = await ItemModel.findOne({ id: itemId });
+    const item = await ItemModel.findOne({ id });
 
     if (item) {
       item.price = itemStockIds;
@@ -78,7 +111,54 @@ export const updateItemStock = async (itemId: number) => {
   }
 };
 
-// 초기 itemStock DB를 구성하기 위한 함수
+// 카테고리 별로, mainCategroy와 subCategory가 0이면 모든 아이템
+export const getItemsByCategory = async (
+  mainCategory: number,
+  subCategory: number,
+  page: number
+) => {
+  try {
+    const pageSize = 30; // 한 페이지에 표시될 아이템 수
+    const skip = (page - 1) * pageSize; // 건너뛸 아이템 수 계산
+
+    ///////////////////////////
+    // TODO: 개발용 stock데이터 없는 얘들업데이트, 나중에 기초적인 stock(가격)데이터 다 쌓이면 지우기
+    let updateItems: IItem[] | null = [];
+    if (mainCategory == 0 && subCategory == 0) {
+      updateItems = await ItemModel.find({}).skip(skip).limit(pageSize);
+    } else {
+      updateItems = await ItemModel.find({ mainCategory, subCategory }).skip(skip).limit(pageSize);
+    }
+    // updateItems를 하나씩 for문을 돌면서 price의 길이가 0이면 updateItemStock = async (id: number) 함수를 호출하여 업데이트
+    // TODO : 최대 10번만 돌게
+    let count = 0;
+    for (const item of updateItems) {
+      if (count >= 10) break;
+      if (item.price.length === 0) {
+        await updateItemStock(item.id);
+        count += 1;
+      }
+    }
+    ///////////////////////////
+
+    // mainCategory == 0 and subCategory == 0이면 ItemModel.find({})호출.
+    let items: any[] = [];
+    let totalCount: Number = 0;
+    if (mainCategory == 0 && subCategory == 0) {
+      items = await ItemStockModel.find({}).skip(skip).limit(pageSize);
+      totalCount = await ItemStockModel.countDocuments();
+    } else {
+      items = await ItemModel.find({ mainCategory, subCategory }).skip(skip).limit(pageSize);
+      totalCount = await ItemStockModel.countDocuments({ mainCategory, subCategory });
+    }
+
+    return { items, totalCount };
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 개발용도 초기 itemStock DB를 구성하기 위한 함수
 export const initUpdateItemStock = async () => {
   try {
     // ItemModel에서 모든 아이템의 name을 가져옴
@@ -106,5 +186,3 @@ export const initUpdateItemStock = async () => {
     console.error("Error initializing item stocks:", error);
   }
 };
-
-export const getItemPrice = async (name: String) => {};

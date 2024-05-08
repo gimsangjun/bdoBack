@@ -3,6 +3,7 @@ import config from "./config";
 import mongoose from "mongoose";
 import cors from "cors";
 import ItemRouter from "./api/routes/item";
+import ItemFavorityRouter from "./api/routes/itemFavorite";
 import UserRouter from "./api/routes/user";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -84,6 +85,7 @@ app.use((req: Request, res: Response, next: any) => {
 });
 
 app.use("/auth", UserRouter);
+app.use("/item/favorite", ItemFavorityRouter);
 app.use("/item", ItemRouter);
 
 const port = config.port;
