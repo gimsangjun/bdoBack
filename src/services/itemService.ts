@@ -70,34 +70,6 @@ export const updateItemPriceByName = async (req: Request, res: Response) => {
 };
 
 // TODO: Pagenation? 기술에 대해서 정리하기
-// TODO: 카테고리 별로도 데이터를 가져올수 있어야됨.
-// ItemStockModel에서 page별로 30개씩 데이터를 가져와서 뿌려주는 함수
-export const getItemStockByPage = async (req: Request, res: Response) => {
-  try {
-    // TODO: validaton Page가 1이상인지 확인.
-    const { page } = req.body;
-    const pageSize = 30; // 한 페이지에 표시될 아이템 수
-
-    const skip = (page - 1) * pageSize; // 건너뛸 아이템 수 계산
-
-    // TODO: 아직 ItemStockModel에 데이터를 업데이트를 안해서 일단은 그냥 ItemModel에서 가져오기.
-    // 해당 페이지의 아이템 데이터 가져오기
-    const itemStocks = await ItemStockModel.find({})
-      .skip(skip) // 건너뛸 아이템 수 적용
-      .limit(pageSize); // 페이지 크기만큼 데이터 제한
-
-    // TODO: 나중에 카테고리 별로도 데이터를 가져올 때, 특정조건문을 달아서 Count를 해야할듯.
-    // 총 데이터 수 조회
-    const totalCount = await ItemStockModel.countDocuments();
-
-    // 가져온 아이템 데이터를 응답으로 반환
-    return res.status(200).json({ itemStocks, totalCount });
-  } catch (error) {
-    console.error("Error fetching item stocks by page:", error);
-    return res.status(500).json({ message: "Failed to fetch item stocks by page" });
-  }
-};
-
 // 카테고리 별로, mainCategroy와 subCategory가 0이면 모든 아이템
 // GET /item/category?mainCategory&subCategory&page
 export const ItemsByCategoryOrAllItems = async (req: Request, res: Response) => {
@@ -107,7 +79,11 @@ export const ItemsByCategoryOrAllItems = async (req: Request, res: Response) => 
       res.status(400).json({ message: "wrong request" });
     }
     // mainCategroy와 subCategory가 0이면 모든 아이템
-    const { items, totalCount } = await getItemsByCategory(0, 0, Number(page));
+    const { items, totalCount } = await getItemsByCategory(
+      Number(mainCategory),
+      Number(subCategory),
+      Number(page)
+    );
 
     res.status(200).json({ items, totalCount });
   } catch (error) {

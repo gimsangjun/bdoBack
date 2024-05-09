@@ -124,13 +124,15 @@ export const getItemsByCategory = async (
     ///////////////////////////
     // TODO: 개발용 stock데이터 없는 얘들업데이트, 나중에 기초적인 stock(가격)데이터 다 쌓이면 지우기
     let updateItems: IItem[] | null = [];
-    if (mainCategory == 0 && subCategory == 0) {
-      updateItems = await ItemModel.find({}).skip(skip).limit(pageSize);
-    } else {
-      updateItems = await ItemModel.find({ mainCategory, subCategory }).skip(skip).limit(pageSize);
-    }
-    // updateItems를 하나씩 for문을 돌면서 price의 길이가 0이면 updateItemStock = async (id: number) 함수를 호출하여 업데이트
-    // TODO : 최대 10번만 돌게
+    const updateQuery: any = { mainCategory };
+    if (subCategory !== 0) updateQuery["subCategory"] = subCategory;
+
+    updateItems = await ItemModel.find(updateQuery)
+      .populate("price") // 자동으로 ObjectID로 이루어진 price를 실제 값으로 가져옴.
+      .skip(page * pageSize)
+      .limit(pageSize);
+
+    // 최대 10번만 돌게
     let count = 0;
     for (const item of updateItems) {
       if (count >= 10) break;
@@ -141,17 +143,20 @@ export const getItemsByCategory = async (
     }
     ///////////////////////////
 
-    // mainCategory == 0 and subCategory == 0이면 ItemModel.find({})호출.
     let items: any[] = [];
-    let totalCount: Number = 0;
-    if (mainCategory == 0 && subCategory == 0) {
-      items = await ItemStockModel.find({}).skip(skip).limit(pageSize);
-      totalCount = await ItemStockModel.countDocuments();
-    } else {
-      items = await ItemModel.find({ mainCategory, subCategory }).skip(skip).limit(pageSize);
-      totalCount = await ItemStockModel.countDocuments({ mainCategory, subCategory });
-    }
+    let totalCount: number = 0;
+    const query: any = { mainCategory };
+    // 이런식으로 if문을 효율적으로 줄일수 있다.
+    if (subCategory !== 0) query["subCategory"] = subCategory;
 
+    items = await ItemModel.find(query)
+      .populate("price") // 자동으로 ObjectID로 이루어진 price를 실제 값으로 가져옴.
+      .skip(page * pageSize)
+      .limit(pageSize);
+
+    totalCount = await ItemModel.countDocuments(query);
+
+    console.log(items);
     return { items, totalCount };
   } catch (error) {
     throw error;

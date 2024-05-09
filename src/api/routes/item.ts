@@ -3,7 +3,6 @@ import {
   getItemByName,
   getItemPrice,
   updateItemPriceByName,
-  getItemStockByPage,
   initItemStock,
   ItemsByCategoryOrAllItems,
 } from "../../services/itemService";
@@ -27,16 +26,6 @@ router.get("/stock", async (req: Request, res: Response) => {
   } catch (error) {
     console.error("아이템 정보 가져오는 중 오류 발생:", error);
     res.status(500).json({ message: "아이템 정보 가져오는 중 오류 발생" });
-  }
-});
-
-// POST /item/page body: {page} 30개씩 pagination해서 보내주기
-router.post("/page", async (req: Request, res: Response) => {
-  try {
-    await getItemStockByPage(req, res);
-  } catch (error) {
-    console.error("아이템 페이지 정보 가져오는 중 오류 발생:", error);
-    res.status(500).json({ message: "아이템 페이지 정보 가져오는 중 오류 발생" });
   }
 });
 
