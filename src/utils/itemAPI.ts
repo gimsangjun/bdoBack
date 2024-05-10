@@ -121,42 +121,29 @@ export const getItemsByCategory = async (
     const pageSize = 30; // 한 페이지에 표시될 아이템 수
     const skip = (page - 1) * pageSize; // 건너뛸 아이템 수 계산
 
-    ///////////////////////////
-    // TODO: 개발용 stock데이터 없는 얘들업데이트, 나중에 기초적인 stock(가격)데이터 다 쌓이면 지우기
-    let updateItems: IItem[] | null = [];
-    const updateQuery: any = { mainCategory };
-    if (subCategory !== 0) updateQuery["subCategory"] = subCategory;
-
-    updateItems = await ItemModel.find(updateQuery)
-      .populate("price") // 자동으로 ObjectID로 이루어진 price를 실제 값으로 가져옴.
-      .skip(page * pageSize)
-      .limit(pageSize);
-
-    // 최대 10번만 돌게
-    let count = 0;
-    for (const item of updateItems) {
-      if (count >= 10) break;
-      if (item.price.length === 0) {
-        await updateItemStock(item.id);
-        count += 1;
-      }
-    }
-    ///////////////////////////
-
     let items: any[] = [];
     let totalCount: number = 0;
-    const query: any = { mainCategory };
+    let query: any = {};
     // 이런식으로 if문을 효율적으로 줄일수 있다.
+    if (mainCategory !== 0) query["mainCategory"] = mainCategory;
     if (subCategory !== 0) query["subCategory"] = subCategory;
+    console.log("qeury :", query);
 
     items = await ItemModel.find(query)
       .populate("price") // 자동으로 ObjectID로 이루어진 price를 실제 값으로 가져옴.
-      .skip(page * pageSize)
+      .skip(skip)
       .limit(pageSize);
+
+    // TODO 찾은 아이템들 중에 price데이터가 없는 경우.
+    for (const item of items) {
+      if (item.price.length === 0) {
+        await updateItemStock(item.id);
+      }
+    }
 
     totalCount = await ItemModel.countDocuments(query);
 
-    console.log(items);
+    // console.log(items);
     return { items, totalCount };
   } catch (error) {
     throw error;
