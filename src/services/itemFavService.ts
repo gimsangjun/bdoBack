@@ -129,7 +129,7 @@ export const deleteItemFavorites = async (req: Request, res: Response) => {
     const { itemFavorites } = user;
     console.log("즐겨찾기 삭제 id sid :", id, sid);
 
-    res.status(200).json({ user: { username, itemFavorites } });
+    res.status(200).json({ username, itemFavorites });
   } catch (error) {
     console.error("Error deleting item from favorites:", error);
     const errorMessage = error instanceof Error ? error.message : "에러 발생";
