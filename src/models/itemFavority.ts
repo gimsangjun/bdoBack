@@ -7,7 +7,7 @@ import mongoose, { Schema, Document } from "mongoose";
 // }
 
 export interface IItemFavorite extends Document {
-  user: string;
+  username: string;
   name: string;
   id: number;
   sid: number;
@@ -15,7 +15,7 @@ export interface IItemFavorite extends Document {
 }
 
 const ItemFavoriteSchema: Schema = new Schema({
-  user: { type: String, required: true },
+  username: { type: String, required: true },
   name: { type: String, required: true },
   id: { type: Number, required: true },
   sid: { type: Number, required: true, default: 0 },

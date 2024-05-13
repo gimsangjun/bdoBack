@@ -48,7 +48,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
 
     // user.itemFavorites 중복 체크
     const existingFavorite = await ItemFavoriteModel.findOne({
-      user: user.username,
+      username: user.username,
       id: item.id,
       sid: item.sid,
     });
@@ -58,7 +58,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
 
     // FavoriteModel 생성
     const newFavorite = new ItemFavoriteModel({
-      user: user.username,
+      username: user.username,
       name: item.name,
       id: item.id,
       sid: item.sid,
@@ -74,6 +74,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
 
     // const user = await UserModel.findOne({ username }).populate("itemFavorites");
     //TODO: user.itemFavorites에 ObjectID가 담겨져 있어서 곧바로 쓸수 없어서 아래와 같이 썼는데 더 효율적인 방법이 없을까?
+    console.log("즐겨찾기 추가 id sid:", id, sid);
     const user_ = await UserModel.findOne({ username }).populate("itemFavorites");
 
     res.status(200).json({ username, itemFavorites: user_?.itemFavorites });
@@ -91,7 +92,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
 
 /// 사용자 찜목록 삭제
 export const deleteItemFavorites = async (req: Request, res: Response) => {
-  const favoriteId = req.params.id;
+  const { id, sid } = req.query;
 
   const username = req.session.username;
   try {
@@ -103,12 +104,11 @@ export const deleteItemFavorites = async (req: Request, res: Response) => {
     }
 
     // ItemFavoriteModel에서 favoriteId를 활용하여 해당 아이템을 찾음
-    const favorite = await ItemFavoriteModel.findById(favoriteId);
+    const favorite = await ItemFavoriteModel.findOne({ username, id, sid });
 
     // 다른 DB처럼 연동이 안되기 때문에 , user와 favorite 둘다 삭제해줘야됨.
-
     // 찾은 아이템이 없거나 해당 아이템의 유저가 현재 접근한 유저와 다른 경우 에러 처리
-    if (!favorite || favorite.user !== user.username) {
+    if (!favorite || favorite.username !== user.username) {
       throw new Error("Favorite item not found or unauthorized access");
     }
 
@@ -122,11 +122,12 @@ export const deleteItemFavorites = async (req: Request, res: Response) => {
     await user.save();
 
     // 해당 찜 삭제
-    await ItemFavoriteModel.findOneAndDelete({ _id: favoriteId });
+    await ItemFavoriteModel.findOneAndDelete({ _id: favorite._id });
 
     // ObjectId만 넘어오는데, 진짜 데이터를 가져오게 => populatea 사용
     await user.populate("itemFavorites");
     const { itemFavorites } = user;
+    console.log("즐겨찾기 삭제 id sid :", id, sid);
 
     res.status(200).json({ user: { username, itemFavorites } });
   } catch (error) {

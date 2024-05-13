@@ -18,7 +18,7 @@ router.get("/", middlewares.isAuth, async (req: Request, res: Response) => {
   }
 });
 
-// POST /item/favorite body: {itemid, sid, priceThreshold}, favorite 추가
+// POST /item/favorite body: {itemid, sid}, favorite 추가
 router.post("/", middlewares.isAuth, async (req: Request, res: Response) => {
   try {
     await addItemFavorites(req, res);
@@ -38,8 +38,8 @@ router.post("/", middlewares.isAuth, async (req: Request, res: Response) => {
 //   }
 // });
 
-// DELETE 장바구니 삭제
-router.delete("/:id", middlewares.isAuth, async (req: Request, res: Response) => {
+// DELETE 장바구니 삭제 body: {itemid, sid},
+router.delete("/", middlewares.isAuth, async (req: Request, res: Response) => {
   try {
     await deleteItemFavorites(req, res);
   } catch (error) {
