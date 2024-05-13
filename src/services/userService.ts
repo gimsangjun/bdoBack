@@ -79,6 +79,8 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
         console.error("세션 제거 중 오류 발생:", err);
         res.status(500).json({ message: "로그아웃 중 오류가 발생했습니다." });
       } else {
+        // 쿠키 제거
+        res.clearCookie("sessionID");
         res.status(200).json({ message: "로그아웃 성공" });
       }
     });
@@ -92,14 +94,14 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 // 사용자가 브라우저를 새로고침(ex : 리액트의 redux store가 초기화)해도 쿠키의 세션ID값을 통해 다시 정보를 불러옴
 export const profile = async (req: Request, res: Response) => {
   try {
-    // 세션에서 세션 ID 가져오기
-    const sessionID = req.cookies.sessionID.split(".")[0].substring(2);
-
-    // 세션이 없는 경우
-    if (!sessionID) {
-      res.status(401).json({ message: "로그인이 필요합니다." });
+    // 로그인 하지 않은 사용자 처리
+    if (!req.cookies || !req.cookies.sessionID) {
+      res.status(401).json({ message: "로그인 하지 않은 사용자" });
       return;
     }
+
+    // 세션에서 세션 ID 가져오기
+    const sessionID = req.cookies.sessionID.split(".")[0].substring(2);
 
     // req.sessionStore.clear();
 
