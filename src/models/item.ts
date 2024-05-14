@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IItemStock } from "./itemStock";
 
+// 기본적인 아이템 내용들. 실제 운영에서는 쓰지 않을듯. 대부분 ItemStock을 쓸듯.
 export interface IItem extends Document {
   id: number;
   name: string;
   mainCategory: number;
   subCategory: number;
-  price: IItemStock["_id"][]; // "_id" : MongoDB에서 사용되는 기본 ID 필드, []: 이것은 배열
 }
 
 const ItemSchema: Schema = new Schema({
@@ -14,7 +14,6 @@ const ItemSchema: Schema = new Schema({
   name: { type: String, required: true },
   mainCategory: { type: Number, require: true },
   subCategory: { type: Number, require: true },
-  price: [{ type: Schema.Types.ObjectId, ref: "ItemStock" }], // 스키마 설정이 중요함.
 });
 
 const ItemModel = mongoose.model<IItem>("Item", ItemSchema);

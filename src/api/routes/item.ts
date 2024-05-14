@@ -4,7 +4,7 @@ import {
   getItemPrice,
   updateItemPriceByName,
   initItemStock,
-  ItemsByCategoryOrAllItems,
+  ItemsByCategory,
 } from "../../services/itemService";
 import middlewares from "../middlewares";
 const router = express.Router();
@@ -43,7 +43,7 @@ router.post("/update", async (req: Request, res: Response) => {
 // GET /item/category?mainCategory&subCategory&page
 router.get("/category", async (req: Request, res: Response) => {
   try {
-    await ItemsByCategoryOrAllItems(req, res);
+    await ItemsByCategory(req, res);
   } catch (error) {
     console.error("아이템 정보 가져오는 중 오류 발생:", error);
     res.status(500).json({ message: "아이템 정보 가져오는 중 오류 발생" });

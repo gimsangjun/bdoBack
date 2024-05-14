@@ -61,7 +61,6 @@ export const updateItemStock = async (id: number) => {
       });
       if (existingItemStock) {
         console.log("이미 존재하는 itemStock: ", itemData.name);
-        // TODO: updateAt을 살펴봐서 업데이트한지 몇분 안지났으면 하지않음.
         // 이미 존재하는 경우, price만 업데이트
         existingItemStock.basePrice = itemData.basePrice;
         existingItemStock.currentStock = itemData.currentStock;
@@ -75,11 +74,16 @@ export const updateItemStock = async (id: number) => {
         await existingItemStock.save();
       } else {
         console.log("존재하지 않은 itemStock: ", itemData.name);
+
+        const itemModel = await ItemModel.findOne({ id });
+
         // 존재하지 않는 경우, 새로운 ItemStock 생성 및 저장
         const newItemStock = new ItemStockModel({
           id: itemData.id,
           name: itemData.name,
           sid: itemData.sid,
+          mainCategroy: itemModel?.mainCategory,
+          subCategroy: itemModel?.mainCategory,
           minEnhance: itemData.minEnhance,
           maxEnhance: itemData.maxEnhance,
           basePrice: itemData.basePrice,
@@ -94,17 +98,6 @@ export const updateItemStock = async (id: number) => {
 
         await newItemStock.save();
       }
-    }
-
-    // Item 모델의 price에 ItemStockModel(가격 정보)를 추가해줌.
-    const savedItemStocks = await ItemStockModel.find({ id });
-    const itemStockIds = savedItemStocks.map((itemStock) => itemStock._id);
-
-    const item = await ItemModel.findOne({ id });
-
-    if (item) {
-      item.price = itemStockIds;
-      await item.save();
     }
   } catch (error) {
     console.error("Error loading item info:", error);
@@ -127,21 +120,17 @@ export const getItemsByCategory = async (
     // 이런식으로 if문을 효율적으로 줄일수 있다.
     if (mainCategory !== 0) query["mainCategory"] = mainCategory;
     if (subCategory !== 0) query["subCategory"] = subCategory;
-    console.log("qeury :", query);
+    console.log("getItemsByCategory - query :", query);
 
-    items = await ItemModel.find(query)
-      .populate("price") // 자동으로 ObjectID로 이루어진 price를 실제 값으로 가져옴.
-      .skip(skip)
-      .limit(pageSize);
-
-    // TODO 찾은 아이템들 중에 price데이터가 없는 경우.
-    for (const item of items) {
-      if (item.price.length === 0) {
-        await updateItemStock(item.id);
-      }
+    // TODO 초기에 ItemStock에 데이터가 없으니까
+    const result: string[] | undefined = await initUpdateItemStock(query);
+    if (!result || result.length === 0) {
+      console.log("얘는 업데이트 종료!", mainCategory, subCategory, page);
     }
 
-    totalCount = await ItemModel.countDocuments(query);
+    items = await ItemStockModel.find(query).skip(skip).limit(pageSize);
+
+    totalCount = await ItemStockModel.countDocuments();
 
     // console.log(items);
     return { items, totalCount };
@@ -150,11 +139,21 @@ export const getItemsByCategory = async (
   }
 };
 
+export const getFavoriteItemsByUsername = async (username: String) => {
+  const user = await UserModel.findOne({ username }).populate("itemFavorites");
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return user.itemFavorites;
+};
+
 // 개발용도 초기 itemStock DB를 구성하기 위한 함수
-export const initUpdateItemStock = async () => {
+export const initUpdateItemStock = async (query: any) => {
   try {
     // ItemModel에서 모든 아이템의 name을 가져옴
-    const allItems = await ItemModel.find({});
+    const allItems = await ItemModel.find(query);
 
     let count = 0; // 업데이트된 아이템 수를 세는 변수
 

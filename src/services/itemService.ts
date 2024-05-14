@@ -72,9 +72,10 @@ export const updateItemPriceByName = async (req: Request, res: Response) => {
 // TODO: Pagenation? 기술에 대해서 정리하기
 // 카테고리 별로, mainCategroy와 subCategory가 0이면 모든 아이템
 // GET /item/category?mainCategory&subCategory&page
-export const ItemsByCategoryOrAllItems = async (req: Request, res: Response) => {
+export const ItemsByCategory = async (req: Request, res: Response) => {
   try {
     const { mainCategory, subCategory, page } = req.query;
+
     if (Number(mainCategory) == 0 && Number(subCategory) > 0) {
       res.status(400).json({ message: "wrong request" });
     }
@@ -86,6 +87,26 @@ export const ItemsByCategoryOrAllItems = async (req: Request, res: Response) => 
     );
 
     res.status(200).json({ items, totalCount });
+
+    // // 즐겨찾기 버튼을 눌렀다면, items중에서 유저가 즐겨찾기만 아이템 가져오기
+    // if (Number(isFav) === 1 && username) {
+    //   // 사용자의 즐겨찾기 아이템 목록 조회
+    //   const favorites = await getFavoriteItemsByUsername(username); // 가정: getFavoriteItemsByUsername는 즐겨찾기 목록을 반환
+
+    //   // 즐겨찾기에 포함된 아이템만 필터링
+    //   // id까지 같은얘 중에, price.sid까지 같은 얘를 리턴
+    //   const favoriteItems = items.filter((item) =>
+    //     // Check if any of the favorite items have the same id and a matching sid in any of the item's price entries.
+    //     favorites.some(
+    //       (fav) => fav.id === item.id && item.price.some((p: any) => p.sid === fav.sid)
+    //     )
+    //   );
+    //   // 필터링된 아이템으로 totalCount 재조정
+    //   res.status(200).json({ items: favoriteItems, totalCount: favoriteItems.length });
+    // } else {
+    //   // 즐겨찾기 필터링 없이 모든 아이템 반환
+
+    // }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to fetch item prices" });
@@ -95,7 +116,7 @@ export const ItemsByCategoryOrAllItems = async (req: Request, res: Response) => 
 // 개발용도 GET /item/init, 초기 아이템 stock DB 10개씩 업데이트.
 export const initItemStock = async (req: Request, res: Response) => {
   try {
-    const result = await initUpdateItemStock();
+    const result = await initUpdateItemStock({});
     return res.status(200).json({ result });
   } catch (error) {
     console.error("Error init item stocks:", error);

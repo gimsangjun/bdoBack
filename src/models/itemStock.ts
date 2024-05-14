@@ -19,6 +19,8 @@ export interface IItemStock extends Document {
   id: number;
   name: string;
   sid: number;
+  mainCategory: number;
+  subCategory: number;
   minEnhance: number;
   maxEnhance: number;
   basePrice: number;
@@ -35,6 +37,8 @@ const ItemStockSchema: Schema = new Schema({
   id: { type: Number, required: true },
   name: { type: String, required: true },
   sid: { type: Number, required: true },
+  mainCategory: { type: Number, required: true },
+  subCategory: { type: Number, required: true },
   minEnhance: { type: Number, required: true },
   maxEnhance: { type: Number, required: true },
   basePrice: { type: Number, required: true },
