@@ -47,13 +47,18 @@ export const getItemPriceById = async (id: number, sid: number) => {
 // ItemStock을 저장 및 업데이트
 export const updateItemStock = async (id: number) => {
   try {
-    console.log("아이템 가격 업데이트 : ", id);
+    // console.log("아이템 가격 업데이트 : ", id);
     const reqUrl = `${BdoMarketUrl}/item?lang=kr&id=${id}`;
     const response = await axios.get(reqUrl);
+
+    const itemModel = await ItemModel.findOne({ id });
+    if (!itemModel) throw new Error("존재하지 않는 아이템 업데이트 시도");
+    console.log("아이템 가격 업데이트 : ", itemModel);
 
     // TODO: response Data가 단수로 넘어와도, list로 감싸기
     const data = Array.isArray(response.data) ? response.data : [response.data];
     // 이미 ItemStock에 동일한 데이터가 있으면, price만 업데이트
+
     for (const itemData of data) {
       const existingItemStock = await ItemStockModel.findOne({
         id: itemData.id,
@@ -75,15 +80,13 @@ export const updateItemStock = async (id: number) => {
       } else {
         console.log("존재하지 않은 itemStock: ", itemData.name);
 
-        const itemModel = await ItemModel.findOne({ id });
-
         // 존재하지 않는 경우, 새로운 ItemStock 생성 및 저장
         const newItemStock = new ItemStockModel({
           id: itemData.id,
           name: itemData.name,
           sid: itemData.sid,
-          mainCategroy: itemModel?.mainCategory,
-          subCategroy: itemModel?.mainCategory,
+          mainCategory: itemModel.mainCategory,
+          subCategory: itemModel.mainCategory,
           minEnhance: itemData.minEnhance,
           maxEnhance: itemData.maxEnhance,
           basePrice: itemData.basePrice,
@@ -123,10 +126,10 @@ export const getItemsByCategory = async (
     console.log("getItemsByCategory - query :", query);
 
     // TODO 초기에 ItemStock에 데이터가 없으니까
-    const result: string[] | undefined = await initUpdateItemStock(query);
-    if (!result || result.length === 0) {
-      console.log("얘는 업데이트 종료!", mainCategory, subCategory, page);
-    }
+    // const result: string[] | undefined = await initUpdateItemStock(query);
+    // if (!result || result.length === 0) {
+    //   console.log("얘는 업데이트 종료!", mainCategory, subCategory, page);
+    // }
 
     items = await ItemStockModel.find(query).skip(skip).limit(pageSize);
 
@@ -137,16 +140,6 @@ export const getItemsByCategory = async (
   } catch (error) {
     throw error;
   }
-};
-
-export const getFavoriteItemsByUsername = async (username: String) => {
-  const user = await UserModel.findOne({ username }).populate("itemFavorites");
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  return user.itemFavorites;
 };
 
 // 개발용도 초기 itemStock DB를 구성하기 위한 함수

@@ -1,8 +1,6 @@
 import UserModel from "../models/user";
 import ItemFavoriteModel from "../models/itemFavority";
 import { Request, Response } from "express";
-import ItemModel, { IItem } from "../models/item";
-import { updateItemStock } from "../utils/itemAPI";
 import ItemStockModel from "../models/itemStock";
 
 // 사용자 찜목록 리턴
@@ -16,39 +14,45 @@ export const getUserFavorites = async (req: Request, res: Response) => {
     if (!user) {
       throw new Error("User not found");
     }
-    console.log("getUserFavorites", user);
 
-    res.status(200).json({ username: user.username, itemFavorites: user.itemFavorites });
+    res.status(200).json({ itemFavorites: user.itemFavorites });
   } catch (error) {
     console.error("Error fetching user favorites:", error);
     res.status(500).json({ message: "찜목록 불러오기 에러" });
   }
 };
 
-// / 사용자 찜목록에 아이템 추가
+// 사용자 즐겨찾기 카테고라만
+// TODO 어려운거 같음. 나중에.
+export const getUserFavoritesByCategory = async (req: Request, res: Response) => {
+  // const { mainCategory, subCategory, page } = req.query;
+  //   if (Number(mainCategory) == 0 && Number(subCategory) > 0) {
+  //     res.status(400).json({ message: "wrong request" });
+  //   }
+  //   // mainCategroy와 subCategory가 0이면 모든 아이템
+  //   const { items, totalCount } = await getFavItemsByCategory(
+  //     Number(mainCategory),
+  //     Number(subCategory),
+  //     Number(page)
+  //   );
+  // res.status(200).json({ items, totalCount });
+};
+
+// 사용자 찜목록에 아이템 추가
 export const addItemFavorites = async (req: Request, res: Response) => {
   const { id, sid } = req.body;
   const username = req.session.username;
   try {
-    // 사용자 정보 가져오기
-    const user = await UserModel.findOne({ username });
-
     // 아이템 정보 가져오기
     let item = await ItemStockModel.findOne({ id, sid });
 
     if (!item) {
-      // 만약, 내 DB에 등록된 stock정보가 없으면
-      await updateItemStock(id);
-      item = await ItemStockModel.findOne({ id, sid });
-    }
-
-    if (!user || !item) {
       throw new Error("User or item not found");
     }
 
     // user.itemFavorites 중복 체크
     const existingFavorite = await ItemFavoriteModel.findOne({
-      username: user.username,
+      username,
       id: item.id,
       sid: item.sid,
     });
@@ -57,27 +61,28 @@ export const addItemFavorites = async (req: Request, res: Response) => {
     }
 
     // FavoriteModel 생성
-    const newFavorite = new ItemFavoriteModel({
-      username: user.username,
+    // TODO: mainCategory, subCategory제대로 들어가는지 확인.
+    const newItemFavorite = new ItemFavoriteModel({
+      username: username,
       name: item.name,
       id: item.id,
       sid: item.sid,
+      mainCategory: item.mainCategory,
+      subCategory: item.subCategory,
     });
 
-    // 사용자의 찜목록에 아이템 추가
-    console.log("newFavorite:", newFavorite._id);
-    user.itemFavorites.push(newFavorite._id);
-
     // 변경 사항 저장
-    await newFavorite.save();
-    await user.save();
+    const result = await newItemFavorite.save();
+    // console.log("즐겨찾기 추가 ", result);
+    const user = await UserModel.findOneAndUpdate(
+      {},
+      { $push: { itemFavorites: newItemFavorite._id } },
+      { new: true }
+    );
 
-    // const user = await UserModel.findOne({ username }).populate("itemFavorites");
-    //TODO: user.itemFavorites에 ObjectID가 담겨져 있어서 곧바로 쓸수 없어서 아래와 같이 썼는데 더 효율적인 방법이 없을까?
-    console.log("즐겨찾기 추가 id sid:", id, sid);
-    const user_ = await UserModel.findOne({ username }).populate("itemFavorites");
+    console.log("즐겨찾기 추가 완료 :", user);
 
-    res.status(200).json({ username, itemFavorites: user_?.itemFavorites });
+    res.status(200).json("즐겨찾기 추가 성공");
   } catch (error) {
     // 아래의 erorr는 문제 없이 잘 출력됨.
     console.error("Error adding item to favorites:", error);
@@ -90,7 +95,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
   }
 };
 
-/// 사용자 찜목록 삭제
+// 사용자 찜목록 삭제
 export const deleteItemFavorites = async (req: Request, res: Response) => {
   const { id, sid } = req.query;
 
@@ -123,13 +128,9 @@ export const deleteItemFavorites = async (req: Request, res: Response) => {
 
     // 해당 찜 삭제
     await ItemFavoriteModel.findOneAndDelete({ _id: favorite._id });
-
-    // ObjectId만 넘어오는데, 진짜 데이터를 가져오게 => populatea 사용
-    await user.populate("itemFavorites");
-    const { itemFavorites } = user;
     console.log("즐겨찾기 삭제 id sid :", id, sid);
 
-    res.status(200).json({ username, itemFavorites });
+    res.status(200).json("즐겨찾기 삭제 성공");
   } catch (error) {
     console.error("Error deleting item from favorites:", error);
     const errorMessage = error instanceof Error ? error.message : "에러 발생";
