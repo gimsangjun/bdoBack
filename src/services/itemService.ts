@@ -5,27 +5,29 @@ import ItemModel, { IItem } from "../models/item";
 import {
   updateItemStock,
   initUpdateItemStock,
-  getItemInfo,
   getItemPriceById,
   getItemsByCategory,
 } from "../utils/itemAPI";
-import ItemStockModel from "../models/itemStock";
+import ItemStockModel, { IItemStock } from "../models/itemStock";
 
-// POST: /item, body: {name: "아이템 이름"}에서 아이템 이름을 가지고 DB에 그 아이템을 가져오는 기능
-export const getItemByName = async (req: Request, res: Response) => {
+// POST: /item, body: {name: "아이템 이름"}
+export const getItemPricesByName = async (req: Request, res: Response) => {
+  const { name } = req.body; // Express 라우트 파라미터에서 아이템 이름을 가져옴
   try {
-    const { name } = req.body;
-
-    const item: IItem | null = await ItemModel.findOne({ name });
-    if (item) {
-      const item_: IItem | null = await getItemInfo(item.id);
-      res.status(200).json({ item_ });
-    } else {
-      res.status(404).json({ message: "Item not found" });
+    let itemStocks: IItemStock[] | null = await ItemStockModel.find({ name });
+    if (!itemStocks || itemStocks.length == 0) {
+      const item: IItem | null = await ItemModel.findOne({ name });
+      if (!item) {
+        return res.status(404).send("존재하지 않는 아이템입니다.");
+      }
+      await updateItemStock(item.id);
+      itemStocks = await ItemStockModel.find({ name });
     }
+
+    return res.status(200).json(itemStocks);
   } catch (error) {
-    console.error("Error fetching item:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error fetching item prices:", error);
+    return res.status(500).send("서버 에러가 발생했습니다.");
   }
 };
 

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import {
-  getItemByName,
+  getItemPricesByName,
   getItemPrice,
   updateItemPriceByName,
   initItemStock,
@@ -12,7 +12,7 @@ const router = express.Router();
 // POST /item body: {name}, 아이템의 정보
 router.post("/", async (req: Request, res: Response) => {
   try {
-    await getItemByName(req, res);
+    await getItemPricesByName(req, res);
   } catch (error) {
     console.error("아이템 정보 가져오는 중 오류 발생:", error);
     res.status(500).json({ message: "아이템 정보 가져오는 중 오류 발생" });

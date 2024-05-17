@@ -9,15 +9,6 @@ import ItemFavoriteModel, { IItemFavorite } from "../models/itemFavority";
 
 const BdoMarketUrl = config.BdoMarketURL;
 
-export const getItemInfo = async (id: number) => {
-  try {
-    const item: IItem | null = await ItemModel.findOne({ id });
-    return item;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getItemPriceById = async (id: number, sid: number) => {
   try {
     const itemPrice = await ItemStockModel.findOne({ id, sid });
