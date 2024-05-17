@@ -29,6 +29,7 @@ router.get("/stock", async (req: Request, res: Response) => {
   }
 });
 
+// TODO: updateItem을 그냥 id,sid로만 업데이트하는걸로 바꿔야할듯.
 // POST /item/update body:{name}, 아이템 stock 업데이트
 router.post("/update", async (req: Request, res: Response) => {
   try {

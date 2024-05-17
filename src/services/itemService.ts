@@ -44,7 +44,6 @@ export const getItemPrice = async (req: Request, res: Response) => {
   }
 };
 
-// TODO: 일단은 개발, 테스트 용도
 // POST: /item/update, body: {name: "아이템 이름"}에서  loadItemStock함수를 호출하는 함수
 export const updateItemPriceByName = async (req: Request, res: Response) => {
   try {

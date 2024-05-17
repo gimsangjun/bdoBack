@@ -28,9 +28,6 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
 
       // 세션이 존재하는 경우, req.session에 정보 담기.
       req.session.username = session.username;
-
-      console.log("isAuth: ", session);
-
       // 다음 미들웨어로 진행
       next();
     });

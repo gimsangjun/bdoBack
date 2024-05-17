@@ -78,6 +78,7 @@ app.use(
 
 // 디버깅용
 app.use((req: Request, res: Response, next: any) => {
+  console.log("HTTP Method:", req.method);
   console.log("Request URL:", req.originalUrl); // 요청 URL 출력
   console.log("Request Body:", req.body); // 요청 바디(body) 출력
   console.log("Cookies:", req.cookies); // 쿠키값 출력
