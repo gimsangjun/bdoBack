@@ -7,21 +7,36 @@ import {
   initUpdateItemStock,
   getItemPriceById,
   getItemsByCategory,
+  updateAllItemModel,
 } from "../utils/itemAPI";
 import ItemStockModel, { IItemStock } from "../models/itemStock";
 
 // POST: /item, body: {name: "아이템 이름"}
 export const getItemPricesByName = async (req: Request, res: Response) => {
-  const { name } = req.body; // Express 라우트 파라미터에서 아이템 이름을 가져옴
+  const { name } = req.body; // 요청에서 아이템 이름 받아옴
+
   try {
-    let itemStocks: IItemStock[] | null = await ItemStockModel.find({ name });
-    if (!itemStocks || itemStocks.length == 0) {
-      const item: IItem | null = await ItemModel.findOne({ name });
-      if (!item) {
+    // 문자열이 일부만 일치하는 경우에도 검색
+    let itemStocks: IItemStock[] | null = await ItemStockModel.find({
+      name: { $regex: new RegExp(name, "i") }, // 대소문자 구분 없이 검색
+    });
+
+    if (!itemStocks || itemStocks.length === 0) {
+      const items: IItem[] | null = await ItemModel.find({
+        name: { $regex: new RegExp(name, "i") }, // 대소문자 구분 없이 검색
+      });
+
+      if (!items || items.length === 0) {
         return res.status(404).send("존재하지 않는 아이템입니다.");
       }
-      await updateItemStock(item.id);
-      itemStocks = await ItemStockModel.find({ name });
+
+      // 각 아이템에 대해 재고 상태를 업데이트
+      await Promise.all(items.map((item) => updateItemStock(item.id)));
+
+      // 업데이트 후 다시 아이템 재고 정보 검색
+      itemStocks = await ItemStockModel.find({
+        name: { $regex: new RegExp(name, "i") }, // 다시 검색
+      });
     }
 
     return res.status(200).json(itemStocks);
@@ -111,6 +126,18 @@ export const ItemsByCategory = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to fetch item prices" });
+  }
+};
+
+// 개발용도  : itemModel 전체 업데이트
+// GET : /item/update-all
+export const itemModelUpdateAll = async (req: Request, res: Response) => {
+  try {
+    await updateAllItemModel();
+    return res.status(200).json({ message: "finished" });
+  } catch (error) {
+    console.error("Error itemModelUpdateALl:", error);
+    return res.status(500).json({ message: "Failed to itemModelUpdateALl" });
   }
 };
 
