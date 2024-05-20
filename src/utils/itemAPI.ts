@@ -6,6 +6,8 @@ import ItemModel, { IItem } from "../models/item";
 import ItemStockModel, { IItemStock } from "../models/itemStock";
 import UserModel, { IUser } from "../models/user";
 import ItemFavoriteModel, { IItemFavorite } from "../models/itemFavority";
+import fs from "fs/promises";
+import path from "path";
 
 const BdoMarketUrl = config.BdoMarketURL;
 
@@ -131,6 +133,47 @@ export const getItemsByCategory = async (
   } catch (error) {
     throw error;
   }
+};
+
+// 개발용도 , 새 아이템 추가시 ItemModel 전부 업데이트
+export const updateAllItemModel = async () => {
+  // TODO: ../model/allItems.json 파일을 긁어와서 ItemModel에 전부 넣어줘
+  try {
+    // JSON 파일의 경로를 설정
+    const filePath = path.join(__dirname, "../models/allItems.json");
+
+    // 파일 읽기
+    const jsonData = await fs.readFile(filePath, "utf-8");
+    const items = JSON.parse(jsonData);
+
+    // 기존 모든 아이템 삭제
+    await ItemModel.deleteMany({});
+
+    // 새로운 아이템 데이터 삽입
+    await ItemModel.insertMany(items);
+
+    console.log("Item models have been successfully updated from JSON file.");
+  } catch (error) {
+    console.error("Failed to update item models from JSON file:", error);
+  }
+  // 아래는 아르샤 API
+  // try {
+  //   // API에서 아이템 데이터 가져오기
+  //   const response = await axios.get(`${BdoMarketUrl}/market`);
+  //   const items = response.data;
+
+  //   // MongoDB의 ItemModel 데이터 전체 교체 로직
+  //   // 기존 모든 아이템 삭제
+  //   await ItemModel.deleteMany({});
+  //   console.log("기존아이템 삭제");
+
+  //   // 새로운 아이템 데이터 삽입
+  //   await ItemModel.insertMany(items);
+
+  //   console.log("Item models have been successfully updated.");
+  // } catch (error) {
+  //   console.error("Failed to update item models:", error);
+  // }
 };
 
 // 개발용도 초기 itemStock DB를 구성하기 위한 함수
