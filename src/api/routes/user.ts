@@ -1,5 +1,12 @@
 import express from "express";
-import { signup, login, logout, profile } from "../../services/userService";
+import {
+  signup,
+  login,
+  logout,
+  profile,
+  discordAuth,
+  discordAuthRedirect,
+} from "../../services/userService";
 import middlewares from "../middlewares";
 
 const router = express.Router();
@@ -9,6 +16,12 @@ router.post("/signup", signup);
 
 // POST /auth/login
 router.post("/login", login, middlewares.removePreviousSession);
+
+// GET /auth/discord
+router.get("/discord", discordAuth);
+
+// GET /auth/discord/redirect
+router.get("/discord/redirect", discordAuthRedirect);
 
 // GET /auth/logout
 router.get("/logout", logout);

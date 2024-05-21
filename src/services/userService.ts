@@ -1,6 +1,13 @@
 import bcrypt from "bcrypt";
 import { Request, Response, NextFunction } from "express";
 import UserModel, { IUser } from "../models/user";
+import axios, { AxiosError } from "axios";
+import config from "../config";
+
+const CLIENT_ID = config.DISCORD_CLIENT_ID;
+const CLIENT_SECRET = config.DISCORD_CLIENT_SECRET;
+const REDIRECT_URI = config.DISCORD_REDIRECT_URI;
+const DISCORD_LOGIN_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&scope=identify+email`;
 
 // 회원가입
 export const signup = async (req: Request, res: Response): Promise<void> => {
@@ -67,6 +74,74 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
     res.status(500).json({ message: "로그인 중 오류 발생" });
+  }
+};
+
+// GET /auth/discord
+export const discordAuth = async (req: Request, res: Response) => {
+  try {
+    // 사용자를 디스코드 인증 페이지로 리디렉션
+    res.redirect(DISCORD_LOGIN_URL);
+  } catch (error) {
+    console.error("디스코드 Auth 로그인 중 오류 발생:", error);
+    res.status(500).json({ message: "디스코드 Auth 로그인 오류" });
+  }
+};
+
+// GET /auth/discord/redirect
+export const discordAuthRedirect = async (req: Request, res: Response) => {
+  // 인증 코드 받아옴.
+  const code = req.query.code as string;
+  if (!code) {
+    return res.status(400).json({ message: "인증 코드가 전달되지 않았습니다." });
+  }
+
+  const params = new URLSearchParams();
+  params.append("client_id", CLIENT_ID);
+  params.append("client_secret", CLIENT_SECRET);
+  params.append("grant_type", "authorization_code");
+  params.append("code", code);
+  params.append("redirect_uri", REDIRECT_URI); // http://localhost:3000/auth/discord/redirect
+
+  try {
+    // 엑세스 토큰 가져오기
+    const tokenResponse = await axios.post("https://discord.com/api/oauth2/token", params, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    // 액세스 토큰으로 사용자 정보 요청
+    const userResponse = await axios.get("https://discord.com/api/users/@me", {
+      headers: {
+        Authorization: `${tokenResponse.data.token_type} ${tokenResponse.data.access_token}`,
+      },
+    });
+    console.log("Discord User Info: ", userResponse.data);
+    const user = {
+      id: userResponse.data.id,
+      username: userResponse.data.global_name,
+      avatar: `https://cdn.discordapp.com/avatars/${userResponse.data.id}/${userResponse.data.avatar}.png`,
+    };
+
+    res.json(user);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    if (axiosError.response) {
+      // 서버로부터 응답이 있는 경우, 응답의 데이터를 로그하고 클라이언트에 전달
+      console.error("디스코드 Auth 로그인 중 오류 발생:", axiosError.response.data);
+      res
+        .status(500)
+        .json({ message: "디스코드 Auth 로그인 오류", error: axiosError.response.data });
+    } else if (axiosError.request) {
+      // 요청이 이루어졌으나 응답을 받지 못한 경우
+      console.error("No response received:", axiosError.request);
+      res.status(500).json({ message: "서버로부터 응답이 없습니다." });
+    } else {
+      // 오류 설정 시 발생한 오류
+      console.error("Error setting up request:", axiosError.message);
+      res.status(500).json({ message: "요청 설정 중 오류가 발생했습니다." });
+    }
   }
 };
 
