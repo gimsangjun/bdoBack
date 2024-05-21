@@ -9,74 +9,6 @@ const CLIENT_SECRET = config.DISCORD_CLIENT_SECRET;
 const REDIRECT_URI = config.DISCORD_REDIRECT_URI;
 const DISCORD_LOGIN_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&scope=identify+email`;
 
-// 회원가입
-export const signup = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { username, password } = req.body as {
-      username: string;
-      password: string;
-    };
-
-    const existingUser = await UserModel.findOne({ username });
-    if (existingUser) {
-      res.status(400).json({ message: "해당 username은 이미 사용 중입니다." });
-      return;
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10); // 비밀번호 해시화
-
-    const newUser: IUser = new UserModel({ username, password: hashedPassword });
-    await newUser.save();
-
-    res.status(201).json({ message: "회원가입이 완료되었습니다." });
-  } catch (error) {
-    console.error("회원가입 중 오류 발생:", error);
-    res.status(500).json({ message: "회원가입 중 오류 발생" });
-  }
-};
-
-// 로그인
-export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { username, password } = req.body as { username: string; password: string };
-
-    // req.session이 존재하는지 확인
-    if (!req.session) {
-      res.status(500).json({ message: "세션이 없습니다." });
-      return;
-    }
-
-    const user = await UserModel.findOne({ username });
-    if (!user) {
-      res.status(401).json({ message: "이메일 또는 비밀번호가 일치하지 않습니다." });
-      return;
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatch) {
-      res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
-      return;
-    }
-
-    // 서버측에 데이터 저장.
-    req.session.username = username;
-
-    // 세션 ID를 클라이언트에게 전달
-    // 쿠키에 세션 ID를 저장, 클라이언트(브라우저 자동 적용)에게도 적용됨
-    // httpOnly true로 하면 자바스크립트로 접근이 안되서 리액트에서 못가져옴.
-    // 세션 미들웨어가 자동으로 쿠키를 설정함.
-    // res.cookie("sessionID", req.sessionID, { httpOnly: false });
-
-    console.log("로그인 성공 sessionId: ", req.sessionID);
-    // res.status(200).json({ message: "로그인 성공", sessionID: req.sessionID, username });
-    next();
-  } catch (error) {
-    console.error("로그인 중 오류 발생:", error);
-    res.status(500).json({ message: "로그인 중 오류 발생" });
-  }
-};
-
 // GET /auth/discord
 export const discordAuth = async (req: Request, res: Response) => {
   try {
@@ -89,7 +21,7 @@ export const discordAuth = async (req: Request, res: Response) => {
 };
 
 // GET /auth/discord/redirect
-export const discordAuthRedirect = async (req: Request, res: Response) => {
+export const discordAuthRedirect = async (req: Request, res: Response, next: NextFunction) => {
   // 인증 코드 받아옴.
   const code = req.query.code as string;
   if (!code) {
@@ -117,14 +49,35 @@ export const discordAuthRedirect = async (req: Request, res: Response) => {
         Authorization: `${tokenResponse.data.token_type} ${tokenResponse.data.access_token}`,
       },
     });
-    console.log("Discord User Info: ", userResponse.data);
-    const user = {
-      id: userResponse.data.id,
-      username: userResponse.data.global_name,
-      avatar: `https://cdn.discordapp.com/avatars/${userResponse.data.id}/${userResponse.data.avatar}.png`,
-    };
 
-    res.json(user);
+    const userData = userResponse.data;
+    const avatarUrl = userData.avatar
+      ? `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`
+      : null;
+
+    // DB에서 사용자 찾기 또는 새로 생성
+    const user = await UserModel.findOneAndUpdate(
+      { id: userData.id },
+      {
+        id: userData.id,
+        username: userData.username,
+        avatarUrl: avatarUrl,
+      },
+      { new: true, upsert: true } // upsert 옵션으로 찾는 데이터가 없을 경우 새로 생성
+    );
+    console.log("Discord User Info: ", userData);
+    console.log(user);
+
+    // 세션에 저장
+    // 서버측에 데이터 저장.
+    req.session.user = { id: user.id, avatarUrl, username: user.username };
+    // 세션 ID를 클라이언트에게 전달
+    // 쿠키에 세션 ID를 저장, 클라이언트(브라우저 자동 적용)에게도 적용됨
+    // httpOnly true로 하면 자바스크립트로 접근이 안되서 리액트에서 못가져옴.
+    // 세션 미들웨어가 자동으로 쿠키를 설정함.
+    // res.cookie("sessionID", req.sessionID, { httpOnly: false });
+    // res.status(200).json({ message: "로그인 성공", sessionID: req.sessionID, username });
+    next();
   } catch (error) {
     const axiosError = error as AxiosError;
     if (axiosError.response) {
@@ -189,18 +142,75 @@ export const profile = async (req: Request, res: Response) => {
       }
 
       // 세션에서 사용자 정보 가져오기
-      const username = session?.username;
+      const user = session?.user;
 
-      if (!username) {
+      if (!user) {
         res.status(401).json({ message: "세션에 사용자 정보가 없습니다." });
         return;
       }
 
       // 사용자 정보 반환
-      res.status(200).json({ username: username });
+      res.status(200).json({ user });
     });
   } catch (error) {
     console.error("Profile error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
+};
+
+// 회원가입 - 디스코드 로그인 때문에 필요없어짐.
+export const signup = async (req: Request, res: Response): Promise<void> => {
+  // try {
+  //   const { username, password } = req.body as {
+  //     username: string;
+  //     password: string;
+  //   };
+  //   const existingUser = await UserModel.findOne({ username });
+  //   if (existingUser) {
+  //     res.status(400).json({ message: "해당 username은 이미 사용 중입니다." });
+  //     return;
+  //   }
+  //   const hashedPassword = await bcrypt.hash(password, 10); // 비밀번호 해시화
+  //   const newUser: IUser = new UserModel({ username, password: hashedPassword });
+  //   await newUser.save();
+  //   res.status(201).json({ message: "회원가입이 완료되었습니다." });
+  // } catch (error) {
+  //   console.error("회원가입 중 오류 발생:", error);
+  //   res.status(500).json({ message: "회원가입 중 오류 발생" });
+  // }
+};
+
+// 로그인 - 디스코드 로그인 때문에 필요없어짐.
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  // try {
+  //   const { username, password } = req.body as { username: string; password: string };
+  //   // req.session이 존재하는지 확인
+  //   if (!req.session) {
+  //     res.status(500).json({ message: "세션이 없습니다." });
+  //     return;
+  //   }
+  //   const user = await UserModel.findOne({ username });
+  //   if (!user) {
+  //     res.status(401).json({ message: "이메일 또는 비밀번호가 일치하지 않습니다." });
+  //     return;
+  //   }
+  //   const passwordMatch = await bcrypt.compare(password, user.password);
+  //   if (!passwordMatch) {
+  //     res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
+  //     return;
+  //   }
+  //   // 서버측에 데이터 저장.
+  //   req.session.username = username;
+  //   // 세션 ID를 클라이언트에게 전달
+  //   // 쿠키에 세션 ID를 저장, 클라이언트(브라우저 자동 적용)에게도 적용됨
+  //   // httpOnly true로 하면 자바스크립트로 접근이 안되서 리액트에서 못가져옴.
+  //   // 세션 미들웨어가 자동으로 쿠키를 설정함.
+  //   // res.cookie("sessionID", req.sessionID, { httpOnly: false });
+  //   console.log("로그인 성공 sessionId: ", req.sessionID);
+  //   // res.status(200).json({ message: "로그인 성공", sessionID: req.sessionID, username });
+  //   next();
+  // } catch (error) {
+  //   console.error("로그인 중 오류 발생:", error);
+  //   res.status(500).json({ message: "로그인 중 오류 발생" });
+  // }
 };

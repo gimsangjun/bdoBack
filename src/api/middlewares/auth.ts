@@ -27,7 +27,7 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
       }
 
       // 세션이 존재하는 경우, req.session에 정보 담기.
-      req.session.username = session.username;
+      req.session.user = session.user;
       // 다음 미들웨어로 진행
       next();
     });
@@ -40,7 +40,7 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
 // 중복 로그인 방지 : 로그인 시 이전 세션을 삭제하는 미들웨어
 export function removePreviousSession(req: Request, res: Response, next: NextFunction) {
   // 현재 사용자 이름 가져오기
-  const { username } = req.session;
+  const { username } = req.session.user;
 
   // req.sessionStore가 정의되어 있는지 확인
   if (!req.sessionStore) {
@@ -76,5 +76,6 @@ export function removePreviousSession(req: Request, res: Response, next: NextFun
       }
     }
   });
-  res.status(200).json({ message: "로그인 성공", sessionID: req.sessionID, username });
+  // 프론트엔드 홈으로 이동.
+  res.redirect(`http://localhost:3001/`);
 }

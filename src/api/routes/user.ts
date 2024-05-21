@@ -1,27 +1,20 @@
 import express from "express";
-import {
-  signup,
-  login,
-  logout,
-  profile,
-  discordAuth,
-  discordAuthRedirect,
-} from "../../services/userService";
+import { logout, profile, discordAuth, discordAuthRedirect } from "../../services/userService";
 import middlewares from "../middlewares";
 
 const router = express.Router();
 
 // POST /auth/signup
-router.post("/signup", signup);
+// router.post("/signup", signup);
 
 // POST /auth/login
-router.post("/login", login, middlewares.removePreviousSession);
+// router.post("/login", login, middlewares.removePreviousSession);
 
 // GET /auth/discord
 router.get("/discord", discordAuth);
 
 // GET /auth/discord/redirect
-router.get("/discord/redirect", discordAuthRedirect);
+router.get("/discord/redirect", discordAuthRedirect, middlewares.removePreviousSession);
 
 // GET /auth/logout
 router.get("/logout", logout);
