@@ -5,7 +5,7 @@ import ItemStockModel from "../models/itemStock";
 
 // 사용자 찜목록 리턴
 export const getUserFavorites = async (req: Request, res: Response) => {
-  const username = req.session.username;
+  const { username } = req.session.user;
 
   try {
     const user = await UserModel.findOne({ username }).populate("itemFavorites");
@@ -55,7 +55,7 @@ export const getUserFavoritesByCategory = async (req: Request, res: Response) =>
 // 사용자 찜목록에 아이템 추가
 export const addItemFavorites = async (req: Request, res: Response) => {
   const { id, sid } = req.body;
-  const username = req.session.username;
+  const { username } = req.session.user;
   try {
     // 아이템 정보 가져오기
     let item = await ItemStockModel.findOne({ id, sid });
@@ -113,7 +113,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
 export const deleteItemFavorites = async (req: Request, res: Response) => {
   const { id, sid } = req.query;
 
-  const username = req.session.username;
+  const { username } = req.session.user;
   try {
     // 사용자 정보 가져오기
     const user = await UserModel.findOne({ username });
