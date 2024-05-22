@@ -11,36 +11,10 @@ import path from "path";
 
 const BdoMarketUrl = config.BdoMarketURL;
 
-export const getItemPriceById = async (id: number, sid: number) => {
-  try {
-    const itemPrice = await ItemStockModel.findOne({ id, sid });
-
-    // 아이템 가격 정보가 없으면, updateItemStock 함수를 호출하여 업데이트
-    if (!itemPrice) {
-      const item: IItem | null = await ItemModel.findOne({ id });
-      if (!item) {
-        // 존재하지 않는 아이템
-        throw new Error("Item not found");
-      } else {
-        await updateItemStock(id);
-        // 다시 아이템 가격 정보를 가져옴
-        const updatedItemPrices = await ItemStockModel.find({ id, sid });
-        console.log("updatedItemPrices :", updatedItemPrices);
-        return updatedItemPrices;
-      }
-    } else {
-      return itemPrice;
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
 // Item의 price(ItemStock에 저장되어있음)를 업데이트
 // ItemStock을 저장 및 업데이트
 export const updateItemStock = async (id: number) => {
   try {
-    // console.log("아이템 가격 업데이트 : ", id);
     const reqUrl = `${BdoMarketUrl}/item?lang=kr&id=${id}`;
     const response = await axios.get(reqUrl);
 
@@ -48,7 +22,7 @@ export const updateItemStock = async (id: number) => {
     if (!itemModel) throw new Error("존재하지 않는 아이템 업데이트 시도");
     console.log("아이템 가격 업데이트 : ", itemModel);
 
-    // TODO: response Data가 단수로 넘어와도, list로 감싸기
+    // response Data가 단수로 넘어와도, list로 감싸기
     const data = Array.isArray(response.data) ? response.data : [response.data];
     // 이미 ItemStock에 동일한 데이터가 있으면, price만 업데이트
 
@@ -100,49 +74,13 @@ export const updateItemStock = async (id: number) => {
   }
 };
 
-// 카테고리 별로, mainCategroy와 subCategory가 0이면 모든 아이템
-export const getItemsByCategory = async (
-  mainCategory: number,
-  subCategory: number,
-  page: number
-) => {
-  try {
-    const pageSize = 30; // 한 페이지에 표시될 아이템 수
-    const skip = (page - 1) * pageSize; // 건너뛸 아이템 수 계산
-
-    let items: any[] = [];
-    let totalCount: number = 0;
-    let query: any = {};
-    // 이런식으로 if문을 효율적으로 줄일수 있다.
-    if (mainCategory !== 0) query["mainCategory"] = mainCategory;
-    if (subCategory !== 0) query["subCategory"] = subCategory;
-    console.log("getItemsByCategory - query :", query);
-
-    // TODO 초기에 ItemStock에 데이터가 없으니까
-    // const result: string[] | undefined = await initUpdateItemStock(query);
-    // if (!result || result.length === 0) {
-    //   console.log("얘는 업데이트 종료!", mainCategory, subCategory, page);
-    // }
-
-    items = await ItemStockModel.find(query).skip(skip).limit(pageSize);
-
-    totalCount = await ItemStockModel.countDocuments();
-
-    // console.log(items);
-    return { items, totalCount };
-  } catch (error) {
-    throw error;
-  }
-};
-
-// 개발용도 , 새 아이템 추가시 ItemModel 전부 업데이트
+// TODO: 에러사항인가 거기에 추가. 이런식으로 하면 쉽게 처리할수 있겟구나.
+// TODO: 이렇게 하면, itemPrice == 0 인경우에만 itemStock 업데이트하면됨.
+// 개발용도 , 새 아이템 추가시 ItemModel 전부 업데이트 + itemModel 전체 업데이트 + itemModel의 데이터를 기본 가격만 없이 itemStockModel에 모두 업데이트
 export const updateAllItemModel = async () => {
-  // TODO: ../model/allItems.json 파일을 긁어와서 ItemModel에 전부 넣어줘
+  // 아르샤 API에서 가져올려고 했는데, 영어로만 리턴와서 임시로 json에 데이터 추가해서 처리.
   try {
-    // JSON 파일의 경로를 설정
     const filePath = path.join(__dirname, "../models/allItems.json");
-
-    // 파일 읽기
     const jsonData = await fs.readFile(filePath, "utf-8");
     const items = JSON.parse(jsonData);
 
@@ -151,11 +89,36 @@ export const updateAllItemModel = async () => {
 
     // 새로운 아이템 데이터 삽입
     await ItemModel.insertMany(items);
+    console.log("아이템 모델 완료.");
 
+    // ItemModel의 모든 데이터를 ItemStockModel에 삽입
+    for (const item of items) {
+      // ItemStockModel에서 동일한 이름의 아이템 검색
+      const existingItem = await ItemStockModel.findOne({ name: item.name });
+      if (!existingItem) {
+        // 존재하지 않는 경우 새로 삽입
+        const newItem = new ItemStockModel({
+          ...item,
+          sid: 0, // 기본 값 설정
+          minEnhance: 0,
+          maxEnhance: 0,
+          basePrice: 0,
+          currentStock: 0,
+          totalTrades: 0,
+          priceMin: 0,
+          priceMax: 0,
+          lastSoldPrice: 0,
+          lastSoldTime: Date.now(),
+          updateAt: Date.now(),
+        });
+        await newItem.save();
+      }
+    }
     console.log("Item models have been successfully updated from JSON file.");
   } catch (error) {
     console.error("Failed to update item models from JSON file:", error);
   }
+
   // 아래는 아르샤 API
   // try {
   //   // API에서 아이템 데이터 가져오기
