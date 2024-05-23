@@ -4,8 +4,8 @@ import UserModel, { IUser } from "../models/user";
 import axios, { AxiosError } from "axios";
 import config from "../config";
 
-const CLIENT_ID = config.DISCORD_CLIENT_ID;
-const CLIENT_SECRET = config.DISCORD_CLIENT_SECRET;
+const CLIENT_ID = config.DISCORD_APPLICATION_ID;
+const CLIENT_SECRET = config.DISCORD_APPLICATION_SECRET;
 const REDIRECT_URI = config.DISCORD_REDIRECT_URI;
 const DISCORD_LOGIN_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&scope=identify+email`;
 

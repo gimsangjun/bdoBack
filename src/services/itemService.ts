@@ -5,6 +5,13 @@ import ItemModel, { IItem } from "../models/item";
 import { updateItemStock, initUpdateItemStock, updateAllItemModel } from "../utils/itemAPI";
 import ItemStockModel, { IItemStock } from "../models/itemStock";
 
+/**
+ *
+ * 종류별로 있던 쿼리 하나로 통합.
+ * 노션 - 동적 쿼리 작성
+ * 링크 - https://whimsical-dugout-2c6.notion.site/2f994ca60008460284f8f7272b82bb50
+ *
+ */
 // POST: /item, body: {query: "여러가지 쿼리들", page: }
 export const getItemsByQuery = async (req: Request, res: Response) => {
   const {

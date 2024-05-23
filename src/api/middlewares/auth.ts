@@ -37,6 +37,14 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+/**
+ * 중복로그인 문제를 해결하기 위해 DB에
+ * 저장된 세션을 제거하는 기능을 만들었는데 작동을안함.
+ * 라이브러리 문제였음.
+ * 노션 세션 - 중복로그인 문제(connect-mongodb-session)
+ * 링크 - https://whimsical-dugout-2c6.notion.site/connect-mongodb-session-722a61231dd74f23a903e79b9dcbafd0?pvs=4
+ */
+
 // 중복 로그인 방지 : 로그인 시 이전 세션을 삭제하는 미들웨어
 export function removePreviousSession(req: Request, res: Response, next: NextFunction) {
   // 현재 사용자 이름 가져오기

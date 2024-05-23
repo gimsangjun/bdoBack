@@ -15,8 +15,9 @@ export default {
   databaseURL: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/blackdesert",
   sessionKey: process.env.SESSION_KEY || "helloworld",
   BdoMarketURL: process.env.BDOMARKET_URL,
-  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID || "",
+  DISCORD_APPLICATION_ID: process.env.DISCORD_APPLICATION_ID || "", // application id, client id와 동일
   DISCORD_REDIRECT_URI:
     process.env.DISCORD_REDIRECT_URI || "http://localhost:3000/auth/discord/redirect",
-  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET || "",
+  DISCORD_APPLICATION_SECRET: process.env.DISCORD_APPLICATION_SECRET || "",
+  DISCORD_BOT_SECRET: process.env.DISCORD_BOT_SECRET || "", // 튜토리얼의 DISCORD_TOKEN
 };
