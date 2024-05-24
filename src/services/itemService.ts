@@ -2,7 +2,11 @@ import UserModel from "../models/user";
 import ItemFavoriteModel from "../models/itemFavority";
 import { Request, Response } from "express";
 import ItemModel, { IItem } from "../models/item";
-import { updateItemStock, initUpdateItemStock, updateAllItemModel } from "../utils/itemAPI";
+import {
+  updateItemStock,
+  initUpdateItemStock,
+  updateAllItemModel,
+} from "../utils/itemAPI";
 import ItemStockModel, { IItemStock } from "../models/itemStock";
 
 /**
@@ -33,7 +37,9 @@ export const getItemsByQuery = async (req: Request, res: Response) => {
 
   try {
     const totalItems = await ItemStockModel.countDocuments(conditions);
-    const items = await ItemStockModel.find(conditions).skip(skip).limit(itemsPerPage);
+    const items = await ItemStockModel.find(conditions)
+      .skip(skip)
+      .limit(itemsPerPage);
 
     res.json({
       items: items,
@@ -43,6 +49,31 @@ export const getItemsByQuery = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error fetching items by query:", error);
+    res.status(500).json({ message: "Error fetching items", error });
+  }
+};
+
+// POST: /item/id-and-sid, body: {id : [], sid : []}
+export const getItemsByIdAndSid = async (req: Request, res: Response) => {
+  const { id, sid } = req.body;
+
+  if (!Array.isArray(id) || !Array.isArray(sid) || id.length !== sid.length) {
+    return res.status(400).json({ message: "Invalid id and sid arrays" });
+  }
+
+  try {
+    const conditions = id.map((_, index) => ({
+      id: id[index],
+      sid: sid[index],
+    }));
+
+    const items = await ItemStockModel.find({
+      $or: conditions,
+    });
+
+    res.json({ items });
+  } catch (error) {
+    console.error("Error fetching items by id and sid:", error);
     res.status(500).json({ message: "Error fetching items", error });
   }
 };

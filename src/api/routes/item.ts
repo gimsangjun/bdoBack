@@ -4,12 +4,18 @@ import {
   initItemStock,
   itemModelUpdateAll,
   getItemsByQuery,
+  getItemsByIdAndSid,
 } from "../../services/itemService";
 const router = express.Router();
 
 // POST: /item, body: {query: "여러가지 쿼리들", page: 없으면 기본값 1}
 router.post("/", async (req: Request, res: Response) => {
   await getItemsByQuery(req, res);
+});
+
+// POST: /item/id-and-sid, body: {id : [], sid : []}
+router.post("/id-and-sid", async (req: Request, res: Response) => {
+  await getItemsByIdAndSid(req, res);
 });
 
 // POST /item/update body:{name}, 아이템 stock 업데이트
