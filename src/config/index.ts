@@ -19,5 +19,5 @@ export default {
   DISCORD_REDIRECT_URI:
     process.env.DISCORD_REDIRECT_URI || "http://localhost:3000/auth/discord/redirect",
   DISCORD_APPLICATION_SECRET: process.env.DISCORD_APPLICATION_SECRET || "",
-  DISCORD_BOT_SECRET: process.env.DISCORD_BOT_SECRET || "", // 튜토리얼의 DISCORD_TOKEN
+  DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN || "", // 튜토리얼의 DISCORD_TOKEN
 };
