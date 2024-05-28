@@ -1,6 +1,7 @@
 import { Application } from "express";
 import config from "../config";
 import session from "express-session";
+// TODO: 현재 sesionStore.all이 먹히질않고, 라이브러리 문제(이슈탭에 있음)인데 그 개발자가 업데이트를 안해서 다른 개발자가 임시로 만든거 사용
 import connectMongoDBSession from "connect-mongodb-session-quickfix";
 
 export default (app: Application) => {
@@ -17,7 +18,7 @@ export default (app: Application) => {
       if (error) {
         console.error("MongoDBStore1 - MongoDB Connection Error:", error);
       }
-    }
+    },
   );
 
   /**
@@ -34,7 +35,7 @@ export default (app: Application) => {
       // 쿠키 기본값 { path: '/', httpOnly: true, secure: false, maxAge: null }.
       // httpOnly : true이면 해당 쿠키는 클라이언트 측 JavaScript에서 접근할 수 없게됨
       cookie: { secure: false }, // secure 속성이 true로 되어있으면 https에서만 동작하기 떄문에, 쿠키에 세션이 담기지 않음.
-    })
+    }),
   );
 
   // 세션스토어 에러 체킹용

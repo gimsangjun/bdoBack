@@ -8,16 +8,17 @@ export const getUserFavorites = async (req: Request, res: Response) => {
   const { username } = req.session.user;
 
   try {
-    const user = await UserModel.findOne({ username }).populate("itemFavorites");
+    const user = await UserModel.findOne({ username }).populate(
+      "itemFavorites",
+    );
 
     if (!user) {
       throw new Error("사용자를 찾을 수 없습니다.");
     }
 
-    // TODO: 이 부분에 대해서 정리, 즐겨찾기 페이지 마무리
     // 각 즐겨찾기에 대해 정확히 일치하는 재고 정보를 찾음
     const itemStockPromises = user.itemFavorites.map((favorite) =>
-      ItemStockModel.findOne({ id: favorite.id, sid: favorite.sid })
+      ItemStockModel.findOne({ id: favorite.id, sid: favorite.sid }),
     );
     // Promise.all 여러 Promise를 동시에 처리하고싶을 때 사용
     // 모든 Promise가 성공적으로 이행되면 각 Promise의 결과를 모아 배열로 반환
@@ -38,7 +39,10 @@ export const getUserFavorites = async (req: Request, res: Response) => {
 
 // 사용자 즐겨찾기 카테고라만
 // TODO 어려운거 같음. 나중에.
-export const getUserFavoritesByCategory = async (req: Request, res: Response) => {
+export const getUserFavoritesByCategory = async (
+  req: Request,
+  res: Response,
+) => {
   // const { mainCategory, subCategory, page } = req.query;
   //   if (Number(mainCategory) == 0 && Number(subCategory) > 0) {
   //     res.status(400).json({ message: "wrong request" });
@@ -75,7 +79,6 @@ export const addItemFavorites = async (req: Request, res: Response) => {
     }
 
     // FavoriteModel 생성
-    // TODO: mainCategory, subCategory제대로 들어가는지 확인.
     const newItemFavorite = new ItemFavoriteModel({
       username: username,
       name: item.name,
@@ -91,7 +94,7 @@ export const addItemFavorites = async (req: Request, res: Response) => {
     const user = await UserModel.findOneAndUpdate(
       {},
       { $push: { itemFavorites: newItemFavorite._id } },
-      { new: true }
+      { new: true },
     );
 
     console.log("즐겨찾기 추가 완료 :", user);
