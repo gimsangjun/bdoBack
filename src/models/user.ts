@@ -3,7 +3,7 @@ import { IItemFavorite } from "./itemFavority";
 import { IItemPriceAlert } from "./itemPriceAlert";
 
 export interface IUser extends Document {
-  id: number;
+  id: string;
   username: string;
   avatarUrl: string;
   itemFavorites: IItemFavorite["_id"][];
@@ -11,7 +11,7 @@ export interface IUser extends Document {
 }
 
 const UserSchema: Schema = new Schema({
-  id: { type: Number, required: true, unique: true },
+  id: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   avatarUrl: { type: String },
   // ref에는 mongoose.model의 collection이름 그대로

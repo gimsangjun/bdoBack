@@ -21,11 +21,17 @@ export const discordAuth = async (req: Request, res: Response) => {
 };
 
 // GET /auth/discord/redirect
-export const discordAuthRedirect = async (req: Request, res: Response, next: NextFunction) => {
+export const discordAuthRedirect = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   // 인증 코드 받아옴.
   const code = req.query.code as string;
   if (!code) {
-    return res.status(400).json({ message: "인증 코드가 전달되지 않았습니다." });
+    return res
+      .status(400)
+      .json({ message: "인증 코드가 전달되지 않았습니다." });
   }
 
   const params = new URLSearchParams();
@@ -37,11 +43,15 @@ export const discordAuthRedirect = async (req: Request, res: Response, next: Nex
 
   try {
     // 엑세스 토큰 가져오기
-    const tokenResponse = await axios.post("https://discord.com/api/oauth2/token", params, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+    const tokenResponse = await axios.post(
+      "https://discord.com/api/oauth2/token",
+      params,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       },
-    });
+    );
 
     // 액세스 토큰으로 사용자 정보 요청
     const userResponse = await axios.get("https://discord.com/api/users/@me", {
@@ -63,10 +73,8 @@ export const discordAuthRedirect = async (req: Request, res: Response, next: Nex
         username: userData.username,
         avatarUrl: avatarUrl,
       },
-      { new: true, upsert: true } // upsert 옵션으로 찾는 데이터가 없을 경우 새로 생성
+      { new: true, upsert: true }, // upsert 옵션으로 찾는 데이터가 없을 경우 새로 생성
     );
-    console.log("Discord User Info: ", userData);
-    console.log(user);
 
     // 세션에 저장
     // 서버측에 데이터 저장.
@@ -82,10 +90,14 @@ export const discordAuthRedirect = async (req: Request, res: Response, next: Nex
     const axiosError = error as AxiosError;
     if (axiosError.response) {
       // 서버로부터 응답이 있는 경우, 응답의 데이터를 로그하고 클라이언트에 전달
-      console.error("디스코드 Auth 로그인 중 오류 발생:", axiosError.response.data);
-      res
-        .status(500)
-        .json({ message: "디스코드 Auth 로그인 오류", error: axiosError.response.data });
+      console.error(
+        "디스코드 Auth 로그인 중 오류 발생:",
+        axiosError.response.data,
+      );
+      res.status(500).json({
+        message: "디스코드 Auth 로그인 오류",
+        error: axiosError.response.data,
+      });
     } else if (axiosError.request) {
       // 요청이 이루어졌으나 응답을 받지 못한 경우
       console.error("No response received:", axiosError.request);
@@ -181,7 +193,11 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
 };
 
 // 로그인 - 디스코드 로그인 때문에 필요없어짐.
-export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   // try {
   //   const { username, password } = req.body as { username: string; password: string };
   //   // req.session이 존재하는지 확인
