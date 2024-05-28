@@ -54,7 +54,6 @@ export const addItemPriceAlert = async (req: Request, res: Response) => {
 };
 
 // 사용자 가격 알림 수정
-// 사용자 가격 알림 수정
 export const updateItemPriceAlert = async (req: Request, res: Response) => {
   const { username } = req.session.user;
   const { alertId, priceThreshold } = req.body;
@@ -89,7 +88,6 @@ export const updateItemPriceAlert = async (req: Request, res: Response) => {
 };
 
 // 사용작 가격 알림 삭제
-// 사용자 가격 알림 삭제
 export const deleteItemPriceAlert = async (req: Request, res: Response) => {
   const { username } = req.session.user;
   const { alertId } = req.body;
@@ -115,9 +113,14 @@ export const deleteItemPriceAlert = async (req: Request, res: Response) => {
 
     await ItemPriceAlertModel.findOneAndDelete({ _id: alertId });
 
-    user.itemPriceAlerts = user.itemPriceAlerts.filter(
-      (alertId) => alertId.toString() !== alert._id.toString(),
+    const index = user.itemPriceAlerts.findIndex(
+      (alert) => alert._id.toString() === alertId,
     );
+
+    if (index !== -1) {
+      user.itemPriceAlerts.splice(index, 1);
+    }
+
     await user.save();
 
     return res.status(200).json({ message: "가격 알림이 삭제되었습니다." });
