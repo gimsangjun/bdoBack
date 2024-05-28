@@ -53,25 +53,26 @@ export const getItemsByQuery = async (req: Request, res: Response) => {
   }
 };
 
-// POST: /item/id-and-sid, body: {id : [], sid : []}
+// POST: /item/id-and-sid, body: items: [{id , sid}]
 export const getItemsByIdAndSid = async (req: Request, res: Response) => {
-  const { id, sid } = req.body;
+  const { items } = req.body;
 
-  if (!Array.isArray(id) || !Array.isArray(sid) || id.length !== sid.length) {
-    return res.status(400).json({ message: "Invalid id and sid arrays" });
+  // items가 배열이 아니거나, 빈 배열인 경우 처리
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ message: "Invalid items array" });
   }
 
   try {
-    const conditions = id.map((_, index) => ({
-      id: id[index],
-      sid: sid[index],
+    const conditions = items.map((item) => ({
+      id: item.id,
+      sid: item.sid,
     }));
 
-    const items = await ItemStockModel.find({
+    const foundItems = await ItemStockModel.find({
       $or: conditions,
     });
 
-    res.json({ items });
+    res.json({ items: foundItems });
   } catch (error) {
     console.error("Error fetching items by id and sid:", error);
     res.status(500).json({ message: "Error fetching items", error });
