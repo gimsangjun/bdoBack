@@ -90,7 +90,7 @@ export const updateItemPriceAlert = async (req: Request, res: Response) => {
 // 사용작 가격 알림 삭제
 export const deleteItemPriceAlert = async (req: Request, res: Response) => {
   const { username } = req.session.user;
-  const { alertId } = req.body;
+  const { id } = req.query;
 
   try {
     const user = await UserModel.findOne({ username }).populate(
@@ -101,7 +101,7 @@ export const deleteItemPriceAlert = async (req: Request, res: Response) => {
       throw new Error("사용자를 찾을 수 없습니다.");
     }
 
-    const alert = await ItemPriceAlertModel.findById(alertId);
+    const alert = await ItemPriceAlertModel.findById(id);
 
     if (!alert) {
       throw new Error("가격 알림을 찾을 수 없습니다.");
@@ -111,10 +111,10 @@ export const deleteItemPriceAlert = async (req: Request, res: Response) => {
       throw new Error("권한이 없습니다.");
     }
 
-    await ItemPriceAlertModel.findOneAndDelete({ _id: alertId });
+    await ItemPriceAlertModel.findOneAndDelete({ _id: id });
 
     const index = user.itemPriceAlerts.findIndex(
-      (alert) => alert._id.toString() === alertId,
+      (alert) => alert._id.toString() === id,
     );
 
     if (index !== -1) {

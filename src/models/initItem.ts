@@ -3,7 +3,6 @@ import ItemModel, { IItem } from "./item";
 
 export async function initializeItems() {
   jsonData.forEach(async (itemData: any) => {
-    // TODO: 이렇게 하나하나씩 삽입해도
     try {
       const newItem: IItem = new ItemModel({
         id: itemData.id,

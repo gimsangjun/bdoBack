@@ -151,7 +151,9 @@ export const initUpdateItemStock = async (query: any) => {
 
     // 각 아이템의 name을 순회하면서 ItemStockModel에 해당하는 아이템 stock 정보가 없으면 updateItemStock 함수를 호출하여 데이터를 넣음
     for (const item of allItems) {
-      const existingItemStock = await ItemStockModel.findOne({ name: item.name });
+      const existingItemStock = await ItemStockModel.findOne({
+        name: item.name,
+      });
       if (!existingItemStock) {
         if (count >= 10) {
           // 이미 10개의 아이템이 업데이트되었으면 더 이상 호출하지 않음
@@ -165,5 +167,32 @@ export const initUpdateItemStock = async (query: any) => {
     return result;
   } catch (error) {
     console.error("Error initializing item stocks:", error);
+  }
+};
+
+// items에 있는 grade를 itemsStock에 업데이트
+export const updateGrades = async () => {
+  try {
+    const allItems = await ItemModel.find({});
+
+    let bulkOps = [];
+
+    for (const item of allItems) {
+      const { name, grade } = item;
+
+      bulkOps.push({
+        updateMany: {
+          filter: { name: name },
+          update: { $set: { grade: grade } },
+        },
+      });
+    }
+
+    if (bulkOps.length > 0) {
+      const result = await ItemStockModel.bulkWrite(bulkOps);
+      console.log(`Updated ${result.modifiedCount} item stocks.`);
+    }
+  } catch (error) {
+    console.error("Error updating item stocks:", error);
   }
 };
