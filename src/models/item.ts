@@ -7,6 +7,7 @@ export interface IItem extends Document {
   name: string;
   mainCategory: number;
   subCategory: number;
+  grade: string;
 }
 
 const ItemSchema: Schema = new Schema({
@@ -14,6 +15,13 @@ const ItemSchema: Schema = new Schema({
   name: { type: String, required: true },
   mainCategory: { type: Number, require: true },
   subCategory: { type: Number, require: true },
+  // grade에 common, uncommon, rare, epic, legendary라는 값만 올수 있게.
+  grade: {
+    type: String,
+    required: true,
+    default: "common",
+    enum: ["common", "uncommon", "rare", "epic", "legendary"],
+  },
 });
 
 const ItemModel = mongoose.model<IItem>("Item", ItemSchema);
