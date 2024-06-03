@@ -16,21 +16,7 @@ export const getUserFavorites = async (req: Request, res: Response) => {
       throw new Error("사용자를 찾을 수 없습니다.");
     }
 
-    // 각 즐겨찾기에 대해 정확히 일치하는 재고 정보를 찾음
-    const itemStockPromises = user.itemFavorites.map((favorite) =>
-      ItemStockModel.findOne({ id: favorite.id, sid: favorite.sid }),
-    );
-    // Promise.all 여러 Promise를 동시에 처리하고싶을 때 사용
-    // 모든 Promise가 성공적으로 이행되면 각 Promise의 결과를 모아 배열로 반환
-    const itemStockDetails = await Promise.all(itemStockPromises);
-
-    // 즐겨찾기와 stock 정보를 결합
-    const combinedFavorites = user.itemFavorites.map((favorite, index) => ({
-      ...favorite.toObject(),
-      stockDetail: itemStockDetails[index],
-    }));
-
-    res.status(200).json({ itemFavorites: combinedFavorites });
+    res.status(200).json({ itemFavorites: user.itemFavorites });
   } catch (error) {
     console.error("Error fetching user favorites:", error);
     res.status(500).json({ message: "찜목록 불러오기 에러" });
