@@ -170,20 +170,20 @@ export const initUpdateItemStock = async (query: any) => {
   }
 };
 
-// items에 있는 grade를 itemsStock에 업데이트
-export const updateGrades = async () => {
+// items에 있는 grade와 imgUrl를 itemsStock에 업데이트
+export const updateItemStocksWithGradesAndImages = async () => {
   try {
     const allItems = await ItemModel.find({});
 
     let bulkOps = [];
 
     for (const item of allItems) {
-      const { name, grade } = item;
+      const { name, grade, imgUrl } = item;
 
       bulkOps.push({
         updateMany: {
           filter: { name: name },
-          update: { $set: { grade: grade } },
+          update: { $set: { grade: grade, imgUrl: imgUrl } },
         },
       });
     }

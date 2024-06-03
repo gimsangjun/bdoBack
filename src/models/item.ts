@@ -8,6 +8,7 @@ export interface IItem extends Document {
   mainCategory: number;
   subCategory: number;
   grade: string;
+  imgUrl: string;
 }
 
 const ItemSchema: Schema = new Schema({
@@ -15,6 +16,7 @@ const ItemSchema: Schema = new Schema({
   name: { type: String, required: true },
   mainCategory: { type: Number, require: true },
   subCategory: { type: Number, require: true },
+  imgUrl: { type: String, default: "" },
   // grade에 common, uncommon, rare, epic, legendary라는 값만 올수 있게.
   grade: {
     type: String,
@@ -27,3 +29,24 @@ const ItemSchema: Schema = new Schema({
 const ItemModel = mongoose.model<IItem>("Item", ItemSchema);
 
 export default ItemModel;
+
+// imgUrl 업데이트하는 쿼리
+
+// db.items.updateMany(
+//   { name: "데보레카 허리띠" },
+//   {
+//     $set: {
+//       imgUrl:
+//         "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/18_belt/00012276.webp",
+//     },
+//   },
+// );
+
+// db.items.find().forEach(function(item) {
+//   db.itemstocks.updateMany(
+//     { name: item.name },
+//     { $set: { imgUrl: item.imgUrl } }
+//   );
+// });
+// MongoDB 쉘에 접속
+// `Item` 컬렉션에서 모든 아이템을 순회하며 `ItemStock` 컬렉션을 업데이트

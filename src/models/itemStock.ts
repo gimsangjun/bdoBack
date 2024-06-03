@@ -1,18 +1,4 @@
 import mongoose, { Schema, Document } from "mongoose";
-// {
-//     "name": "셀레스 장검",
-//     "id": 10007,
-//     "sid": 0, // 강화단계
-//     "minEnhance": 0, // 0~7강
-//     "maxEnhance": 7, //
-//     "basePrice": 215000, // 최상위 구매대기 가격
-//     "currentStock": 13, // 현재 판매대기 매물
-//     "totalTrades": 265147,
-//     "priceMin": 23100,
-//     "priceMax": 231000,
-//     "lastSoldPrice": 228000,
-//     "lastSoldTime": 1713412381 // 검은사막만의 시간인듯.
-// }
 
 // Item 매물의 대한 가격
 export interface IItemStock extends Document {
@@ -21,6 +7,7 @@ export interface IItemStock extends Document {
   sid: number;
   mainCategory: number;
   subCategory: number;
+  imgUrl: string;
   minEnhance: number;
   maxEnhance: number;
   basePrice: number;
@@ -40,6 +27,7 @@ const ItemStockSchema: Schema = new Schema({
   sid: { type: Number, required: true },
   mainCategory: { type: Number, required: true, default: 0 },
   subCategory: { type: Number, required: true, default: 0 },
+  imgUrl: { type: String, default: "" },
   minEnhance: { type: Number, required: true, default: 0 },
   maxEnhance: { type: Number, required: true, default: 0 },
   basePrice: { type: Number, required: true, default: 0 },
