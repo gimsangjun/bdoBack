@@ -79,25 +79,36 @@ export const getItemsByIdAndSid = async (req: Request, res: Response) => {
   }
 };
 
-// POST: /item/update, body: {name: "아이템 이름"}에서  loadItemStock함수를 호출하는 함수
-export const updateItemPriceByName = async (req: Request, res: Response) => {
+// POST: /item/update, body: {items}에서  loadItemStock함수를 호출하는 함수
+export const updateItemsPrice = async (req: Request, res: Response) => {
   try {
-    const { name } = req.body;
+    const { items } = req.body; // items 배열을 body에서 가져옴
 
-    // 아이템 정보를 DB에서 찾음
-    const item: IItem | null = await ItemModel.findOne({ name });
-
-    if (item) {
-      // 아이템 정보가 있다면 loadItemStock 함수를 호출하여 가격 정보 업데이트
-      await updateItemStock(item.id); // 아이템 stock(가격정보 ) 업데이트
-
-      // 업데이트된 아이템 정보를 다시 가져와서 반환
-      const updatedItem = await ItemStockModel.find({ name });
-      res.status(200).json({ items: updatedItem });
-    } else {
-      // 아이템 정보가 없다면 404 에러 반환
-      res.status(404).json({ message: "Item not found" });
+    if (!items || items.length === 0) {
+      return res.status(400).json({ message: "No items provided" });
     }
+
+    // 아이템 이름 중복 제거
+    const uniqueItemNames = [...new Set(items.map((item: any) => item.name))];
+
+    // 중복 제거된 아이템 이름에 대해 updateItemStock 호출
+    const updatePromises = uniqueItemNames.map(async (name: string) => {
+      const item: IItem | null = await ItemModel.findOne({ name });
+
+      if (item) {
+        await updateItemStock(item.id); // 아이템 stock(가격 정보) 업데이트
+      }
+    });
+
+    // 모든 업데이트 작업이 완료될 때까지 기다림
+    await Promise.all(updatePromises);
+
+    // 업데이트된 아이템 정보를 다시 가져옴
+    const updatedItems = await ItemStockModel.find({
+      name: { $in: uniqueItemNames },
+    });
+
+    res.status(200).json({ items: updatedItems });
   } catch (error) {
     // 오류 발생 시 500 에러 반환
     console.error("Error updating item prices:", error);

@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import {
-  updateItemPriceByName,
   initItemStock,
   itemModelUpdateAll,
   getItemsByQuery,
   getItemsByIdAndSid,
+  updateItemsPrice,
 } from "../../services/itemService";
 const router = express.Router();
 
@@ -18,9 +18,9 @@ router.post("/id-and-sid", async (req: Request, res: Response) => {
   await getItemsByIdAndSid(req, res);
 });
 
-// POST /item/update body:{name}, 아이템 stock 업데이트
+// POST /item/update body:{items}, 아이템 stock 업데이트
 router.post("/update", async (req: Request, res: Response) => {
-  await updateItemPriceByName(req, res);
+  await updateItemsPrice(req, res);
 });
 
 // 개발용도  : itemModel 전체 업데이트
