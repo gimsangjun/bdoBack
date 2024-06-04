@@ -1,13 +1,6 @@
-import UserModel from "../models/user";
-import ItemFavoriteModel from "../models/itemFavority";
 import { Request, Response } from "express";
-import ItemModel, { IItem } from "../models/item";
-import {
-  updateItemStock,
-  initUpdateItemStock,
-  updateAllItemModel,
-} from "../utils/itemAPI";
-import ItemStockModel, { IItemStock } from "../models/itemStock";
+import ItemStockModel from "../models/itemStock";
+import ItemAPI from "../utils/itemAPI";
 
 /**
  *
@@ -87,25 +80,16 @@ export const updateItemsPrice = async (req: Request, res: Response) => {
     if (!items || items.length === 0) {
       return res.status(400).json({ message: "No items provided" });
     }
-
-    // 아이템 이름 중복 제거
-    const uniqueItemNames = [...new Set(items.map((item: any) => item.name))];
-
-    // 중복 제거된 아이템 이름에 대해 updateItemStock 호출
-    const updatePromises = uniqueItemNames.map(async (name: string) => {
-      const item: IItem | null = await ItemModel.findOne({ name });
-
-      if (item) {
-        await updateItemStock(item.id); // 아이템 stock(가격 정보) 업데이트
-      }
-    });
-
-    // 모든 업데이트 작업이 완료될 때까지 기다림
-    await Promise.all(updatePromises);
+    await ItemAPI.updateItemStock(items);
 
     // 업데이트된 아이템 정보를 다시 가져옴
+    const uniqueItemIdentifiers = items.map((item) => ({
+      id: item.id,
+      sid: item.sid,
+    }));
+
     const updatedItems = await ItemStockModel.find({
-      name: { $in: uniqueItemNames },
+      $or: uniqueItemIdentifiers,
     });
 
     res.status(200).json({ items: updatedItems });
@@ -120,21 +104,10 @@ export const updateItemsPrice = async (req: Request, res: Response) => {
 // GET : /item/update-all
 export const itemModelUpdateAll = async (req: Request, res: Response) => {
   try {
-    await updateAllItemModel();
+    await ItemAPI.updateAllItemModel();
     return res.status(200).json({ message: "finished" });
   } catch (error) {
     console.error("Error itemModelUpdateALl:", error);
     return res.status(500).json({ message: "Failed to itemModelUpdateALl" });
-  }
-};
-
-// 개발용도 GET /item/init, 초기 아이템 stock DB 10개씩 업데이트.
-export const initItemStock = async (req: Request, res: Response) => {
-  try {
-    const result = await initUpdateItemStock({});
-    return res.status(200).json({ result });
-  } catch (error) {
-    console.error("Error init item stocks:", error);
-    return res.status(500).json({ message: "Failed to init item stocks" });
   }
 };

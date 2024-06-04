@@ -1,7 +1,5 @@
 import express, { Request, Response } from "express";
 import {
-  initItemStock,
-  itemModelUpdateAll,
   getItemsByQuery,
   getItemsByIdAndSid,
   updateItemsPrice,
@@ -28,10 +26,5 @@ router.post("/update", async (req: Request, res: Response) => {
 // router.get("/update-all", async (req: Request, res: Response) => {
 //   await itemModelUpdateAll(req, res);
 // });
-
-// 개발용도 : GET /item/init, 초기 아이템 stock DB 10개씩 업데이트.
-router.get("/init", async (req: Request, res: Response) => {
-  await initItemStock(req, res);
-});
 
 export default router;
