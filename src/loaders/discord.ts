@@ -97,43 +97,43 @@ export default class discordAppliaction {
     // });
   }
 
-  //TODO: 아래 함수들은 나중에 클래스화 시켜야할지도?
-  async sendPriceAlert(itemName: string, price: number, channelId: string) {
-    // 어느 채널에 보낼것인지, 서버(guild)안에 여러채널이 있음(보이스채널, 텍스트채널 등)
-    const channel = this.client.channels.cache.get(channelId) as TextChannel;
-    if (!channel) {
-      console.error("Channel not found:", channelId);
-      return;
-    }
+  // async sendPriceAlert(itemName: string, price: number, channelId: string) {
+  //   // 어느 채널에 보낼것인지, 서버(guild)안에 여러채널이 있음(보이스채널, 텍스트채널 등)
+  //   const channel = this.client.channels.cache.get(channelId) as TextChannel;
+  //   if (!channel) {
+  //     console.error("Channel not found:", channelId);
+  //     return;
+  //   }
 
-    const message = `🔔 **Price Alert** 🔔\nItem **${itemName}** has reached the target price of **${price}**!`;
-    await channel.send(message);
-  }
+  //   const message = `🔔 **Price Alert** 🔔\nItem **${itemName}** has reached the target price of **${price}**!`;
+  //   await channel.send(message);
+  // }
 
-  startMonitoring() {
-    const checkPrices = async () => {
-      try {
-        const alerts = await ItemPriceAlertModel.find({});
-        for (const alert of alerts) {
-          const item = await ItemStockModel.findOne({
-            id: alert.itemId,
-            sid: alert.itemSid,
-          });
+  // TODO: 하루종일 모니터링 하는건 나중에, 일단 slashcommand를 통해 알림을 받을수 있도록하기
+  // startMonitoring() {
+  //   const checkPrices = async () => {
+  //     try {
+  //       const alerts = await ItemPriceAlertModel.find({});
+  //       for (const alert of alerts) {
+  //         const item = await ItemStockModel.findOne({
+  //           id: alert.itemId,
+  //           sid: alert.itemSid,
+  //         });
 
-          if (item && item.basePrice >= alert.priceThreshold) {
-            this.sendPriceAlert(
-              item.name,
-              item.basePrice,
-              "742294333348118562", // 채널 ID
-            );
-          }
-        }
-      } catch (error) {
-        console.error("Error checking item prices:", error);
-      }
-    };
+  //         if (item && item.basePrice >= alert.priceThreshold) {
+  //           this.sendPriceAlert(
+  //             item.name,
+  //             item.basePrice,
+  //             "742294333348118562", // 채널 ID
+  //           );
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking item prices:", error);
+  //     }
+  //   };
 
-    setInterval(checkPrices, 10000); // 60초마다 체크
-    console.log("Started monitoring item prices.");
-  }
+  //   setInterval(checkPrices, 10000); // 60초마다 체크
+  //   console.log("Started monitoring item prices.");
+  // }
 }

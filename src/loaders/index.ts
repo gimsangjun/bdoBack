@@ -4,7 +4,6 @@ import mongooseLoader from "./mongoose";
 import sessionLoader from "./session";
 import discordAppliaction from "./discord";
 import Logger from "./logger";
-import { updateItemStocksWithGradesAndImages } from "../utils/itemAPI";
 
 export default async ({ expressApp }: { expressApp: Application }) => {
   await mongooseLoader();
@@ -18,6 +17,4 @@ export default async ({ expressApp }: { expressApp: Application }) => {
 
   new discordAppliaction().start();
   Logger.info("🤖 Discord loaded");
-
-  // updateItemStocksWithGradesAndImages();
 };

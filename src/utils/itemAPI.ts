@@ -11,13 +11,15 @@ export default class ItemAPI {
   /**
    * ItemStock을 저장 및 업데이트
    * tem의 price(ItemStock에 저장되어있음)를 업데이트
-   * @param items Item[]
+   * @param items Item[] or priceAlert[]
    */
-  static updateItemStock = async (items: IItem[]) => {
+  static updateItemStock = async (items: any[]) => {
     try {
       // items의 id를 모두 꺼내서 하나의 배열로 만듬.
-      // 여기서 겹치는 id가 있을수 있으므로 Set으로 중복 제거
-      const itemIds = [...new Set(items.map((item) => item.id))];
+      //여기서 겹치는 id가 있을수 있으므로 Set으로 중복 제거
+      // items의 priceAlert의 경우 item.id대신 item.itemId임
+      // itemId 순서 중요함. 뒤에있을경우 item.id 우선쉰위가 id가 있는지 확인 -> _id 이렇게 가버려서 , itemId가 뒤에있으면 정상적으로 동작안함.
+      const itemIds = [...new Set(items.map((item) => item.itemId || item.id))];
 
       const reqUrl = `${ItemAPI.BdoMarketUrl}/item?kr/item?lang=kr`;
       const response = await axios.post(reqUrl, itemIds);
@@ -50,7 +52,12 @@ export default class ItemAPI {
         }
       }
     } catch (error) {
-      console.error("Error loading item info:", error);
+      console.error(
+        "ItemAPI.updateItemStock - Error updating item info:",
+        error.response ? error.response.data : error.message,
+        error.stack,
+      );
+      throw error;
     }
   };
 
@@ -96,7 +103,12 @@ export default class ItemAPI {
       }
       console.log("Item models have been successfully updated from JSON file.");
     } catch (error) {
-      console.error("Failed to update item models from JSON file:", error);
+      console.error(
+        "ItemAPI.updateAllItemModel - Error updating AllItem :",
+        error.response ? error.response.data : error.message,
+        error.stack,
+      );
+      throw error;
     }
 
     // 아래는 아르샤 API
@@ -142,7 +154,12 @@ export default class ItemAPI {
         console.log(`Updated ${result.modifiedCount} item stocks.`);
       }
     } catch (error) {
-      console.error("Error updating item stocks:", error);
+      console.error(
+        "ItemAPI.updateItemStocksWithGradesAndImages Error updating item stocks:",
+        error.response ? error.response.data : error.message,
+        error.stack,
+      );
+      throw error;
     }
   };
 }

@@ -2,12 +2,17 @@ import { ChatInputCommandInteraction } from "discord.js";
 import { Command } from "../commands";
 import LoginCommand from "../commands/auth/login";
 import LogoutCommand from "../commands/auth/logout";
+import updateCommand from "../commands/item/update";
 
 export class InteractionHandler {
   private commands: Command[];
 
   constructor() {
-    this.commands = [new LoginCommand(), new LogoutCommand()];
+    this.commands = [
+      new LoginCommand(),
+      new LogoutCommand(),
+      new updateCommand(),
+    ];
   }
 
   getSlashCommands() {
