@@ -141,7 +141,8 @@
     "mainCategory": 1,
     "subCategory": 1,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736015.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97befe" },
@@ -285,7 +286,8 @@
     "mainCategory": 1,
     "subCategory": 2,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736016.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf0e" },
@@ -429,7 +431,8 @@
     "mainCategory": 1,
     "subCategory": 3,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736017.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf1e" },
@@ -573,7 +576,8 @@
     "mainCategory": 1,
     "subCategory": 4,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736018.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf2e" },
@@ -717,7 +721,8 @@
     "mainCategory": 1,
     "subCategory": 5,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736019.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf3e" },
@@ -861,7 +866,8 @@
     "mainCategory": 1,
     "subCategory": 6,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736020.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf4e" },
@@ -1005,7 +1011,8 @@
     "mainCategory": 1,
     "subCategory": 7,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736021.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf5e" },
@@ -1149,7 +1156,8 @@
     "mainCategory": 1,
     "subCategory": 8,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736022.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf6e" },
@@ -1293,7 +1301,8 @@
     "mainCategory": 1,
     "subCategory": 9,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736023.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf7e" },
@@ -1437,7 +1446,8 @@
     "mainCategory": 1,
     "subCategory": 10,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736024.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf8e" },
@@ -1581,7 +1591,8 @@
     "mainCategory": 1,
     "subCategory": 11,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736025.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bf9e" },
@@ -1725,7 +1736,8 @@
     "mainCategory": 1,
     "subCategory": 12,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736026.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bfae" },
@@ -1869,7 +1881,8 @@
     "mainCategory": 1,
     "subCategory": 13,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736027.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bfbe" },
@@ -2013,7 +2026,8 @@
     "mainCategory": 1,
     "subCategory": 14,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736028.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bfce" },
@@ -2157,7 +2171,8 @@
     "mainCategory": 1,
     "subCategory": 15,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736029.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bfde" },
@@ -2301,7 +2316,8 @@
     "mainCategory": 1,
     "subCategory": 16,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736030.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bfee" },
@@ -2445,7 +2461,8 @@
     "mainCategory": 1,
     "subCategory": 17,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736031.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97bffe" },
@@ -2589,7 +2606,8 @@
     "mainCategory": 1,
     "subCategory": 18,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736032.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c00e" },
@@ -2598,7 +2616,8 @@
     "mainCategory": 1,
     "subCategory": 19,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736033.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c00f" },
@@ -2742,7 +2761,8 @@
     "mainCategory": 1,
     "subCategory": 20,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736034.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c01f" },
@@ -2886,7 +2906,8 @@
     "mainCategory": 1,
     "subCategory": 21,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736035.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c02f" },
@@ -3102,7 +3123,8 @@
     "mainCategory": 5,
     "subCategory": 1,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738201.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c047" },
@@ -3183,7 +3205,8 @@
     "mainCategory": 5,
     "subCategory": 2,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738202.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c050" },
@@ -3264,7 +3287,8 @@
     "mainCategory": 5,
     "subCategory": 3,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738203.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c059" },
@@ -3345,7 +3369,8 @@
     "mainCategory": 5,
     "subCategory": 4,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738204.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c062" },
@@ -3426,7 +3451,8 @@
     "mainCategory": 5,
     "subCategory": 5,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738205.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c06b" },
@@ -3507,7 +3533,8 @@
     "mainCategory": 5,
     "subCategory": 6,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738206.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c074" },
@@ -3588,7 +3615,8 @@
     "mainCategory": 5,
     "subCategory": 7,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738207.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c07d" },
@@ -3669,7 +3697,8 @@
     "mainCategory": 5,
     "subCategory": 8,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738208.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c086" },
@@ -3750,7 +3779,8 @@
     "mainCategory": 5,
     "subCategory": 9,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738209.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c08f" },
@@ -3831,7 +3861,8 @@
     "mainCategory": 5,
     "subCategory": 10,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738210.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c098" },
@@ -3912,7 +3943,8 @@
     "mainCategory": 5,
     "subCategory": 11,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738211.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0a1" },
@@ -3993,7 +4025,8 @@
     "mainCategory": 5,
     "subCategory": 12,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738212.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0aa" },
@@ -4074,7 +4107,8 @@
     "mainCategory": 5,
     "subCategory": 13,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738213.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0b3" },
@@ -4155,7 +4189,8 @@
     "mainCategory": 5,
     "subCategory": 14,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738214.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0bc" },
@@ -4236,7 +4271,8 @@
     "mainCategory": 5,
     "subCategory": 15,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738215.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0c5" },
@@ -4317,7 +4353,8 @@
     "mainCategory": 5,
     "subCategory": 16,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738216.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0ce" },
@@ -4335,7 +4372,8 @@
     "mainCategory": 5,
     "subCategory": 17,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738217.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0d0" },
@@ -4416,7 +4454,8 @@
     "mainCategory": 5,
     "subCategory": 18,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738218.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0d9" },
@@ -4497,7 +4536,8 @@
     "mainCategory": 5,
     "subCategory": 19,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/00738219.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0e2" },
@@ -4623,7 +4663,8 @@
     "mainCategory": 10,
     "subCategory": 1,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736115.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0f0" },
@@ -4686,7 +4727,8 @@
     "mainCategory": 10,
     "subCategory": 2,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736116.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0f7" },
@@ -4749,7 +4791,8 @@
     "mainCategory": 10,
     "subCategory": 3,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736117.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c0fe" },
@@ -4812,7 +4855,8 @@
     "mainCategory": 10,
     "subCategory": 4,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736118.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c105" },
@@ -4875,7 +4919,8 @@
     "mainCategory": 10,
     "subCategory": 5,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736119.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c10c" },
@@ -4938,7 +4983,8 @@
     "mainCategory": 10,
     "subCategory": 6,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736120.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c113" },
@@ -5001,7 +5047,8 @@
     "mainCategory": 10,
     "subCategory": 7,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736121.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c11a" },
@@ -5064,7 +5111,8 @@
     "mainCategory": 10,
     "subCategory": 8,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736122.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c121" },
@@ -5127,7 +5175,8 @@
     "mainCategory": 10,
     "subCategory": 9,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736123.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c128" },
@@ -5190,7 +5239,8 @@
     "mainCategory": 10,
     "subCategory": 10,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736124.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c12f" },
@@ -5253,7 +5303,8 @@
     "mainCategory": 10,
     "subCategory": 11,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736125.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c136" },
@@ -5316,7 +5367,8 @@
     "mainCategory": 10,
     "subCategory": 12,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736126.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c13d" },
@@ -5379,7 +5431,8 @@
     "mainCategory": 10,
     "subCategory": 13,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736127.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c144" },
@@ -5442,7 +5495,8 @@
     "mainCategory": 10,
     "subCategory": 14,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736128.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c14b" },
@@ -5505,7 +5559,8 @@
     "mainCategory": 10,
     "subCategory": 15,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736129.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c152" },
@@ -5568,7 +5623,8 @@
     "mainCategory": 10,
     "subCategory": 16,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736131.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c159" },
@@ -5631,7 +5687,8 @@
     "mainCategory": 10,
     "subCategory": 17,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736130.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c160" },
@@ -5694,7 +5751,8 @@
     "mainCategory": 10,
     "subCategory": 19,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736132.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c167" },
@@ -5757,7 +5815,8 @@
     "mainCategory": 10,
     "subCategory": 20,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736133.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c16e" },
@@ -5820,7 +5879,8 @@
     "mainCategory": 10,
     "subCategory": 21,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736134.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c175" },
@@ -5883,7 +5943,8 @@
     "mainCategory": 10,
     "subCategory": 22,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736135.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c17c" },
@@ -5937,7 +5998,8 @@
     "mainCategory": 10,
     "subCategory": 23,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736136.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c182" },
@@ -6000,7 +6062,8 @@
     "mainCategory": 10,
     "subCategory": 24,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736137.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c189" },
@@ -6018,7 +6081,8 @@
     "mainCategory": 10,
     "subCategory": 25,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736138.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c18b" },
@@ -6072,7 +6136,8 @@
     "mainCategory": 10,
     "subCategory": 26,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736139.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c191" },
@@ -6126,7 +6191,8 @@
     "mainCategory": 10,
     "subCategory": 27,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/01_weapon/00736140.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c197" },
@@ -10689,7 +10755,8 @@
     "mainCategory": 20,
     "subCategory": 1,
     "__v": 0,
-    "grade": "epic"
+    "grade": "epic",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/16_ring/00012094_1.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c392" },
@@ -10977,7 +11044,8 @@
     "mainCategory": 20,
     "subCategory": 2,
     "__v": 0,
-    "grade": "epic"
+    "grade": "epic",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/15_necklace/00011653.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c3b2" },
@@ -11481,7 +11549,8 @@
     "mainCategory": 20,
     "subCategory": 3,
     "__v": 0,
-    "grade": "epic"
+    "grade": "epic",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/17_earring/00011882.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c3ea" },
@@ -11841,7 +11910,8 @@
     "mainCategory": 20,
     "subCategory": 4,
     "__v": 0,
-    "grade": "epic"
+    "grade": "epic",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/18_belt/00012276.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c412" },
