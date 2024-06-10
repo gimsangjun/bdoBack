@@ -35,18 +35,47 @@ export default class ItemAPI {
           ? itemDatas
           : [itemDatas];
         for (const itemData of itemDataArray) {
-          const itemStock = await ItemStockModel.findOne({
+          // itemStock이 없을 경우 만들어서 업데이트 해줌.
+          let itemStock = await ItemStockModel.findOne({
             id: itemData.id,
             sid: itemData.sid,
           });
-          itemStock.basePrice = itemData.basePrice;
-          itemStock.currentStock = itemData.currentStock;
-          itemStock.totalTrades = itemData.totalTrades;
-          itemStock.priceMin = itemData.priceMin;
-          itemStock.priceMax = itemData.priceMax;
-          itemStock.lastSoldPrice = itemData.lastSoldPrice;
-          itemStock.lastSoldTime = itemData.lastSoldTime;
-          itemStock.updateAt = new Date();
+
+          if (!itemStock) {
+            // 존재하지 않는 경우 새로운 ItemStock 생성
+            const itemModel = await ItemModel.findOne({ id: itemData.id });
+
+            itemStock = new ItemStockModel({
+              id: itemData.id,
+              sid: itemData.sid,
+              name: itemModel.name,
+              mainCategory: itemData.mainCategory,
+              subCategory: itemData.subCategory,
+              grade: itemModel.grade,
+              imgUrl: itemModel.imgUrl,
+              minEnhance: itemData.minEnhance,
+              maxEnhance: itemData.maxEnhance,
+              basePrice: itemData.basePrice,
+              currentStock: itemData.currentStock,
+              totalTrades: itemData.totalTrades,
+              priceMin: itemData.priceMin,
+              priceMax: itemData.priceMax,
+              lastSoldPrice: itemData.lastSoldPrice,
+              lastSoldTime: itemData.lastSoldTime,
+
+              updateAt: new Date(),
+            });
+          } else {
+            // 기존 ItemStock 업데이트
+            itemStock.basePrice = itemData.basePrice;
+            itemStock.currentStock = itemData.currentStock;
+            itemStock.totalTrades = itemData.totalTrades;
+            itemStock.priceMin = itemData.priceMin;
+            itemStock.priceMax = itemData.priceMax;
+            itemStock.lastSoldPrice = itemData.lastSoldPrice;
+            itemStock.lastSoldTime = itemData.lastSoldTime;
+            itemStock.updateAt = new Date();
+          }
 
           await itemStock.save();
         }
@@ -61,8 +90,7 @@ export default class ItemAPI {
     }
   };
 
-  // TODO: 에러사항인가 거기에 추가. 이런식으로 하면 쉽게 처리할수 있겟구나.
-  // TODO: 이렇게 하면, itemPrice == 0 인경우에만 itemStock 업데이트하면됨.
+  // 이렇게 하면, itemPrice == 0 인경우에만 itemStock 업데이트하면됨.
   // 개발용도 , 새 아이템 추가시 ItemModel 전부 업데이트 + itemModel 전체 업데이트 + itemModel의 데이터를 기본 가격만 없이 itemStockModel에 모두 업데이트
   static updateAllItemModel = async () => {
     // 아르샤 API에서 가져올려고 했는데, 영어로만 리턴와서 임시로 json에 데이터 추가해서 처리.
@@ -89,6 +117,8 @@ export default class ItemAPI {
             sid: 0, // 기본 값 설정
             minEnhance: 0,
             maxEnhance: 0,
+            imgUrl: item.imgUrl,
+            grade: item.grade,
             basePrice: 0,
             currentStock: 0,
             totalTrades: 0,
@@ -131,7 +161,7 @@ export default class ItemAPI {
     // }
   };
 
-  // items에 있는 grade와 imgUrl를 itemsStock에 업데이트
+  //개발용도 :  items에 있는 grade와 imgUrl를 itemsStock에 업데이트
   static updateItemStocksWithGradesAndImages = async () => {
     try {
       const allItems = await ItemModel.find({});
@@ -160,6 +190,52 @@ export default class ItemAPI {
         error.stack,
       );
       throw error;
+    }
+  };
+
+  // 개발용도
+  static test = async () => {
+    try {
+      const itemsToUpdate = [
+        "단검",
+        "타리스만",
+        "장식매듭",
+        "노리개",
+        "각궁",
+        "수리검",
+        "표창",
+        "완갑",
+        "고검",
+        "라곤",
+        "비츠아리",
+        "금계",
+        "크라툼",
+        "마레카",
+        "샤드",
+        "도장",
+        "비녀칼",
+        "중력핵",
+      ];
+
+      const regex = new RegExp(`고드아이드 (${itemsToUpdate.join("|")})`);
+
+      const items = await ItemModel.find({
+        name: { $regex: regex, $options: "i" },
+      });
+
+      for (const item of items) {
+        const paddedId = item.id.toString().padStart(8, "0");
+        const newImgUrl = `https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/08_subweapon/${paddedId}.webp`;
+
+        await ItemModel.updateOne(
+          { _id: item._id },
+          { $set: { imgUrl: newImgUrl } },
+        );
+      }
+
+      console.log("아이템 이미지 URL 업데이트 완료.");
+    } catch (error) {
+      console.error("아이템 이미지 URL 업데이트 중 오류 발생:", error);
     }
   };
 }
