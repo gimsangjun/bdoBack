@@ -21,10 +21,4 @@ router.post("/update", async (req: Request, res: Response) => {
   await updateItemsPrice(req, res);
 });
 
-// 개발용도  : itemModel 전체 업데이트
-// GET : /item/update-all
-// router.get("/update-all", async (req: Request, res: Response) => {
-//   await itemModelUpdateAll(req, res);
-// });
-
 export default router;

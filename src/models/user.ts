@@ -24,6 +24,7 @@ const UserSchema: Schema = new Schema({
   itemFavorites: [{ type: Schema.Types.ObjectId, ref: "ItemFavorite" }],
   itemPriceAlerts: [{ type: Schema.Types.ObjectId, ref: "ItemPriceAlert" }],
   discordChannel: {
+    //TODO: 나중에 자동으로 알림을 보내야하니까 채널id을 알고 있어야됨.
     id: { type: String, required: true },
     name: { type: String, required: true },
   },

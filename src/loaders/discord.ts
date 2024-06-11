@@ -88,6 +88,7 @@ export default class discordAppliaction {
     });
 
     // 테스트 용도
+    // 특정 채널에 message 보내기
     // this.client.on(Events.MessageCreate, async (message: Message) => {
     //   // console.log("Message received:", message);
     //   // 특정 채널에서 메시지를 작성했는지 확인
@@ -97,43 +98,5 @@ export default class discordAppliaction {
     // });
   }
 
-  // async sendPriceAlert(itemName: string, price: number, channelId: string) {
-  //   // 어느 채널에 보낼것인지, 서버(guild)안에 여러채널이 있음(보이스채널, 텍스트채널 등)
-  //   const channel = this.client.channels.cache.get(channelId) as TextChannel;
-  //   if (!channel) {
-  //     console.error("Channel not found:", channelId);
-  //     return;
-  //   }
-
-  //   const message = `🔔 **Price Alert** 🔔\nItem **${itemName}** has reached the target price of **${price}**!`;
-  //   await channel.send(message);
-  // }
-
   // TODO: 하루종일 모니터링 하는건 나중에, 일단 slashcommand를 통해 알림을 받을수 있도록하기
-  // startMonitoring() {
-  //   const checkPrices = async () => {
-  //     try {
-  //       const alerts = await ItemPriceAlertModel.find({});
-  //       for (const alert of alerts) {
-  //         const item = await ItemStockModel.findOne({
-  //           id: alert.itemId,
-  //           sid: alert.itemSid,
-  //         });
-
-  //         if (item && item.basePrice >= alert.priceThreshold) {
-  //           this.sendPriceAlert(
-  //             item.name,
-  //             item.basePrice,
-  //             "742294333348118562", // 채널 ID
-  //           );
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.error("Error checking item prices:", error);
-  //     }
-  //   };
-
-  //   setInterval(checkPrices, 10000); // 60초마다 체크
-  //   console.log("Started monitoring item prices.");
-  // }
 }
