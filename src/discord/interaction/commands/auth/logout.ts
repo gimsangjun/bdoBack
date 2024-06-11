@@ -8,7 +8,7 @@ import DiscordBotService from "../../../../services/discordBotService";
 
 export default class LogoutCommand implements Command {
   name = "logout";
-  description = "Logout 테스트";
+  description = "자동알림 해제를 위한 채널ID등록 삭제";
   slashCommandConfig = new SlashCommandBuilder()
     .setName(this.name)
     .setDescription(this.description);
