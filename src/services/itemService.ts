@@ -99,15 +99,3 @@ export const updateItemsPrice = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to update item prices" });
   }
 };
-
-// 개발용도  : itemModel 전체 업데이트 + itemModel의 데이터를 기본 가격만 없이 itemStockModel에 모두 업데이트
-// GET : /item/update-all
-export const itemModelUpdateAll = async (req: Request, res: Response) => {
-  try {
-    await ItemAPI.updateAllItemModel();
-    return res.status(200).json({ message: "finished" });
-  } catch (error) {
-    console.error("Error itemModelUpdateALl:", error);
-    return res.status(500).json({ message: "Failed to itemModelUpdateALl" });
-  }
-};
