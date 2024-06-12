@@ -1,0 +1,78 @@
+[
+  {
+    "type": "엑세사리",
+    "stages": ["장", "광", "고", "유", "동"],
+    "cronStones": [95, 288, 865, 2405, 11548],
+    "reinforcementStart": [25, 10, 7.5, 2.5, 0.5],
+    "reinforceIncreasedAmountBeforeSoftCap": [2.5, 1, 0.75, 0.25, 0.05],
+    "reinforceIncreasedAmountAfterSoftCap": [0.5, 0.2, 0.15, 0.05],
+    "stackSoftCap": [18, 40, 44, 110, 999999],
+    "recommendStack": [30, 40, 80, 110, 280],
+    "maxReinforcementChange": [90, 90, 90, 90, 90],
+    "itemsPerTry": [
+      { "name": "", "count": 1 },
+      { "name": "", "count": 1 },
+      { "name": "", "count": 1 },
+      { "name": "", "count": 1 },
+      { "name": "", "count": 1 }
+    ],
+    "durabilityLossOnFailure": 0
+  },
+  {
+    "type": "검은별 무기",
+    "stages": ["장", "광", "고", "유", "동"],
+    "cronStones": [0, 0, 100, 591, 3670],
+    "reinforcementStart": [13.08, 10.61, 3.4, 0.51, 0.2],
+    "reinforceIncreasedAmountBeforeSoftCap": [1.308, 1.063, 0.34, 0.051, 0.02],
+    "reinforceIncreasedAmountAfterSoftCap": [1.308, 1.063, 0.34, 0.051, 0.02],
+    "stackSoftCap": [999999, 999999, 999999, 999999, 999999],
+    "recommendStack": [30, 40, 80, 110, 200],
+    "maxReinforcementChange": [90, 90, 90, 90, 90],
+    "itemsPerTry": [
+      { "name": "무결한 마력의 블랙스톤", "count": 1 },
+      { "name": "무결한 마력의 블랙스톤", "count": 1 },
+      { "name": "무결한 마력의 블랙스톤", "count": 1 },
+      { "name": "무결한 마력의 블랙스톤", "count": 1 },
+      { "name": "무결한 마력의 블랙스톤", "count": 1 }
+    ],
+    "durabilityLossOnFailure": 20
+  },
+  {
+    "type": "고드아이드",
+    "stages": ["장", "광", "고", "유", "동"],
+    "cronStones": [0, 0, 620, 980, 1820],
+    "reinforcementStart": [0.9, 0.5, 0.38, 0.25, 0.155],
+    "reinforceIncreasedAmountBeforeSoftCap": [0.09, 0.05, 0.35, 0.025, 0.015],
+    "reinforceIncreasedAmountAfterSoftCap": [0.09, 0.05, 0.35, 0.025, 0.015],
+    "stackSoftCap": [999999, 999999, 999999, 999999, 999999],
+    "recommendStack": [100, 160, 200, 200, 200],
+    "maxReinforcementChange": [90, 90, 90, 90, 90],
+    "itemsPerTry": [
+      { "name": "사르는 태양의 원석", "count": 1 },
+      { "name": "사르는 태양의 원석", "count": 1 },
+      { "name": "사르는 태양의 원석", "count": 1 },
+      { "name": "사르는 태양의 원석", "count": 1 },
+      { "name": "사르는 태양의 원석", "count": 1 }
+    ],
+    "durabilityLossOnFailure": 10
+  },
+  {
+    "type": "테고 방어구",
+    "stages": ["장", "광", "고", "유", "동"],
+    "cronStones": [0, 1500, 2100, 2700, 4000],
+    "reinforcementStart": [2, 1, 0.5, 0.2, 0],
+    "reinforceIncreasedAmountBeforeSoftCap": [0.2, 0.1, 0.05, 0.002, 0.0003],
+    "reinforceIncreasedAmountAfterSoftCap": [0.2, 0.1, 0.05, 0.002, 0.0003],
+    "stackSoftCap": [999999, 999999, 999999, 999999, 999999],
+    "recommendStack": [100, 160, 200, 200, 200],
+    "maxReinforcementChange": [90, 90, 90, 90, 90],
+    "itemsPerTry": [
+      { "name": "무결한 혼돈의 블랙스톤", "count": 1 },
+      { "name": "무결한 혼돈의 블랙스톤", "count": 1 },
+      { "name": "무결한 혼돈의 블랙스톤", "count": 1 },
+      { "name": "무결한 혼돈의 블랙스톤", "count": 1 },
+      { "name": "무결한 혼돈의 블랙스톤", "count": 1 }
+    ],
+    "durabilityLossOnFailure": 30
+  }
+]

@@ -6381,7 +6381,8 @@
     "mainCategory": 15,
     "subCategory": 1,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/13_hel/00719897.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c1ac" },
@@ -6534,7 +6535,8 @@
     "mainCategory": 15,
     "subCategory": 2,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/09_upperbody/00719898.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c1bd" },
@@ -6687,7 +6689,8 @@
     "mainCategory": 15,
     "subCategory": 3,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/11_hand/00719899.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c1ce" },
@@ -6705,7 +6708,8 @@
     "mainCategory": 15,
     "subCategory": 3,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/11_hand/00719955.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c1d0" },
@@ -6849,7 +6853,8 @@
     "mainCategory": 15,
     "subCategory": 4,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/12_foot/00719900.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c1e0" },
@@ -6867,7 +6872,8 @@
     "mainCategory": 15,
     "subCategory": 4,
     "__v": 0,
-    "grade": "legendary"
+    "grade": "legendary",
+    "imgUrl": "https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/12_foot/00719956.webp"
   },
   {
     "_id": { "$oid": "664d464e4417f97dad97c1e2" },
