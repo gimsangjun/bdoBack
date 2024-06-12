@@ -9,6 +9,7 @@ export interface IItem extends Document {
   subCategory: number;
   grade: string;
   imgUrl: string;
+  type: string;
 }
 
 const ItemSchema: Schema = new Schema({
@@ -24,6 +25,7 @@ const ItemSchema: Schema = new Schema({
     default: "common",
     enum: ["common", "uncommon", "rare", "epic", "legendary"],
   },
+  type: { type: String, default: "" },
 });
 
 const ItemModel = mongoose.model<IItem>("Item", ItemSchema);

@@ -5,6 +5,7 @@ import ItemRouter from "../api/routes/item";
 import ItemFavorityRouter from "../api/routes/itemFavorite";
 import ItemPriceAlertRouter from "../api/routes/itemPriceAlert";
 import UserRouter from "../api/routes/user";
+import ReinforcementRouter from "../api/routes/reinforcementRouter";
 
 export default ({ app }: { app: express.Application }) => {
   app.use(
@@ -31,4 +32,5 @@ export default ({ app }: { app: express.Application }) => {
   app.use("/item/favorite", ItemFavorityRouter);
   app.use("/item/alert", ItemPriceAlertRouter);
   app.use("/item", ItemRouter);
+  app.use("/reinforce", ReinforcementRouter);
 };

@@ -44,13 +44,19 @@ export default class ItemAPI {
           if (!itemStock) {
             // 존재하지 않는 경우 새로운 ItemStock 생성
             const itemModel = await ItemModel.findOne({ id: itemData.id });
+            console.log(
+              "새로운 ItemStock업데이트 ",
+              itemModel.id,
+              itemModel,
+              name,
+            );
 
             itemStock = new ItemStockModel({
               id: itemData.id,
               sid: itemData.sid,
               name: itemModel.name,
-              mainCategory: itemData.mainCategory,
-              subCategory: itemData.subCategory,
+              mainCategory: itemModel.mainCategory,
+              subCategory: itemModel.subCategory,
               grade: itemModel.grade,
               imgUrl: itemModel.imgUrl,
               minEnhance: itemData.minEnhance,
@@ -67,6 +73,8 @@ export default class ItemAPI {
             });
           } else {
             // 기존 ItemStock 업데이트
+            // itemStock.mainCategory = itemData.mainCategory;
+            // itemStock.subCategory = itemData.subCategory;
             itemStock.basePrice = itemData.basePrice;
             itemStock.currentStock = itemData.currentStock;
             itemStock.totalTrades = itemData.totalTrades;
@@ -109,7 +117,7 @@ export default class ItemAPI {
       // ItemModel의 모든 데이터를 ItemStockModel에 삽입
       for (const item of items) {
         // ItemStockModel에서 동일한 이름의 아이템 검색
-        const existingItem = await ItemStockModel.findOne({ name: item.name });
+        const existingItem = await ItemStockModel.findOne({ id: item.id });
         if (!existingItem) {
           // 존재하지 않는 경우 새로 삽입
           const newItem = new ItemStockModel({
@@ -119,6 +127,8 @@ export default class ItemAPI {
             maxEnhance: 0,
             imgUrl: item.imgUrl,
             grade: item.grade,
+            mainCategory: item.mainCategory,
+            subCategory: item.subCategory,
             basePrice: 0,
             currentStock: 0,
             totalTrades: 0,
@@ -162,19 +172,19 @@ export default class ItemAPI {
   };
 
   //개발용도 :  items에 있는 grade와 imgUrl를 itemsStock에 업데이트
-  static updateItemStocksWithGradesAndImages = async () => {
+  static updateItemStocksWithGradesAndImagesAndType = async () => {
     try {
       const allItems = await ItemModel.find({});
 
       let bulkOps = [];
 
       for (const item of allItems) {
-        const { name, grade, imgUrl } = item;
+        const { id, grade, imgUrl, type } = item;
 
         bulkOps.push({
           updateMany: {
-            filter: { name: name },
-            update: { $set: { grade: grade, imgUrl: imgUrl } },
+            filter: { id },
+            update: { $set: { grade: grade, imgUrl: imgUrl, type: type } },
           },
         });
       }

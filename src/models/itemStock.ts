@@ -19,6 +19,7 @@ export interface IItemStock extends Document {
   lastSoldTime: number;
   updateAt: Date;
   grade: string;
+  type: string;
 }
 
 const ItemStockSchema: Schema = new Schema({
@@ -45,6 +46,7 @@ const ItemStockSchema: Schema = new Schema({
     default: "common",
     enum: ["common", "uncommon", "rare", "epic", "legendary"],
   },
+  type: { type: String, default: "" },
 });
 
 // id와 sid를 결합한 복합 인덱스 생성
