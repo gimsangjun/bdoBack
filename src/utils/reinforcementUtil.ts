@@ -10,6 +10,9 @@ export default class ReinforcementUtil {
       const jsonData = await fs.readFileSync(dataPath, "utf-8");
       const reinforcements = JSON.parse(jsonData);
 
+      // 기존에 있던 데이터 삭제
+      await ReinforcementModel.deleteMany({});
+
       for (const reinforcement of reinforcements) {
         const reinforcementDoc = new ReinforcementModel(reinforcement);
         await reinforcementDoc.save();

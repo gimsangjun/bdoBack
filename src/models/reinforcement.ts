@@ -12,6 +12,7 @@ export interface IReinforcement extends Document {
   maxReinforcementChange: number[];
   itemsPerTry: any[];
   durabilityLossOnFailure: number;
+  downgradeProbability: number;
 }
 
 const ItemSchema = new Schema({
@@ -33,11 +34,11 @@ const ReinforcementSchema: Schema = new Schema({
   // Ex  { name: "무결한 마력의 블랙스톤", count: 1 }, 등등.
   itemsPerTry: [{ type: ItemSchema, required: true }],
   durabilityLossOnFailure: { type: Number, required: true }, // 강화 실패 시 내구도 소모량
+  downgradeProbability: { type: Number, required: true }, // 강화 실패시 강화 등급 내려갈 확률
 });
 
 const ReinforcementModel = mongoose.model<IReinforcement>(
   "Reinforcement",
   ReinforcementSchema,
 );
-
 export default ReinforcementModel;

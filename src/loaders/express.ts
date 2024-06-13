@@ -32,5 +32,5 @@ export default ({ app }: { app: express.Application }) => {
   app.use("/item/favorite", ItemFavorityRouter);
   app.use("/item/alert", ItemPriceAlertRouter);
   app.use("/item", ItemRouter);
-  app.use("/reinforce", ReinforcementRouter);
+  app.use("/reinforcement", ReinforcementRouter);
 };

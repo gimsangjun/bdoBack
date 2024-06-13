@@ -1,6 +1,6 @@
 [
   {
-    "type": "엑세사리",
+    "type": "악세사리",
     "stages": ["장", "광", "고", "유", "동"],
     "cronStones": [95, 288, 865, 2405, 11548],
     "reinforcementStart": [25, 10, 7.5, 2.5, 0.5],
@@ -16,7 +16,8 @@
       { "name": "", "count": 1 },
       { "name": "", "count": 1 }
     ],
-    "durabilityLossOnFailure": 0
+    "durabilityLossOnFailure": 0,
+    "downgradeProbability": 40
   },
   {
     "type": "검은별 무기",
@@ -35,7 +36,8 @@
       { "name": "무결한 마력의 블랙스톤", "count": 1 },
       { "name": "무결한 마력의 블랙스톤", "count": 1 }
     ],
-    "durabilityLossOnFailure": 20
+    "durabilityLossOnFailure": 20,
+    "downgradeProbability": 0
   },
   {
     "type": "고드아이드",
@@ -54,17 +56,18 @@
       { "name": "사르는 태양의 원석", "count": 1 },
       { "name": "사르는 태양의 원석", "count": 1 }
     ],
-    "durabilityLossOnFailure": 10
+    "durabilityLossOnFailure": 10,
+    "downgradeProbability": 0
   },
   {
-    "type": "테고 방어구",
+    "type": "태고 방어구",
     "stages": ["장", "광", "고", "유", "동"],
     "cronStones": [0, 1500, 2100, 2700, 4000],
     "reinforcementStart": [2, 1, 0.5, 0.2, 0],
-    "reinforceIncreasedAmountBeforeSoftCap": [0.2, 0.1, 0.05, 0.002, 0.0003],
-    "reinforceIncreasedAmountAfterSoftCap": [0.2, 0.1, 0.05, 0.002, 0.0003],
+    "reinforceIncreasedAmountBeforeSoftCap": [0.2, 0.1, 0.05, 0.02, 0.0003],
+    "reinforceIncreasedAmountAfterSoftCap": [0.2, 0.1, 0.05, 0.02, 0.0003],
     "stackSoftCap": [999999, 999999, 999999, 999999, 999999],
-    "recommendStack": [100, 160, 200, 200, 200],
+    "recommendStack": [60, 120, 167, 222, 300],
     "maxReinforcementChange": [90, 90, 90, 90, 90],
     "itemsPerTry": [
       { "name": "무결한 혼돈의 블랙스톤", "count": 1 },
@@ -73,6 +76,7 @@
       { "name": "무결한 혼돈의 블랙스톤", "count": 1 },
       { "name": "무결한 혼돈의 블랙스톤", "count": 1 }
     ],
-    "durabilityLossOnFailure": 30
+    "durabilityLossOnFailure": 30,
+    "downgradeProbability": 0
   }
 ]
