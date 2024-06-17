@@ -8,7 +8,7 @@
 
 ---
 
-- 디스코드 로그인
+- GET /auth/discord : 디스코드 로그인
 - GET /auth/logout
 - GET /auth/profile
   - 사용자가 가지고 있는 쿠키값으로 로그인 판별
@@ -26,7 +26,7 @@
 
 - POST /item body: {query : {mainCategory, subCateogory, name, id, sid}, page} 아이템 검색
 
-  ```json
+  ```javascript
   // Request
   body: { query: { mainCategory: 1, subCategory: 0 }, page: 1 }
 
@@ -65,8 +65,8 @@
 
   ```
 
-- POST /item/update body:[{item}], 아이템 가격 업데이트
-  ```json
+- POST /item/update body:[items: [{item}]], 아이템 가격 업데이트
+  ```javascript
   Request Body: {
     items: [
       {
@@ -95,8 +95,8 @@
     ]
   }
   ```
-- POST: /item/id-and-sid, body: {id : [], sid : []}, 특정 아이템만 가져오기(sid는 아이템의 강화 등급)
-  ```json
+- POST: /item/id-and-sid, body: items: [{id, sid}], 특정 아이템만 가져오기(sid는 아이템의 강화 등급)
+  ```javascript
   Request Body: {
     items: [
       { id: 12094, sid: 0 },  { id: 11653, sid: 0 },
@@ -129,7 +129,7 @@
 
 - GET /item/alert
 - POST /item/alert body: {itemName, itemId, itemSid, priceThreshold}
-  ```json
+   ```javascript
   Request Body: {
     itemName: '엘쉬 장검',
     itemId: 10003,
@@ -138,7 +138,7 @@
   }
   ```
 - PUT /item/alert body = {alertId, priceThreshold}
-  ```json
+    ```javascript
   Request Body: { alertId: '6666e6c39d7605b11371f523', priceThreshold: '81500000' }
   ```
 - DELETE /item/alert body = {alertId}
@@ -149,7 +149,7 @@
 
 - POST: /reinforcement, body: {type : 아이템 타입}
 
-  ```json
+  ```javascript
   Request Body: { type: '악세사리' }
 
   // Response
