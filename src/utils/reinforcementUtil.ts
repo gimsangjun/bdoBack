@@ -4,6 +4,7 @@ import ReinforcementModel from "../models/reinforcement";
 import mongoose from "mongoose";
 
 export default class ReinforcementUtil {
+  // 강화 기본 데이터 추가 . json에 적어놓음.
   static async addInitData() {
     try {
       const dataPath = path.join(__dirname, "../models/reinforcementData.json");
