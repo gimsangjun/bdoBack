@@ -33,6 +33,19 @@ export const addItemPriceAlert = async (req: Request, res: Response) => {
       throw new Error("사용자를 찾을 수 없습니다.");
     }
 
+    // 한명의 유저가 같은 itemId, itemSid를 가진 priceAlert를 가질 수 없음.
+    const existingAlert = await ItemPriceAlertModel.findOne({
+      username,
+      itemId,
+      itemSid,
+    });
+
+    if (existingAlert) {
+      return res
+        .status(400)
+        .json({ message: "이미 존재하는 가격 알림입니다." });
+    }
+
     const newItemPriceAlert = new ItemPriceAlertModel({
       username,
       itemName,
