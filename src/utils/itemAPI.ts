@@ -48,7 +48,7 @@ export default class ItemAPI {
               "새로운 ItemStock업데이트 ",
               itemModel.id,
               itemModel,
-              name,
+              itemModel.name,
             );
 
             itemStock = new ItemStockModel({
@@ -171,7 +171,7 @@ export default class ItemAPI {
     // }
   };
 
-  //개발용도 :  items에 있는 grade와 imgUrl를 itemsStock에 업데이트
+  //개발용도 :  items에 있는 grade와 imgUrl,type를 itemsStock에 업데이트
   static updateItemStocksWithGradesAndImagesAndType = async () => {
     try {
       const allItems = await ItemModel.find({});
