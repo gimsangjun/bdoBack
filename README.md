@@ -1,30 +1,27 @@
 # 검은사막 거래소 알림 및 강화 기댓값 계산기 만들기 - BackEnd
 
-- [검은사막 거래소 알림 및 강화 기댓값 계산기 만들기 - FrontEnd](https://github.com/gimsangjun/bdoFront)
+[**검은사막 거래소 알림 및 강화 기댓값 계산기 만들기 - FrontEnd**](https://github.com/gimsangjun/bdoFront)
 
 ## API 문서
 
-### 로그인 - /auth
+### 로그인 - `/auth`
 
----
-
-- GET /auth/discord : 디스코드 로그인
-- GET /auth/logout
-- GET /auth/profile
+- **GET** `/auth/discord` : 디스코드 로그인
+- **GET** `/auth/logout`
+- **GET** `/auth/profile`
   - 사용자가 가지고 있는 쿠키값으로 로그인 판별
-  ```json
+  ```javascript
+  // Response
   {
     "id": "394392090085294093",
     "avatarUrl": "https://cdn.discordapp.com/avatars/394392090085294093/ace4d6e08b3579e5dc0bee581a39f4b1.png",
     "username": "kimsangjun"
   }
-  ```
 
-### 아이템 - /item
 
----
+### 아이템 - `/item`
 
-- POST /item body: {query : {mainCategory, subCateogory, name, id, sid}, page} 아이템 검색
+- **POST** `/item` body: {query : {mainCategory, subCateogory, name, id, sid}, page} 아이템 검색
 
   ```javascript
   // Request
@@ -65,7 +62,7 @@
 
   ```
 
-- POST /item/update body:[items: [{item}]], 아이템 가격 업데이트
+- **POST** `/item/update` body:[items: [{item}]], 아이템 가격 업데이트
   ```javascript
   Request Body: {
     items: [
@@ -95,7 +92,7 @@
     ]
   }
   ```
-- POST: /item/id-and-sid, body: items: [{id, sid}], 특정 아이템만 가져오기(sid는 아이템의 강화 등급)
+- **POST**: `/item/id-and-sid`, body: items: [{id, sid}], 특정 아이템만 가져오기(sid는 아이템의 강화 등급)
   ```javascript
   Request Body: {
     items: [
@@ -115,20 +112,20 @@
   }
   ```
 
-### 아이템 즐겨찾기 - /item/favorite
+### **아이템 즐겨찾기** - `/item/favorite`
 
 ---
 
-- GET /item/favorite : 가져오기
-- POST /item/favorite body: {id, sid} : 즐겨 찾기 추가
-- DELETE /item/favorite?id&sid : 즐겨 찾기 삭제
+- **GET** /item/favorite : 가져오기
+- **POST** /item/favorite body: {id, sid} : 즐겨 찾기 추가
+- **DELETE** /item/favorite?id&sid : 즐겨 찾기 삭제
 
-### 아이템 알림등록 - /item/alert
+### **아이템 알림등록** - `/item/alert`
 
 ---
 
-- GET /item/alert
-- POST /item/alert body: {itemName, itemId, itemSid, priceThreshold}
+- **GET** /item/alert
+- **POST** /item/alert body: {itemName, itemId, itemSid, priceThreshold}
    ```javascript
   Request Body: {
     itemName: '엘쉬 장검',
@@ -137,17 +134,17 @@
     priceThreshold: 2560000
   }
   ```
-- PUT /item/alert body = {alertId, priceThreshold}
+- **PUT** /item/alert body = {alertId, priceThreshold}
     ```javascript
   Request Body: { alertId: '6666e6c39d7605b11371f523', priceThreshold: '81500000' }
   ```
-- DELETE /item/alert body = {alertId}
+- **DELETE** /item/alert body = {alertId}
 
-### 강화 정보 가져오기 - /reinforcement
+### **강화 정보 가져오기** - `/reinforcement`
 
 ---
 
-- POST: /reinforcement, body: {type : 아이템 타입}
+- **POST**: /reinforcement, body: {type : 아이템 타입}
 
   ```javascript
   Request Body: { type: '악세사리' }
@@ -225,10 +222,7 @@
   }
   ```
 
-#### 활용한 API : [BDO Market API](https://documenter.getpostman.com/view/4028519/2s9Y5YRhp4#intro)
+#### 활용한 API 
+🔗[BDO Market API](https://documenter.getpostman.com/view/4028519/2s9Y5YRhp4#intro)
 
-#### 디자인 참고
 
-- [OP.GG](https://www.op.gg/)
-- [가모스 닷컴: https://garmoth.com/](https://garmoth.com/)
-- [bdolytics](https://bdolytics.com/ko/KR)
