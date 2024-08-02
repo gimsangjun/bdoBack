@@ -1,18 +1,19 @@
 {
-  "ts-node": { "files": true }, // 개발 중 TypeScript 파일을 별도의 컴파일 과정 없이 바로 실행
-  "compilerOptions": {
-    "experimentalDecorators": true, // Enable experimental support for TypeScript decorators
-    "skipLibCheck": true, // Skip type checking of declaration files (*.d.ts)
-    "target": "es6", // Specify the ECMAScript target version (ES6 in this case)
-    "module": "commonjs", // Specify the module system for generated code (CommonJS for Node.js)
-    "moduleResolution": "node", // Specify how module resolution should be done (Node.js-style resolution)
-    "allowJs": true, // Allow JavaScript files to be included in the TypeScript project
-    "resolveJsonModule": true, // Enable importing JSON modules directly in TypeScript files
-    "esModuleInterop": true, // Allow using CommonJS-style imports in ES6 modules
-    "typeRoots": ["./node_modules/@types", "./src/types"], // 타입선언파일 두개에서 가져와
-    "outDir": "./build", // Specify the output directory for compiled JavaScript files
-    "rootDir": "src" // Specify the root directory of TypeScript source files
+  "ts-node": {
+    "files": true // ts-node를 사용하여 개발 중 TypeScript 파일을 별도의 컴파일 과정 없이 바로 실행하도록 설정
   },
-  "include": ["src/**/*"], // Specify the files or patterns to include in the compilation
-  "exclude": ["node_modules"] // Specify the files or patterns to exclude from the compilation
+  "compilerOptions": {
+    "target": "es6", // 컴파일된 JavaScript 파일이 ECMAScript 6 표준을 따름
+    "module": "commonjs", // 모듈 시스템으로 CommonJS를 사용
+    "strict": true, // 모든 엄격한 타입 검사 옵션을 활성화
+    "esModuleInterop": true, // CommonJS와 ES 모듈 간의 호환성을 허용
+    "forceConsistentCasingInFileNames": true, // 파일 이름의 대소문자 일관성을 강제
+    "moduleResolution": "node", // Node.js 방식의 모듈 해결 방식을 사용
+    "outDir": "dist", // 컴파일된 파일이 저장될 디렉토리
+    "sourceMap": true, // 소스 맵 파일을 생성하여 디버깅을 지원
+    "rootDir": "src", // 소스 파일의 루트 디렉토리
+    "typeRoots": ["./node_modules/@types", "./src/types"] // 타입 선언 파일을 찾을 디렉토리들
+  },
+  "include": ["src/**/*"], // 포함할 파일 및 디렉토리 패턴
+  "exclude": ["node_modules"] // 제외할 파일 및 디렉토리
 }
