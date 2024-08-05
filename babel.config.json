@@ -1,0 +1,18 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env", // 최신 JavaScript 기능을 구형 브라우저와 환경에서 사용할 수 있도록 트랜스파일링.
+      {
+        "targets": {
+          "edge": "17",
+          "firefox": "60",
+          "chrome": "67",
+          "safari": "11.1"
+        },
+        "useBuiltIns": "usage",
+        "corejs": "3.6.5"
+      }
+    ],
+    "@babel/preset-typescript" // TypeScript를 Babel을 통해 트랜스파일링.
+  ]
+}
