@@ -1,4 +1,3 @@
-import { Command } from "./../discord/interaction/commands/index";
 import { InteractionHandler } from "../discord/interaction/handler/index";
 import {
   Client,
@@ -7,17 +6,13 @@ import {
   REST as DiscordRestClient,
   Routes,
   ChatInputCommandInteraction,
-  Message,
-  TextChannel,
 } from "discord.js";
 import config from "../config";
-import ItemPriceAlertModel from "../models/itemPriceAlert";
-import ItemStockModel from "../models/itemStock";
 
 // export default loader로 내보내기 해야하니까 모듈화?라고해야하나..
 export default class discordAppliaction {
-  private client: Client; // 디스코드봇
-  private discordRestClient: DiscordRestClient; // 디스코드한테 command 등록할때
+  private client: Client; // Discord.js 라이브러리의 핵심 클래스이며, 디스코드 봇과 디스코드 API 사이의 상호작용을 관리
+  private discordRestClient: DiscordRestClient; // 디스코드의 REST API와 상호작용하기 위해 사용
   private interactionHandler: InteractionHandler;
 
   constructor() {
@@ -31,15 +26,14 @@ export default class discordAppliaction {
         GatewayIntentBits.DirectMessages,
       ],
     });
+    this.discordRestClient = new DiscordRestClient();
+    this.interactionHandler = new InteractionHandler();
   }
   async start() {
     try {
       // client는 discord bot인듯
       await this.client.login(config.DISCORD_BOT_TOKEN);
-      this.discordRestClient = new DiscordRestClient().setToken(
-        config.DISCORD_BOT_TOKEN,
-      );
-      this.interactionHandler = new InteractionHandler();
+      this.discordRestClient.setToken(config.DISCORD_BOT_TOKEN);
       this.addClientEventHandlers();
       await this.registerSlashCommands();
 

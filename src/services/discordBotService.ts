@@ -6,25 +6,28 @@ import ItemStockModel from "../models/itemStock";
 
 export default class DiscordBotService {
   static async login(interaction: Interaction) {
-    const {
-      guild: { systemChannelId: channelId, name: guildName },
-      user: { id: userId },
-    } = interaction;
+    const { guild, user } = interaction;
 
-    // userId가 같은 user가 있는지 확인
-    try {
-      // userId가 같은 user가 있는지 확인
-      const user = await UserModel.findOne({ id: userId });
-      if (user) {
-        // 유저 DB에 discordChannel에 (channelId, guildName)를 추가
-        user.discordChannel = { id: channelId, name: guildName };
-        await user.save();
-        console.log("Discord channel added to user:", user);
-      } else {
-        console.log("User not found:", userId);
+    if (guild) {
+      const { systemChannelId: channelId, name: guildName } = guild;
+      const { id: userId } = user;
+
+      try {
+        // userId가 같은 user가 있는지 확인
+        const existingUser = await UserModel.findOne({ id: userId });
+        if (existingUser) {
+          // 유저 DB에 discordChannel에 (channelId, guildName)를 추가
+          existingUser.discordChannel = { id: channelId, name: guildName };
+          await existingUser.save();
+          console.log("Discord channel added to user:", existingUser);
+        } else {
+          console.log("User not found:", userId);
+        }
+      } catch (error) {
+        console.error("Error adding discord channel to user:", error);
       }
-    } catch (error) {
-      console.error("Error adding discord channel to user:", error);
+    } else {
+      console.error("Interaction does not have a guild");
     }
   }
 

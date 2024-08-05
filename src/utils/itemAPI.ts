@@ -44,6 +44,14 @@ export default class ItemAPI {
           if (!itemStock) {
             // 존재하지 않는 경우 새로운 ItemStock 생성
             const itemModel = await ItemModel.findOne({ id: itemData.id });
+
+            if (!itemModel) {
+              console.error(
+                `ItemModel not found for name:${itemData.name} id${itemData.id}`,
+              );
+              continue; // itemModel이 없을 경우 해당 아이템을 건너뜀
+            }
+
             console.log(
               "새로운 ItemStock업데이트 ",
               itemModel.id,
@@ -89,11 +97,22 @@ export default class ItemAPI {
         }
       }
     } catch (error) {
-      console.error(
-        "ItemAPI.updateItemStock - Error updating item info:",
-        error.response ? error.response.data : error.message,
-        error.stack,
-      );
+      // TODO: 이런식으로 계쏙 중복으로 처리하는게 맞나?
+      if (axios.isAxiosError(error)) {
+        // Axios 에러인 경우
+        console.error(
+          "ItemAPI.updateItemStock - Axios error:",
+          error.response ? error.response.data : error.message,
+          error.stack,
+        );
+      } else {
+        // 그 외의 에러
+        console.error(
+          "ItemAPI.updateItemStock - Error updating item info:",
+          (error as Error).message,
+          (error as Error).stack,
+        );
+      }
       throw error;
     }
   };
@@ -143,11 +162,21 @@ export default class ItemAPI {
       }
       console.log("Item models have been successfully updated from JSON file.");
     } catch (error) {
-      console.error(
-        "ItemAPI.updateAllItemModel - Error updating AllItem :",
-        error.response ? error.response.data : error.message,
-        error.stack,
-      );
+      if (axios.isAxiosError(error)) {
+        // Axios 에러인 경우
+        console.error(
+          "ItemAPI.updateAllItemModel - Axios error:",
+          error.response ? error.response.data : error.message,
+          error.stack,
+        );
+      } else {
+        // 그 외의 에러
+        console.error(
+          "ItemAPI.updateAllItemModel - Error updating AllItem info:",
+          (error as Error).message,
+          (error as Error).stack,
+        );
+      }
       throw error;
     }
 
@@ -194,11 +223,21 @@ export default class ItemAPI {
         console.log(`Updated ${result.modifiedCount} item stocks.`);
       }
     } catch (error) {
-      console.error(
-        "ItemAPI.updateItemStocksWithGradesAndImages Error updating item stocks:",
-        error.response ? error.response.data : error.message,
-        error.stack,
-      );
+      if (axios.isAxiosError(error)) {
+        // Axios 에러인 경우
+        console.error(
+          "ItemAPI.updateItemStocksWithGradesAndImages - Axios error:",
+          error.response ? error.response.data : error.message,
+          error.stack,
+        );
+      } else {
+        // 그 외의 에러
+        console.error(
+          "ItemAPI.updateItemStocksWithGradesAndImages - Error updating item stocks:",
+          (error as Error).message,
+          (error as Error).stack,
+        );
+      }
       throw error;
     }
   };

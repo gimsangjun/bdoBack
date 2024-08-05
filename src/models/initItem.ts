@@ -1,4 +1,4 @@
-import jsonData from "./allItems.json";
+import jsonData from "./itemsData.json";
 import ItemModel, { IItem } from "./item";
 
 export async function initializeItems() {

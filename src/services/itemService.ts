@@ -83,7 +83,7 @@ export const updateItemsPrice = async (req: Request, res: Response) => {
     await ItemAPI.updateItemStock(items);
 
     // 업데이트된 아이템 정보를 다시 가져옴
-    const uniqueItemIdentifiers = items.map((item) => ({
+    const uniqueItemIdentifiers = items.map((item: any) => ({
       id: item.id,
       sid: item.sid,
     }));
