@@ -6,6 +6,7 @@ import connectMongoDBSession from "connect-mongodb-session-quickfix";
 
 export default (app: Application) => {
   const dbURL = config.databaseURL;
+  const sessionKey = config.sessionKey;
 
   const MongoDBStore = connectMongoDBSession(session);
   const mongoDBstore = new MongoDBStore(
@@ -29,7 +30,7 @@ export default (app: Application) => {
     session({
       name: "sessionID", //쿠키의 세션ID 담을 이름 (connect.sid가 디폴트), 자동으로 담김.
       store: mongoDBstore, // 세션 저장소. 메모리가 디폴트.
-      secret: "some-secret-example", // 쿠키 암호화 키
+      secret: sessionKey, // 쿠키 암호화 키
       resave: false, // // 매 request 마다 세션을 계속 다시 저장하는 것
       saveUninitialized: false, // 세션에 데이터가 추가되기 전까지는 세션 저장소에 저장하지 않음, 즉 로그인 안한 사용자도 세션 저장소에 저장됨.
       // 쿠키 기본값 { path: '/', httpOnly: true, secure: false, maxAge: null }.
