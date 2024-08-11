@@ -12,7 +12,7 @@ async function startServer() {
   await loader.default({ expressApp: app });
 
   const currentEnvironment = process.env.NODE_ENV;
-  const HOST = currentEnvironment === "production" ? "0.0.0.0" : "localhost";
+  const HOST = currentEnvironment === "production" ? "0.0.0.0" : "127.0.0.1";
 
   Logger.info(`Current NODE_ENV: ${currentEnvironment || "not set"}`); // NODE_ENV가 설정되지 않은 경우 "not set"을 출력
   Logger.info(`App will listen on ${HOST}`);
