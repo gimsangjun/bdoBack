@@ -9,12 +9,16 @@ import ItemAPI from "../utils/itemAPI";
  * 링크 - https://whimsical-dugout-2c6.notion.site/2f994ca60008460284f8f7272b82bb50
  *
  */
-// POST: /item, body: {query: "여러가지 쿼리들", page: }
+// POST: /item, body: {query: {mainCategory, subCategory, name, id, sid}, page: }
 export const getItemsByQuery = async (req: Request, res: Response) => {
+  // req.body에서 필요한 데이터 구조를 안전하게 추출
   const {
-    query: { mainCategory, subCategory, name, id, sid },
-    page,
+    query = {}, // query가 없는 경우 기본값을 빈 객체로 설정
+    page = 1, // page가 제공되지 않은 경우 기본값을 1로 설정
   } = req.body;
+
+  // query 객체에서 필요한 값들을 추출
+  const { mainCategory, subCategory, name, id, sid } = query;
 
   const itemsPerPage = 30;
   const skip = (page - 1) * itemsPerPage; // 건너뛸 아이템 수
