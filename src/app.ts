@@ -15,11 +15,11 @@ async function startServer() {
   const HOST = currentEnvironment === "production" ? "0.0.0.0" : "127.0.0.1";
 
   Logger.info("Current Environment Configuration:");
-  Logger.info(`NODE_ENV: ${currentEnvironment || "not set"}`);
+  Logger.info(`NODE_ENV: ${currentEnvironment}`);
   Logger.info(`PORT: ${config.port}`);
   Logger.info(`Database URL: ${config.databaseURL}`);
   Logger.info(`Session Key: ${config.sessionKey}`);
-  Logger.info(`CORS Allowed URL: ${config.CorsURL}`);
+  Logger.info(`Front End URL: ${config.FrontEndURL}`);
   Logger.info(`BDO Market URL: ${config.BdoMarketURL}`);
   Logger.info(`Discord App ID: ${config.DISCORD_APPLICATION_ID}`);
   Logger.info(`Discord Redirect URL: ${config.DISCORD_REDIRECT_URL}`);

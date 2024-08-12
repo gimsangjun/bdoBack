@@ -1,3 +1,4 @@
+import config from "../../config";
 import { Request, Response, NextFunction } from "express";
 
 // 세션이 있는지 확인하는 미들웨어
@@ -9,21 +10,25 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
 
     if (!sessionID) {
       // 세션 ID가 없는 경우, 로그인이 필요함을 알림
-      return res.status(401).json({ message: "세션ID가 존재하지 않습니다. 로그인이 필요합니다." });
+      return res
+        .status(401)
+        .json({ message: "세션ID가 존재하지 않습니다. 로그인이 필요합니다." });
     }
 
     // 세션이 존재하는지 확인
     req.sessionStore.get(sessionID, (err, session) => {
       if (err) {
         console.error("세션 조회 중 오류 발생:", err);
-        return res.status(500).json({ message: "세션 조회 중 오류가 발생했습니다." });
+        return res
+          .status(500)
+          .json({ message: "세션 조회 중 오류가 발생했습니다." });
       }
 
       // 세션이 존재하지 않는 경우, 로그인이 필요함을 알림
       if (!session) {
-        return res
-          .status(401)
-          .json({ message: "세션 스토어에 세션이 없습니다. 로그인이 필요합니다." });
+        return res.status(401).json({
+          message: "세션 스토어에 세션이 없습니다. 로그인이 필요합니다.",
+        });
       }
 
       // 세션이 존재하는 경우, req.session에 정보 담기.
@@ -46,7 +51,11 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
  */
 
 // 중복 로그인 방지 : 로그인 시 이전 세션을 삭제하는 미들웨어
-export function removePreviousSession(req: Request, res: Response, next: NextFunction) {
+export function removePreviousSession(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   // 현재 사용자 이름 가져오기
   const { username } = req.session.user;
 
@@ -85,5 +94,5 @@ export function removePreviousSession(req: Request, res: Response, next: NextFun
     }
   });
   // 프론트엔드 홈으로 이동.
-  res.redirect(`http://localhost:3001/`);
+  res.redirect(config.FrontEndURL);
 }

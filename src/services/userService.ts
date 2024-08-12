@@ -6,8 +6,8 @@ import config from "../config";
 
 const CLIENT_ID = config.DISCORD_APPLICATION_ID;
 const CLIENT_SECRET = config.DISCORD_APPLICATION_SECRET;
-const REDIRECT_URI = config.DISCORD_REDIRECT_URI;
-const DISCORD_LOGIN_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&scope=identify+email`;
+const REDIRECT_URL = config.DISCORD_REDIRECT_URL;
+const DISCORD_LOGIN_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URL}&scope=identify+email`;
 
 // GET /auth/discord
 export const discordAuth = async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ export const discordAuthRedirect = async (
   params.append("client_secret", CLIENT_SECRET);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", REDIRECT_URI); // http://localhost:3000/auth/discord/redirect
+  params.append("redirect_uri", REDIRECT_URL);
 
   try {
     // 엑세스 토큰 가져오기
