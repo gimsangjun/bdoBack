@@ -1,12 +1,14 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import geoip from "geoip-lite";
 import ItemRouter from "../api/routes/item";
 import ItemFavorityRouter from "../api/routes/itemFavorite";
 import ItemPriceAlertRouter from "../api/routes/itemPriceAlert";
 import UserRouter from "../api/routes/user";
 import ReinforcementRouter from "../api/routes/reinforcementRouter";
 import config from "../config";
+import Logger from "../loaders/logger";
 
 export default ({ app }: { app: express.Application }) => {
   app.use(
@@ -22,10 +24,19 @@ export default ({ app }: { app: express.Application }) => {
 
   // 디버깅용
   app.use((req: Request, res: Response, next: any) => {
-    console.log("HTTP Method:", req.method);
-    console.log("Request URL:", req.originalUrl); // 요청 URL 출력
-    console.log("Request Body:", req.body); // 요청 바디(body) 출력
-    console.log("Cookies:", req.cookies); // 쿠키값 출력
+    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    const geo = geoip.lookup(ip as string);
+    const location = geo ? `${geo.city}, ${geo.country}` : "Location unknown";
+
+    Logger.info(`Request received: {
+      Method: ${req.method},
+      URL: ${req.originalUrl},
+      Body: ${JSON.stringify(req.body)},
+      Cookies: ${JSON.stringify(req.cookies)},
+      IP: ${ip},
+      Location: ${location}
+    }`);
+
     next(); // 다음 미들웨어로 요청 전달
   });
 

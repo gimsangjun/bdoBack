@@ -14,8 +14,17 @@ async function startServer() {
   const currentEnvironment = process.env.NODE_ENV;
   const HOST = currentEnvironment === "production" ? "0.0.0.0" : "127.0.0.1";
 
-  Logger.info(`Current NODE_ENV: ${currentEnvironment || "not set"}`); // NODE_ENV가 설정되지 않은 경우 "not set"을 출력
-  Logger.info(`App will listen on ${HOST}`);
+  Logger.info("Current Environment Configuration:");
+  Logger.info(`NODE_ENV: ${currentEnvironment || "not set"}`);
+  Logger.info(`PORT: ${config.port}`);
+  Logger.info(`Database URL: ${config.databaseURL}`);
+  Logger.info(`Session Key: ${config.sessionKey}`);
+  Logger.info(`CORS Allowed URL: ${config.CorsURL}`);
+  Logger.info(`BDO Market URL: ${config.BdoMarketURL}`);
+  Logger.info(`Discord App ID: ${config.DISCORD_APPLICATION_ID}`);
+  Logger.info(`Discord Redirect URL: ${config.DISCORD_REDIRECT_URL}`);
+  Logger.info(`Discord App Secret: ${config.DISCORD_APPLICATION_SECRET}`);
+  Logger.info(`Discord Bot Token: ${config.DISCORD_BOT_TOKEN}`);
 
   app
     .listen(Number(config.port), HOST, () => {
