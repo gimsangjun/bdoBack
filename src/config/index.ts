@@ -16,15 +16,18 @@ export default {
   port: process.env.PORT || 3000,
   databaseURL:
     process.env.NODE_ENV === "production"
-      ? process.env.MONGODB_URI ||
-        "mongodb://default-production-uri:27017/blackdesert"
+      ? process.env.MONGODB_URL
       : `mongodb://${HOST}:27017/blackdesert`,
   sessionKey: process.env.SESSION_KEY,
+  CorsURL:
+    process.env.NODE_ENV === "production"
+      ? process.env.CORS_URL || "localhost:3000"
+      : process.env.CORS_URL,
 
   BdoMarketURL: process.env.BDOMARKET_URL,
   DISCORD_APPLICATION_ID: process.env.DISCORD_APPLICATION_ID, // application id, client id와 동일
-  DISCORD_REDIRECT_URI:
-    process.env.DISCORD_REDIRECT_URI ||
+  DISCORD_REDIRECT_URL:
+    process.env.DISCORD_REDIRECT_URL ||
     `http://localhost:${process.env.PORT || 3000}/auth/discord/redirect`,
   DISCORD_APPLICATION_SECRET: process.env.DISCORD_APPLICATION_SECRET,
   DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN, // 튜토리얼의 DISCORD_TOKEN

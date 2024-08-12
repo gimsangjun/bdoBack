@@ -6,11 +6,12 @@ import ItemFavorityRouter from "../api/routes/itemFavorite";
 import ItemPriceAlertRouter from "../api/routes/itemPriceAlert";
 import UserRouter from "../api/routes/user";
 import ReinforcementRouter from "../api/routes/reinforcementRouter";
+import config from "../config";
 
 export default ({ app }: { app: express.Application }) => {
   app.use(
     cors({
-      origin: "http://localhost:3001", // 클라이언트의 origin을 명시적으로 지정
+      origin: config.CorsURL, // 클라이언트의 origin을 명시적으로 지정
       credentials: true, // handshake과정중에 헤더에 저 옵션이 true로 설정되어 있어서 브라우저가 이를 인식하고 해당 요청에 대해 사용자의 세션 쿠키를 자동으로 포함 시킴
     }),
   );
