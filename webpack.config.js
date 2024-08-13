@@ -2,7 +2,7 @@ const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: "development", // 또는 'production'. 'development'는 개발 환경에 맞춰 최적화된 설정을 적용하며, 'production'은 배포 환경에 맞춰 최적화된 설정을 적용합니다.
+  mode: "production", // 또는 'production'. 'development'는 개발 환경에 맞춰 최적화된 설정을 적용하며, 'production'은 배포 환경에 맞춰 최적화된 설정을 적용합니다.
   entry: "./src/app.ts", // 애플리케이션의 진입점
   target: "node", // Node.js 환경을 타겟으로 함
   externals: [nodeExternals()], // 외부 모듈을 번들에서 제외. 주로 node_modules 폴더 내의 모듈을 번들에 포함시키지 않기 위해 사용합니다.
