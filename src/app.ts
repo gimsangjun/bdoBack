@@ -28,14 +28,20 @@ async function startServer() {
 
   app
     .listen(Number(config.port), HOST, () => {
-      Logger.info(`
-      ################################################
-      🛡️  Server listening on port: ${config.port} at ${HOST} 🛡️
-      ################################################
-    `);
+      if (process.env.NODE_ENV === "development") {
+        Logger.info(`
+    ################################################
+    🛡️  Server listening on port: ${config.port} at ${HOST} 🛡️
+    ################################################
+  `);
+      } else {
+        Logger.info(`Server listening on port: ${config.port} at ${HOST}`);
+      }
     })
     .on("error", (err) => {
-      Logger.error(`Server failed to start: ${err}`);
+      Logger.error(
+        `Server failed to start on port: ${config.port} at ${HOST} due to error: ${err.message}`,
+      );
       process.exit(1);
     });
 }
