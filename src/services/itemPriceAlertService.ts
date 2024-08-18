@@ -24,9 +24,25 @@ export const getItemPriceAlerts = async (req: Request, res: Response) => {
 // 사용자 가격 알림 추가
 export const addItemPriceAlert = async (req: Request, res: Response) => {
   const { username } = req.session.user;
-  const { itemName, itemId, itemSid, priceThreshold } = req.body;
+  const { itemName, itemId, itemSid, priceThreshold, alertCondition } =
+    req.body;
 
   try {
+    if (!alertCondition || !["above", "below"].includes(alertCondition)) {
+      return res.status(400).json({
+        message:
+          "유효하지 않은 알림 조건입니다. 'above' 또는 'below' 중 하나를 선택하세요.",
+      });
+    }
+
+    // priceThreshold가 유효한 값인지 확인
+    if (typeof priceThreshold !== "number" || priceThreshold <= 0) {
+      return res.status(400).json({
+        message:
+          "유효하지 않은 기준가입니다. 기준가는 0보다 큰 숫자여야 합니다.",
+      });
+    }
+
     const user = await UserModel.findOne({ username });
 
     if (!user) {
@@ -52,6 +68,7 @@ export const addItemPriceAlert = async (req: Request, res: Response) => {
       itemId,
       itemSid,
       priceThreshold,
+      alertCondition,
     });
 
     await newItemPriceAlert.save();
@@ -69,7 +86,7 @@ export const addItemPriceAlert = async (req: Request, res: Response) => {
 // 사용자 가격 알림 수정
 export const updateItemPriceAlert = async (req: Request, res: Response) => {
   const { username } = req.session.user;
-  const { alertId, priceThreshold } = req.body;
+  const { alertId, priceThreshold, alertCondition } = req.body;
 
   try {
     const user = await UserModel.findOne({ username }).populate(
@@ -90,7 +107,24 @@ export const updateItemPriceAlert = async (req: Request, res: Response) => {
       throw new Error("권한이 없습니다.");
     }
 
+    if (alertCondition && !["above", "below"].includes(alertCondition)) {
+      return res.status(400).json({
+        message:
+          "유효하지 않은 알림 조건입니다. 'above' 또는 'below' 중 하나를 선택하세요.",
+      });
+    }
+
+    if (typeof priceThreshold !== "number" || priceThreshold <= 0) {
+      return res.status(400).json({
+        message:
+          "유효하지 않은 기준가입니다. 기준가는 0보다 큰 숫자여야 합니다.",
+      });
+    }
+
+    // 값 업데이트
     alert.priceThreshold = priceThreshold;
+    alert.alertCondition = alertCondition;
+
     await alert.save();
 
     return res.status(200).json({ itemPriceAlert: alert });
