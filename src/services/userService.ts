@@ -130,43 +130,36 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// 로그인한 사용자 정보 확인,
+// 로그인한 사용자 정보 가져오기, 없으면 없는대로 그냥 빈상태로 리턴해주면됨.
 // 사용자가 브라우저를 새로고침(ex : 리액트의 redux store가 초기화)해도 쿠키의 세션ID값을 통해 다시 정보를 불러옴
 export const profile = async (req: Request, res: Response) => {
   try {
-    // 로그인 하지 않은 사용자 처리
-    if (!req.cookies || !req.cookies.sessionID) {
-      res.status(401).json({ message: "로그인 하지 않은 사용자" });
+    // 세션에서 세션 ID 가져오기
+    const sessionID = req.cookies?.sessionID?.split(".")[0].substring(2);
+
+    if (!sessionID) {
+      // 세션 ID가 없는 경우 빈 사용자 정보 반환
+      res.status(200).json({ user: null });
       return;
     }
-
-    // 세션에서 세션 ID 가져오기
-    const sessionID = req.cookies.sessionID.split(".")[0].substring(2);
-
-    // req.sessionStore.clear();
 
     // 세션 스토어에서 세션 가져오기
     req.sessionStore.get(sessionID, (err, session) => {
       if (err) {
-        console.error("세션 조회 중 오류 발생:", err);
-        res.status(500).json({ message: "세션 조회 중 오류가 발생했습니다." });
+        console.error("세션 조회 중 오류 발생:", err); // 서버에만 오류 로그를 남김
+        res.status(500).json({ message: "사용자 정보를 가져오지 못했습니다." }); // 사용자에게는 일반 오류 메시지 전달
         return;
       }
 
       // 세션에서 사용자 정보 가져오기
       const user = session?.user;
 
-      if (!user) {
-        res.status(401).json({ message: "세션에 사용자 정보가 없습니다." });
-        return;
-      }
-
-      // 사용자 정보 반환
-      res.status(200).json({ user });
+      // 사용자 정보가 없으면 빈 사용자 정보 반환
+      res.status(200).json({ user: user || null });
     });
   } catch (error) {
-    console.error("Profile error:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Profile error:", error); // 서버에만 오류 로그를 남김
+    res.status(500).json({ message: "오류가 발생했습니다." }); // 사용자에게는 일반 오류 메시지 전달
   }
 };
 
