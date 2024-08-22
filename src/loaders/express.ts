@@ -11,12 +11,13 @@ import config from "../config";
 import Logger from "../loaders/logger";
 
 export default ({ app }: { app: express.Application }) => {
-  app.use(
-    cors({
-      origin: config.FrontEndURL, // 클라이언트의 origin을 명시적으로 지정
-      credentials: true, // handshake과정중에 헤더에 저 옵션이 true로 설정되어 있어서 브라우저가 이를 인식하고 해당 요청에 대해 사용자의 세션 쿠키를 자동으로 포함 시킴
-    }),
-  );
+  // nginx에서 모두 다 처리했기 때문에 주석처리.
+  // app.use(
+  //   cors({
+  //     origin: config.FrontEndURL, // 클라이언트의 origin을 명시적으로 지정
+  //     credentials: true, // handshake과정중에 헤더에 저 옵션이 true로 설정되어 있어서 브라우저가 이를 인식하고 해당 요청에 대해 사용자의 세션 쿠키를 자동으로 포함 시킴
+  //   }),
+  // );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true })); // URL-encoded 데이터 파싱을 위한 미들웨어
   app.use(express.static("public")); // 정적 파일 제공을 위한 미들웨어
