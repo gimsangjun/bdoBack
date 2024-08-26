@@ -5,6 +5,7 @@ import geoip from "geoip-lite";
 import ItemRouter from "../api/routes/item";
 import ItemFavorityRouter from "../api/routes/itemFavorite";
 import ItemPriceAlertRouter from "../api/routes/itemPriceAlert";
+import ItemInfoRouter from "../api/routes/itemInfo";
 import UserRouter from "../api/routes/user";
 import ReinforcementRouter from "../api/routes/reinforcementRouter";
 import config from "../config";
@@ -29,6 +30,7 @@ export default ({ app }: { app: express.Application }) => {
     const geo = geoip.lookup(ip as string);
     const location = geo ? `${geo.city}, ${geo.country}` : "Location unknown";
 
+    // TODO: 이부분 서버에서 꺠져서 보기힘듬. 제대로 고쳐야됨.
     Logger.info(`Request received: {
       Method: ${req.method},
       URL: ${req.originalUrl},
@@ -46,4 +48,5 @@ export default ({ app }: { app: express.Application }) => {
   app.use("/item/alert", ItemPriceAlertRouter);
   app.use("/item", ItemRouter);
   app.use("/reinforcement", ReinforcementRouter);
+  app.use("/admin", ItemInfoRouter);
 };
