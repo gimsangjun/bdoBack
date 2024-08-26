@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IItemStock } from "./itemStock";
 
-// 기본적인 아이템 내용들. 실제 운영에서는 쓰지 않을듯. 대부분 ItemStock을 쓸듯.
+// 기본적인 아이템 내용들. 실제 운영에서는 쓰지 않음. => 대부분 itemStock
+// 초반에 데이터 구성할떄 받아온 데이터들을 저장하기 위해 사용.
 export interface IItem extends Document {
   id: number;
   name: string;

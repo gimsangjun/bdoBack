@@ -12,6 +12,7 @@ async function startServer() {
   await loader.default({ expressApp: app });
 
   const currentEnvironment = process.env.NODE_ENV;
+  // 0.0.0.0인 경우 모든 네트워크 인터페이스에서 접근 가능, 127.0.0.1은 로컬컴퓨터만 접근가능.
   const HOST = currentEnvironment === "production" ? "0.0.0.0" : "127.0.0.1";
 
   Logger.info("Current Environment Configuration:");

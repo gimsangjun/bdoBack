@@ -16,7 +16,7 @@ router.post("/id-and-sid", async (req: Request, res: Response) => {
   await getItemsByIdAndSid(req, res);
 });
 
-// POST /item/update body:{items}, 아이템 stock 업데이트
+// POST /item/update body:{items}, 아이템 stock(가격) 업데이트
 router.post("/update", async (req: Request, res: Response) => {
   await updateItemsPrice(req, res);
 });
