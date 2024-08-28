@@ -24,36 +24,37 @@ export interface IItemStock extends Document {
   details: string; // 아이템 상세 정보
 }
 
-const ItemStockSchema: Schema = new Schema({
-  id: { type: Number, required: true },
-  name: { type: String, required: true },
-  sid: { type: Number, required: true },
-  mainCategory: { type: Number, default: 0 },
-  subCategory: { type: Number, default: 0 },
-  imgUrl: { type: String, default: "" },
-  minEnhance: { type: Number, default: 0 },
-  maxEnhance: { type: Number, default: 0 },
-  basePrice: { type: Number, default: 0 },
-  currentStock: { type: Number, default: 0 },
-  totalTrades: { type: Number, default: 0 },
-  priceMin: { type: Number, default: 0 },
-  priceMax: { type: Number, default: 0 },
-  lastSoldPrice: { type: Number, default: 0 },
-  lastSoldTime: { type: Number, default: 0 },
-  updateAt: { type: Date, default: Date.now },
-  // grade에 common, uncommon, rare, epic, legendary라는 값만 올수 있게.
-  grade: {
-    type: String,
-    default: "common",
-    enum: ["common", "uncommon", "rare", "epic", "legendary"],
+const ItemStockSchema: Schema = new Schema(
+  {
+    id: { type: Number, required: true },
+    name: { type: String, required: true },
+    sid: { type: Number, required: true },
+    mainCategory: { type: Number, default: 0 },
+    subCategory: { type: Number, default: 0 },
+    imgUrl: { type: String, default: "" },
+    minEnhance: { type: Number },
+    maxEnhance: { type: Number },
+    basePrice: { type: Number, default: 0 },
+    currentStock: { type: Number },
+    totalTrades: { type: Number },
+    priceMin: { type: Number },
+    priceMax: { type: Number },
+    lastSoldPrice: { type: Number },
+    lastSoldTime: { type: Number },
+    updateAt: { type: Date, default: Date.now },
+    // grade에 common, uncommon, rare, epic, legendary라는 값만 올 수 있게.
+    grade: {
+      type: String,
+      default: "common",
+      enum: ["common", "uncommon", "rare", "epic", "legendary"],
+    },
+    type: { type: String, default: "" },
+    details: { type: String, default: "" },
   },
-  type: { type: String, default: "" },
-  details: { type: String, default: "" },
-});
+  { strict: false }, // 스키마에 정의되지 않은 추가 필드들을 허용
+);
 
 // id와 sid를 결합한 복합 인덱스 생성
-// mongodb쉘에서는 이렇게 db.itemstocks.createIndex({ id: 1, sid: 1 }, { unique: true })
-// 1의 의미 : "1"은 인덱스가 오름차순으로 생성되어야 함을 나타내는 옵션
 ItemStockSchema.index({ id: 1, sid: 1 }, { unique: true });
 
 const ItemStockModel = mongoose.model<IItemStock>("ItemStock", ItemStockSchema);
