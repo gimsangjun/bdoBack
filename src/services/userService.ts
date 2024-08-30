@@ -78,7 +78,12 @@ export const discordAuthRedirect = async (
 
     // 세션에 저장
     // 서버측에 데이터 저장.
-    req.session.user = { id: user.id, avatarUrl, username: user.username };
+    req.session.user = {
+      id: user.id,
+      avatarUrl,
+      username: user.username,
+      role: user.role,
+    };
     // 세션 ID를 클라이언트에게 전달
     // 쿠키에 세션 ID를 저장, 클라이언트(브라우저 자동 적용)에게도 적용됨
     // httpOnly true로 하면 자바스크립트로 접근이 안되서 리액트에서 못가져옴.

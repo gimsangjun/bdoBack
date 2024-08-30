@@ -10,6 +10,7 @@ interface IDiscordChannel {
 export interface IUser extends Document {
   id: string;
   username: string;
+  role: "admin" | "user";
   avatarUrl: string;
   itemFavorites: IItemFavorite["_id"][];
   itemPriceAlerts: IItemPriceAlert["_id"][];
@@ -19,6 +20,7 @@ export interface IUser extends Document {
 const UserSchema: Schema = new Schema({
   id: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
+  role: { type: String, enum: ["admin", "user"], default: "user" },
   avatarUrl: { type: String },
   // ref에는 mongoose.model의 collection이름 그대로
   itemFavorites: [{ type: Schema.Types.ObjectId, ref: "ItemFavorite" }],
