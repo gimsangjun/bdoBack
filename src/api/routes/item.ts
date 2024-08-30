@@ -11,7 +11,7 @@ router.post("/", async (req: Request, res: Response) => {
   await getItemsByQuery(req, res);
 });
 
-// POST: /item/id-and-sid, body: {id : [], sid : []}
+// POST: /item/id-and-sid, body: items: [{id , sid}]
 router.post("/id-and-sid", async (req: Request, res: Response) => {
   await getItemsByIdAndSid(req, res);
 });
