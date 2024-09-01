@@ -14,9 +14,9 @@ export default class ItemAPI {
         items = [items];
       }
 
-      // 아이템 ID를 추출하고 중복을 제거합니다.
+      // 아이템 ID를 추출하고 중복을 제거함. id하나만 넘기면 sid 전체 정보(강화등급)가 넘어옴
       const itemIds = [...new Set(items.map((item) => item.itemId || item.id))];
-      const reqUrl = `${ItemAPI.BdoMarketUrl}/item?kr/item?lang=kr`;
+      const reqUrl = `${ItemAPI.BdoMarketUrl}/item?lang=kr`;
 
       const response = await axios.post(reqUrl, itemIds);
       const itemDataArray = Array.isArray(response.data)
@@ -26,19 +26,34 @@ export default class ItemAPI {
       for (const itemData of itemDataArray) {
         let item = await ItemModel.findOne({
           id: itemData.id,
+          sid: itemData.sid,
         });
 
         if (!item) {
+          // sid가 0인 아이템은 항상 DB에 존재하고, 여기에서 type과 imgUrl와 같은 변하지 않는 아이템들을 똑같이 로드해주기 위함.
+          let tempItem = await ItemModel.findOne({
+            id: itemData.id,
+          });
+
+          if (!tempItem) {
+            console.error(
+              "아예 DB에 존재하지 않는 아이템입니다. Id: ",
+              itemData.id,
+            );
+            throw new Error("아예 DB에 존재하지 않는 아이템입니다.");
+          }
+
           item = new ItemModel({
             id: itemData.id,
             sid: itemData.sid || 0,
             name: itemData.name || "Unknown",
-            mainCategory: itemData.mainCategory,
-            subCategory: itemData.subCategory,
+            mainCategory: tempItem.mainCategory,
+            subCategory: tempItem.subCategory,
             price: itemData.basePrice,
-            grade: itemData.grade || "common",
-            imgUrl: itemData.imgUrl || "",
-            details: itemData.details || "",
+            grade: tempItem.grade || "common",
+            imgUrl: tempItem.imgUrl || "",
+            type: tempItem.type || "",
+            details: tempItem.details || "",
             updateAt: new Date(),
           });
         } else {
@@ -64,6 +79,7 @@ export default class ItemAPI {
   // src/models/itemsData.json을 읽어서 itemsModel로 저장
   static initItem = async () => {
     try {
+      // DB초기화는 직접 쿼리문으로 하셈
       const filePath = path.join(__dirname, "../models/itemsData.json");
       const data = await fs.readFile(filePath, "utf8");
       const items = JSON.parse(data);
@@ -78,6 +94,7 @@ export default class ItemAPI {
           price: itemData.price || 0,
           grade: itemData.grade || "common",
           imgUrl: itemData.imgUrl || "",
+          type: itemData.type || "",
           details: itemData.details || "",
           components: itemData.components || [], // 하위 재료
           updateAt: new Date(),
@@ -86,6 +103,7 @@ export default class ItemAPI {
         // 아이템을 저장합니다.
         await item.save();
       }
+      console.log("초기 아이템 로드 완료");
     } catch (error) {
       console.error("Error initializing items from JSON:", error.message);
       throw error; // 오류 발생 시 예외를 다시 발생시킵니다.
