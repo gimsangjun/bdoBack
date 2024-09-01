@@ -22,10 +22,10 @@ async function startServer() {
   Logger.info(`Session Key: ${config.sessionKey}`);
   Logger.info(`Front End URL: ${config.FrontEndURL}`);
   Logger.info(`BDO Market URL: ${config.BdoMarketURL}`);
-  Logger.info(`Discord App ID: ${config.DISCORD_APPLICATION_ID}`);
-  Logger.info(`Discord Redirect URL: ${config.DISCORD_REDIRECT_URL}`);
-  Logger.info(`Discord App Secret: ${config.DISCORD_APPLICATION_SECRET}`);
-  Logger.info(`Discord Bot Token: ${config.DISCORD_BOT_TOKEN}`);
+  // Logger.info(`Discord App ID: ${config.DISCORD_APPLICATION_ID}`);
+  // Logger.info(`Discord Redirect URL: ${config.DISCORD_REDIRECT_URL}`);
+  // Logger.info(`Discord App Secret: ${config.DISCORD_APPLICATION_SECRET}`);
+  // Logger.info(`Discord Bot Token: ${config.DISCORD_BOT_TOKEN}`);
 
   app
     .listen(Number(config.port), HOST, () => {
