@@ -1,6 +1,27 @@
 import config from "../../config";
 import { Request, Response, NextFunction } from "express";
 
+// 접속한 사용자가 role이 admin인지 확인하는 미들웨어
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // 세션 정보에서 사용자 데이터와 역할(role)을 확인
+    if (req.session.user && req.session.user.role === "admin") {
+      // 역할이 'admin'이면 다음 미들웨어로 진행
+      next();
+    } else {
+      // 역할이 'admin'이 아니면 권한이 없다는 메시지와 함께 403 Forbidden 응답
+      return res
+        .status(403)
+        .json({ message: "접근 권한이 없습니다. 관리자만 접근 가능합니다." });
+    }
+  } catch (error) {
+    console.error("관리자 권한 확인 중 오류 발생:", error);
+    res
+      .status(500)
+      .json({ message: "관리자 권한 확인 중 서버 오류가 발생했습니다." });
+  }
+};
+
 // 세션이 있는지 확인하는 미들웨어
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
   try {
