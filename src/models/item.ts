@@ -1,33 +1,39 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IItemStock } from "./itemStock";
 
-// 기본적인 아이템 내용들. 실제 운영에서는 쓰지 않음. => 대부분 itemStock
-// 초반에 데이터 구성할떄 받아온 데이터들을 저장하기 위해 사용.
 export interface IItem extends Document {
   id: number;
+  sid: number; // 강화 등급이 있는 아이템의 경우
   name: string;
-  mainCategory: number;
-  subCategory: number;
-  grade: string;
+  mainCategory: number; // 1 - 가공무역
+  subCategory: number; // 1-1 목재, 1-2 광석
+  price: number;
+  grade: string; // 아이템 등급, 색깔을 주기 위함.
   imgUrl: string;
-  type: string;
+  type: string; // 강화 정보를 구별하기 위함.
+  details: string; // 아이템 상세 정보
+  updateAt: Date;
 }
 
-const ItemSchema: Schema = new Schema({
-  id: { type: Number, require: true, unique: true },
-  name: { type: String, required: true },
-  mainCategory: { type: Number, require: true },
-  subCategory: { type: Number, require: true },
-  imgUrl: { type: String, default: "" },
-  // grade에 common, uncommon, rare, epic, legendary라는 값만 올수 있게.
-  grade: {
-    type: String,
-    required: true,
-    default: "common",
-    enum: ["common", "uncommon", "rare", "epic", "legendary"],
+const ItemSchema: Schema = new Schema(
+  {
+    id: { type: Number, require: true, unique: true },
+    name: { type: String, required: true },
+    mainCategory: { type: Number, require: true },
+    subCategory: { type: Number, require: true },
+    price: { type: Number, default: 0 },
+    grade: {
+      type: String,
+      required: true,
+      default: "common",
+      enum: ["common", "uncommon", "rare", "epic", "legendary"],
+    },
+    imgUrl: { type: String, default: "" },
+    type: { type: String, default: "" },
+    details: { type: String, default: "" },
+    updateAt: { type: Date, default: Date.now },
   },
-  type: { type: String, default: "" },
-});
+  { strict: false }, // 스키마에 정의되지 않은 추가 필드들을 허용
+);
 
 const ItemModel = mongoose.model<IItem>("Item", ItemSchema);
 

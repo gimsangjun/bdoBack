@@ -3,9 +3,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import geoip from "geoip-lite";
 import ItemRouter from "../api/routes/item";
-import ItemFavorityRouter from "../api/routes/itemFavorite";
-import ItemPriceAlertRouter from "../api/routes/itemPriceAlert";
-import ItemInfoRouter from "../api/routes/itemInfo";
 import UserRouter from "../api/routes/user";
 import ReinforcementRouter from "../api/routes/reinforcementRouter";
 import config from "../config";
@@ -44,9 +41,6 @@ export default ({ app }: { app: express.Application }) => {
   });
 
   app.use("/auth", UserRouter);
-  app.use("/item/favorite", ItemFavorityRouter);
-  app.use("/item/alert", ItemPriceAlertRouter);
   app.use("/item", ItemRouter);
   app.use("/reinforcement", ReinforcementRouter);
-  app.use("/admin", ItemInfoRouter);
 };
