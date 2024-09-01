@@ -23,7 +23,7 @@ export interface IItem extends Document {
 
 const ItemSchema: Schema = new Schema(
   {
-    id: { type: Number, require: true, unique: true },
+    id: { type: Number, require: true },
     sid: { type: Number, require: true, default: 0 },
     name: { type: String, required: true },
     mainCategory: { type: Number, require: true },
@@ -44,6 +44,8 @@ const ItemSchema: Schema = new Schema(
   { strict: false }, // 스키마에 정의되지 않은 추가 필드들을 허용
 );
 
+//  id와 sid를 합쳐서 유니크한 인덱스 생성.
+ItemSchema.index({ id: 1, sid: 1 }, { unique: true });
 const ItemModel = mongoose.model<IItem>("Item", ItemSchema);
 
 export default ItemModel;
