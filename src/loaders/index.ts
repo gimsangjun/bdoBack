@@ -2,7 +2,7 @@ import { Application } from "express";
 import expressLoader from "./express";
 import mongooseLoader from "./mongooseLoader";
 import sessionLoader from "./session";
-import discordAppliaction from "./discord";
+// import discordAppliaction from "./discord";
 import Logger from "./logger";
 import ItemAPI from "../utils/itemAPI";
 import ReinforcementUtil from "../utils/reinforcementUtil";
@@ -21,8 +21,5 @@ export default async ({ expressApp }: { expressApp: Application }) => {
   // Logger.info("🤖 Discord loaded");
 
   // await ReinforcementUtil.addInitData();
-  // await ItemAPI.test();
-  // await ItemAPI.updateAllItemModel();
-  // await ItemAPI.updateItemStock([{ id: 719956 }, { id: 719955 }]);
-  // await ItemAPI.updateItemStocksWithGradesAndImagesAndType();
+  // await ItemAPI.initItem();
 };
