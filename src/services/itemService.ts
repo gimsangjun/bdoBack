@@ -6,7 +6,6 @@ import ItemAPI from "../utils/itemAPI";
 export const getItemsByQuery = async (req: Request, res: Response) => {
   try {
     const query: any = {};
-    console.log("query:", req.query);
 
     // 제공된 쿼리 파라미터에 따라 동적으로 쿼리 객체를 생성
     if (req.query.id) {
@@ -31,13 +30,13 @@ export const getItemsByQuery = async (req: Request, res: Response) => {
     const items = await ItemModel.find(query).skip(skip).limit(limit);
 
     // 총 아이템 수 계산 (페이지네이션용)
-    const totalItems = await ItemModel.countDocuments(query);
+    const totalItemsCount = await ItemModel.countDocuments(query);
 
     // 응답 데이터에 페이지 정보 포함
     res.json({
       items,
-      totalItems,
-      totalPages: Math.ceil(totalItems / limit),
+      totalItemsCount,
+      totalPages: Math.ceil(totalItemsCount / limit),
       currentPage: page,
     });
   } catch (error) {
@@ -49,7 +48,7 @@ export const getItemsByQuery = async (req: Request, res: Response) => {
 // POST: /item/id-and-sid, body: items: [{id , sid}]
 export const getItemsByIdAndSid = async (req: Request, res: Response) => {
   const { items } = req.body;
-  console.log("items", items);
+
   // items가 배열이 아니거나, 빈 배열인 경우 처리
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ message: "Invalid items array" });
@@ -64,7 +63,6 @@ export const getItemsByIdAndSid = async (req: Request, res: Response) => {
     const foundItems = await ItemModel.find({
       $or: conditions,
     });
-    console.log(foundItems);
 
     res.json({ items: foundItems });
   } catch (error) {
