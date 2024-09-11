@@ -22,7 +22,6 @@ mkdir -p $backup_path
 
 # Backup specific collections
 mongodump --uri "$uri" --collection items --out $backup_path
-mongodump --uri "$uri" --collection itemstocks --out $backup_path
 mongodump --uri "$uri" --collection reinforcements --out $backup_path
 
 echo "Backup completed successfully."
